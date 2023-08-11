@@ -1,4 +1,4 @@
-use crate::errors::GameError;
+use crate::errors::PlayerError;
 use anchor_lang::prelude::*;
 
 #[account]
@@ -15,7 +15,7 @@ impl Player {
     pub const MAXIMUM_SIZE: usize = 5000;
 
     pub fn init(&mut self, owner_pubkey: Pubkey) -> Result<()> {
-        require_eq!(self.is_initialized, false, GameError::PlayerAlreadyInitialized);
+        require_eq!(self.is_initialized, false, PlayerError::AlreadyInitialized);
 
         self.owner_pubkey = owner_pubkey;
         self.rank = 0;

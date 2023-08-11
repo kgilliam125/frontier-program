@@ -10,7 +10,7 @@ declare_id!("Fk8C6UUGGZgWHXmb6HPHNhfnBhf4eKDzNnj4R8zMjHCr");
 // pub const BOARD_TILES: usize = 169;
 
 #[program]
-pub mod clash_of_clones {
+pub mod frontier {
     use super::*;
 
     // pub fn init_base(ctx: Context<InitBase>) -> Result<()> {
@@ -23,8 +23,8 @@ pub mod clash_of_clones {
     //     Ok(())
     // }
 
-    pub fn init_player(ctx: Context<InitPlayer>) -> Result<()> {
-        instructions::init_player::init_player(ctx)
+    pub fn init_player_accounts(ctx: Context<InitPlayerAccounts>) -> Result<()> {
+        instructions::init_player_accounts::init_player_accounts(ctx)
     }
 }
 

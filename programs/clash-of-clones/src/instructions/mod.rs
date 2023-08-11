@@ -1,3 +1,3 @@
-pub use init_player::*;
+pub use init_player_accounts::*;
 
-pub mod init_player;
+pub mod init_player_accounts;
