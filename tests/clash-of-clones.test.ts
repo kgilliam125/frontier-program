@@ -17,18 +17,32 @@ describe('clash-of-clones', () => {
         [Buffer.from('base'), provider.publicKey.toBuffer()],
         program.programId
     )
+    const [armyPda] = anchor.web3.PublicKey.findProgramAddressSync(
+        [Buffer.from('army'), provider.publicKey.toBuffer()],
+        program.programId
+    )
 
     it('It initialized a player!', async () => {
         const tx = await program.methods
             .initPlayer()
             .accounts({
                 playerAccount: playerPda,
-                baseAccount: basePda,
             })
             .rpc()
 
         const playerAccount = await program.account.player.fetch(playerPda)
 
         expect(playerAccount.ownerPubkey).toEqual(provider.publicKey)
+        expect(playerAccount.experience).toEqual(0)
+        expect(playerAccount.rank).toEqual(0)
+        expect(playerAccount.isInitialized).toEqual(true)
+        expect(playerAccount.resources).toEqual({
+            wood: 0,
+            stone: 0,
+            iron: 0,
+            steel: 0,
+            mana: 0,
+            gold: 0,
+        })
     })
 })
