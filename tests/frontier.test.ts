@@ -38,8 +38,8 @@ describe('frontier', () => {
         expect(playerAccount.rank).toEqual(0)
         expect(playerAccount.isInitialized).toEqual(true)
         expect(playerAccount.resources).toEqual({
-            wood: 0,
-            stone: 0,
+            wood: 1,
+            stone: 1,
             iron: 0,
             steel: 0,
             mana: 0,
@@ -61,5 +61,44 @@ describe('frontier', () => {
         expect(armyAccount.armySize).toEqual(0)
 
         
+    })
+
+    it('builds a structure', async () => {
+        let baseAccount = await program.account.playerBase.fetch(basePda)
+        const nextStructureCount = baseAccount.structureCount + 1
+
+        const structureCountAsBuff = Buffer.allocUnsafe(4);
+        structureCountAsBuff.writeUInt32LE(nextStructureCount, 0);
+        const [structurePda] = anchor.web3.PublicKey.findProgramAddressSync(
+            [structureCountAsBuff, basePda.toBuffer()],
+            program.programId
+        )
+
+        await program.methods
+            .buildStructure(nextStructureCount, 1)
+            .accounts({
+                playerAccount: playerPda,
+                baseAccount: basePda,
+                structureAccount: structurePda,
+            })
+            .rpc()
+
+        baseAccount = await program.account.playerBase.fetch(basePda)
+        expect(baseAccount.structureCount).toEqual(nextStructureCount)
+
+        const playerAccount = await program.account.player.fetch(playerPda)
+        expect(playerAccount.resources).toEqual({
+            wood: 0,
+            stone: 0,
+            iron: 0,
+            steel: 0,
+            mana: 0,
+            gold: 0,
+        })
+
+        const structureAccount = await program.account.structure.fetch(structurePda)
+        expect(structureAccount.player).toEqual(playerPda)
+        expect(structureAccount.playerBase).toEqual(basePda)
+        expect(structureAccount.isInitialized).toEqual(true)
     })
 })

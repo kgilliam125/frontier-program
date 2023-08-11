@@ -32,6 +32,46 @@ export type Frontier = {
         }
       ],
       "args": []
+    },
+    {
+      "name": "buildStructure",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "playerAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "baseAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "structureAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "structureCount",
+          "type": "u32"
+        },
+        {
+          "name": "structureType",
+          "type": "u32"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -81,6 +121,10 @@ export type Frontier = {
             "type": "u32"
           },
           {
+            "name": "maxBaseSize",
+            "type": "u32"
+          },
+          {
             "name": "rating",
             "type": "u32"
           },
@@ -112,6 +156,50 @@ export type Frontier = {
             "name": "resources",
             "type": {
               "defined": "Resources"
+            }
+          },
+          {
+            "name": "isInitialized",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "structure",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "u32"
+          },
+          {
+            "name": "playerBase",
+            "type": "publicKey"
+          },
+          {
+            "name": "player",
+            "type": "publicKey"
+          },
+          {
+            "name": "rank",
+            "type": "u32"
+          },
+          {
+            "name": "structureType",
+            "type": "u32"
+          },
+          {
+            "name": "stats",
+            "type": {
+              "defined": "StructureStats"
+            }
+          },
+          {
+            "name": "position",
+            "type": {
+              "defined": "Position"
             }
           },
           {
@@ -156,6 +244,74 @@ export type Frontier = {
       }
     },
     {
+      "name": "StructureStats",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "health",
+            "type": "u32"
+          },
+          {
+            "name": "attack",
+            "type": "u32"
+          },
+          {
+            "name": "defense",
+            "type": "u32"
+          },
+          {
+            "name": "speed",
+            "type": "u32"
+          },
+          {
+            "name": "range",
+            "type": "u32"
+          },
+          {
+            "name": "cost",
+            "type": "u32"
+          },
+          {
+            "name": "upkeep",
+            "type": "u32"
+          },
+          {
+            "name": "buildTime",
+            "type": "u32"
+          },
+          {
+            "name": "level",
+            "type": "u32"
+          },
+          {
+            "name": "experience",
+            "type": "u32"
+          },
+          {
+            "name": "experienceToLevel",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Position",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "x",
+            "type": "u32"
+          },
+          {
+            "name": "y",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
       "name": "BaseError",
       "type": {
         "kind": "enum",
@@ -165,6 +321,15 @@ export type Frontier = {
           },
           {
             "name": "NotInitialized"
+          },
+          {
+            "name": "BaseSizeExceeded"
+          },
+          {
+            "name": "MaxRatingExceeded"
+          },
+          {
+            "name": "NoStructures"
           }
         ]
       }
@@ -196,6 +361,34 @@ export type Frontier = {
           }
         ]
       }
+    },
+    {
+      "name": "StructureError",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "AlreadyInitialized"
+          },
+          {
+            "name": "NotInitialized"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UnitError",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "AlreadyInitialized"
+          },
+          {
+            "name": "NotInitialized"
+          }
+        ]
+      }
     }
   ],
   "errors": [
@@ -206,6 +399,10 @@ export type Frontier = {
     {
       "code": 6001,
       "name": "NotInitialized"
+    },
+    {
+      "code": 6002,
+      "name": "NotEnoughResources"
     }
   ]
 };
@@ -244,6 +441,46 @@ export const IDL: Frontier = {
         }
       ],
       "args": []
+    },
+    {
+      "name": "buildStructure",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "playerAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "baseAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "structureAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "structureCount",
+          "type": "u32"
+        },
+        {
+          "name": "structureType",
+          "type": "u32"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -293,6 +530,10 @@ export const IDL: Frontier = {
             "type": "u32"
           },
           {
+            "name": "maxBaseSize",
+            "type": "u32"
+          },
+          {
             "name": "rating",
             "type": "u32"
           },
@@ -324,6 +565,50 @@ export const IDL: Frontier = {
             "name": "resources",
             "type": {
               "defined": "Resources"
+            }
+          },
+          {
+            "name": "isInitialized",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "structure",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "u32"
+          },
+          {
+            "name": "playerBase",
+            "type": "publicKey"
+          },
+          {
+            "name": "player",
+            "type": "publicKey"
+          },
+          {
+            "name": "rank",
+            "type": "u32"
+          },
+          {
+            "name": "structureType",
+            "type": "u32"
+          },
+          {
+            "name": "stats",
+            "type": {
+              "defined": "StructureStats"
+            }
+          },
+          {
+            "name": "position",
+            "type": {
+              "defined": "Position"
             }
           },
           {
@@ -368,6 +653,74 @@ export const IDL: Frontier = {
       }
     },
     {
+      "name": "StructureStats",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "health",
+            "type": "u32"
+          },
+          {
+            "name": "attack",
+            "type": "u32"
+          },
+          {
+            "name": "defense",
+            "type": "u32"
+          },
+          {
+            "name": "speed",
+            "type": "u32"
+          },
+          {
+            "name": "range",
+            "type": "u32"
+          },
+          {
+            "name": "cost",
+            "type": "u32"
+          },
+          {
+            "name": "upkeep",
+            "type": "u32"
+          },
+          {
+            "name": "buildTime",
+            "type": "u32"
+          },
+          {
+            "name": "level",
+            "type": "u32"
+          },
+          {
+            "name": "experience",
+            "type": "u32"
+          },
+          {
+            "name": "experienceToLevel",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Position",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "x",
+            "type": "u32"
+          },
+          {
+            "name": "y",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
       "name": "BaseError",
       "type": {
         "kind": "enum",
@@ -377,6 +730,15 @@ export const IDL: Frontier = {
           },
           {
             "name": "NotInitialized"
+          },
+          {
+            "name": "BaseSizeExceeded"
+          },
+          {
+            "name": "MaxRatingExceeded"
+          },
+          {
+            "name": "NoStructures"
           }
         ]
       }
@@ -408,6 +770,34 @@ export const IDL: Frontier = {
           }
         ]
       }
+    },
+    {
+      "name": "StructureError",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "AlreadyInitialized"
+          },
+          {
+            "name": "NotInitialized"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UnitError",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "AlreadyInitialized"
+          },
+          {
+            "name": "NotInitialized"
+          }
+        ]
+      }
     }
   ],
   "errors": [
@@ -418,6 +808,10 @@ export const IDL: Frontier = {
     {
       "code": 6001,
       "name": "NotInitialized"
+    },
+    {
+      "code": 6002,
+      "name": "NotEnoughResources"
     }
   ]
 };

@@ -5,26 +5,20 @@ pub mod errors;
 pub mod instructions;
 pub mod state;
 
-declare_id!("Fk8C6UUGGZgWHXmb6HPHNhfnBhf4eKDzNnj4R8zMjHCr");
-
-// pub const BOARD_TILES: usize = 169;
+// declare_id!("Fk8C6UUGGZgWHXmb6HPHNhfnBhf4eKDzNnj4R8zMjHCr");
+declare_id!("3FKoVbicsX7moGuqVPCY1qkZ4adA85tTpYVFEe9Vs2ei");
 
 #[program]
 pub mod frontier {
     use super::*;
 
-    // pub fn init_base(ctx: Context<InitBase>) -> Result<()> {
-    //     let base_state = &mut ctx.accounts.base_state;
-
-    //     base_state.player = ctx.accounts.player.key();
-    //     base_state.base_grid = [BaseGridState { value: 0 }; BOARD_TILES];
-    //     base_state.is_initialized = true;
-
-    //     Ok(())
-    // }
-
     pub fn init_player_accounts(ctx: Context<InitPlayerAccounts>) -> Result<()> {
         instructions::init_player_accounts::init_player_accounts(ctx)
+    }
+    
+    // ture(ctx: Context<BuildStructure>, structure_count: u32, structure_type: u32) 
+    pub fn build_structure(ctx: Context<BuildStructure>, structure_count: u32, structure_type: u32) -> Result<()> {
+        instructions::build_structure::build_structure(ctx, structure_count, structure_type)
     }
 }
 

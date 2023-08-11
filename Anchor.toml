@@ -2,7 +2,8 @@
 seeds = false
 skip-lint = false
 [programs.localnet]
-frontier = "Fk8C6UUGGZgWHXmb6HPHNhfnBhf4eKDzNnj4R8zMjHCr"
+# frontier = "Fk8C6UUGGZgWHXmb6HPHNhfnBhf4eKDzNnj4R8zMjHCr"
+frontier = "3FKoVbicsX7moGuqVPCY1qkZ4adA85tTpYVFEe9Vs2ei"
 
 [registry]
 url = "https://api.apr.dev"

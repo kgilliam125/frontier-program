@@ -32,6 +32,46 @@
         }
       ],
       "args": []
+    },
+    {
+      "name": "buildStructure",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "playerAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "baseAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "structureAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "structureCount",
+          "type": "u32"
+        },
+        {
+          "name": "structureType",
+          "type": "u32"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -81,6 +121,10 @@
             "type": "u32"
           },
           {
+            "name": "maxBaseSize",
+            "type": "u32"
+          },
+          {
             "name": "rating",
             "type": "u32"
           },
@@ -112,6 +156,50 @@
             "name": "resources",
             "type": {
               "defined": "Resources"
+            }
+          },
+          {
+            "name": "isInitialized",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Structure",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "u32"
+          },
+          {
+            "name": "playerBase",
+            "type": "publicKey"
+          },
+          {
+            "name": "player",
+            "type": "publicKey"
+          },
+          {
+            "name": "rank",
+            "type": "u32"
+          },
+          {
+            "name": "structureType",
+            "type": "u32"
+          },
+          {
+            "name": "stats",
+            "type": {
+              "defined": "StructureStats"
+            }
+          },
+          {
+            "name": "position",
+            "type": {
+              "defined": "Position"
             }
           },
           {
@@ -156,6 +244,74 @@
       }
     },
     {
+      "name": "StructureStats",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "health",
+            "type": "u32"
+          },
+          {
+            "name": "attack",
+            "type": "u32"
+          },
+          {
+            "name": "defense",
+            "type": "u32"
+          },
+          {
+            "name": "speed",
+            "type": "u32"
+          },
+          {
+            "name": "range",
+            "type": "u32"
+          },
+          {
+            "name": "cost",
+            "type": "u32"
+          },
+          {
+            "name": "upkeep",
+            "type": "u32"
+          },
+          {
+            "name": "buildTime",
+            "type": "u32"
+          },
+          {
+            "name": "level",
+            "type": "u32"
+          },
+          {
+            "name": "experience",
+            "type": "u32"
+          },
+          {
+            "name": "experienceToLevel",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Position",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "x",
+            "type": "u32"
+          },
+          {
+            "name": "y",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
       "name": "BaseError",
       "type": {
         "kind": "enum",
@@ -165,6 +321,15 @@
           },
           {
             "name": "NotInitialized"
+          },
+          {
+            "name": "BaseSizeExceeded"
+          },
+          {
+            "name": "MaxRatingExceeded"
+          },
+          {
+            "name": "NoStructures"
           }
         ]
       }
@@ -196,6 +361,34 @@
           }
         ]
       }
+    },
+    {
+      "name": "StructureError",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "AlreadyInitialized"
+          },
+          {
+            "name": "NotInitialized"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UnitError",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "AlreadyInitialized"
+          },
+          {
+            "name": "NotInitialized"
+          }
+        ]
+      }
     }
   ],
   "errors": [
@@ -206,9 +399,13 @@
     {
       "code": 6001,
       "name": "NotInitialized"
+    },
+    {
+      "code": 6002,
+      "name": "NotEnoughResources"
     }
   ],
   "metadata": {
-    "address": "Fk8C6UUGGZgWHXmb6HPHNhfnBhf4eKDzNnj4R8zMjHCr"
+    "address": "3FKoVbicsX7moGuqVPCY1qkZ4adA85tTpYVFEe9Vs2ei"
   }
 }
