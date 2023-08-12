@@ -1,6 +1,7 @@
 use crate::state::player::*;
 use crate::state::player_base::*;
 use crate::state::structure::*;
+use crate::state::Resources;
 use anchor_lang::prelude::*;
 
 pub fn build_structure(ctx: Context<BuildStructure>, _structure_count: u32, structure_type: u32) -> Result<()> {

@@ -3,9 +3,11 @@ pub use army::*;
 pub use player::*;
 pub use player_base::*;
 pub use structure::*;
+pub use resource::*;
 // pub use unit::*;
 
 pub mod army;
 pub mod player;
 pub mod player_base;
 pub mod structure;
+pub mod resource;

@@ -1,4 +1,5 @@
 use crate::errors::PlayerError;
+use crate::state::Resources;
 use anchor_lang::prelude::*;
 
 #[account]
@@ -58,12 +59,12 @@ impl Player {
     }
 }
 
-#[derive(AnchorSerialize, AnchorDeserialize, Clone)]
-pub struct Resources {
-    pub wood: u32,
-    pub stone: u32,
-    pub iron: u32,
-    pub steel: u32,
-    pub mana: u32,
-    pub gold: u32,
-}
+// #[derive(AnchorSerialize, AnchorDeserialize, Clone)]
+// pub struct Resources {
+//     pub wood: u32,
+//     pub stone: u32,
+//     pub iron: u32,
+//     pub steel: u32,
+//     pub mana: u32,
+//     pub gold: u32,
+// }
