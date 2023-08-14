@@ -122,7 +122,6 @@ pub fn get_cost(structure_type: StructureType) -> Option<Resources> {
         StructureType::MageTower => Some(MAGE_TOWER_BASE_COST),
         StructureType::Wall => Some(WALL_BASE_COST),
         StructureType::SentryCreature => Some(SENTRY_CREATURE_BASE_COST),
-        _ => None,
     }
 }
 
