@@ -389,6 +389,53 @@ export type Frontier = {
           }
         ]
       }
+    },
+    {
+      "name": "StructureType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "ThroneHall"
+          },
+          {
+            "name": "Barracks"
+          },
+          {
+            "name": "Blacksmith"
+          },
+          {
+            "name": "ManaWell"
+          },
+          {
+            "name": "CarpenterHut"
+          },
+          {
+            "name": "PvpPortal"
+          },
+          {
+            "name": "Mine"
+          },
+          {
+            "name": "Quarry"
+          },
+          {
+            "name": "LumberMill"
+          },
+          {
+            "name": "ArcherTower"
+          },
+          {
+            "name": "MageTower"
+          },
+          {
+            "name": "Wall"
+          },
+          {
+            "name": "SentryCreature"
+          }
+        ]
+      }
     }
   ],
   "errors": [
@@ -795,6 +842,53 @@ export const IDL: Frontier = {
           },
           {
             "name": "NotInitialized"
+          }
+        ]
+      }
+    },
+    {
+      "name": "StructureType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "ThroneHall"
+          },
+          {
+            "name": "Barracks"
+          },
+          {
+            "name": "Blacksmith"
+          },
+          {
+            "name": "ManaWell"
+          },
+          {
+            "name": "CarpenterHut"
+          },
+          {
+            "name": "PvpPortal"
+          },
+          {
+            "name": "Mine"
+          },
+          {
+            "name": "Quarry"
+          },
+          {
+            "name": "LumberMill"
+          },
+          {
+            "name": "ArcherTower"
+          },
+          {
+            "name": "MageTower"
+          },
+          {
+            "name": "Wall"
+          },
+          {
+            "name": "SentryCreature"
           }
         ]
       }
