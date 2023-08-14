@@ -7,10 +7,10 @@ pub struct Structure {
     player_base: Pubkey,
     player: Pubkey,
     rank: u32,
-    structure_type: u32, // todo check if enum extension breaks pre-existing accounts
+    structure_type: StructureType, // todo check if enum extension breaks pre-existing accounts
     stats: StructureStats,
     position: Position,
-    is_initialized: bool
+    is_initialized: bool,
 }
 
 impl Structure {
@@ -18,8 +18,19 @@ impl Structure {
     pub const MAXIMUM_SIZE: usize = 5000;
     pub const MAX_RATING: u32 = 3;
 
-    pub fn init(&mut self, player_pubkey: Pubkey, base_pubkey: Pubkey, id: u32, structure_type: u32) -> Result<()> {
-        require_eq!(self.is_initialized, false, StructureError::AlreadyInitialized);
+    pub fn init(
+        &mut self,
+        player_pubkey: Pubkey,
+        base_pubkey: Pubkey,
+        id: u32,
+        structure_type: StructureType,
+        position: Position,
+    ) -> Result<()> {
+        require_eq!(
+            self.is_initialized,
+            false,
+            StructureError::AlreadyInitialized
+        );
 
         self.id = id;
         self.player = player_pubkey;
@@ -40,10 +51,7 @@ impl Structure {
             experience: 0,
             experience_to_level: 0,
         };
-        self.position = Position {
-            x: 0,
-            y: 0,
-        };
+        self.position = position;
 
         Ok(())
     }
@@ -68,4 +76,26 @@ pub struct StructureStats {
 pub struct Position {
     pub x: u32,
     pub y: u32,
+}
+
+// NOTE: enum order cannot be changed, only extended
+#[derive(AnchorSerialize, AnchorDeserialize, Copy, Clone)]
+
+pub enum StructureType {
+    // --- Utility ---
+    ThroneHall,
+    Barracks,
+    Blacksmith,   // after beta
+    ManaWell,     // after beta
+    CarpenterHut, // after beta
+    PvpPortal,
+    // --- Resource ---
+    Mine,
+    Quarry,
+    LumberMill,
+    // --- Defensive ---
+    ArcherTower,
+    MageTower,
+    Wall,
+    SentryCreature,
 }

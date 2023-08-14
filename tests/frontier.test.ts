@@ -38,8 +38,8 @@ describe('frontier', () => {
         expect(playerAccount.rank).toEqual(0)
         expect(playerAccount.isInitialized).toEqual(true)
         expect(playerAccount.resources).toEqual({
-            wood: 1,
-            stone: 1,
+            wood: 100,
+            stone: 100,
             iron: 0,
             steel: 0,
             mana: 0,
@@ -52,30 +52,32 @@ describe('frontier', () => {
         expect(baseAccount.rating).toEqual(0)
         expect(baseAccount.structureCount).toEqual(0)
         expect(baseAccount.baseSize).toEqual(0)
-        
+
         const armyAccount = await program.account.army.fetch(armyPda)
         expect(armyAccount.playerAccount).toEqual(playerPda)
         expect(armyAccount.isInitialized).toEqual(true)
         expect(armyAccount.rating).toEqual(0)
         expect(armyAccount.unitCount).toEqual(0)
         expect(armyAccount.armySize).toEqual(0)
-
-        
     })
 
     it('builds a structure', async () => {
         let baseAccount = await program.account.playerBase.fetch(basePda)
         const nextStructureCount = baseAccount.structureCount + 1
 
-        const structureCountAsBuff = Buffer.allocUnsafe(4);
-        structureCountAsBuff.writeUInt32LE(nextStructureCount, 0);
+        const structureCountAsBuff = Buffer.allocUnsafe(4)
+        structureCountAsBuff.writeUInt32LE(nextStructureCount, 0)
         const [structurePda] = anchor.web3.PublicKey.findProgramAddressSync(
             [structureCountAsBuff, basePda.toBuffer()],
             program.programId
         )
 
         await program.methods
-            .buildStructure(nextStructureCount, 1)
+            .buildStructure(
+                nextStructureCount,
+                { quarry: {} },
+                { x: 0, y: 0 }
+            )
             .accounts({
                 playerAccount: playerPda,
                 baseAccount: basePda,
@@ -96,7 +98,9 @@ describe('frontier', () => {
             gold: 0,
         })
 
-        const structureAccount = await program.account.structure.fetch(structurePda)
+        const structureAccount = await program.account.structure.fetch(
+            structurePda
+        )
         expect(structureAccount.player).toEqual(playerPda)
         expect(structureAccount.playerBase).toEqual(basePda)
         expect(structureAccount.isInitialized).toEqual(true)

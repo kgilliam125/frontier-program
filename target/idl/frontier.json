@@ -69,7 +69,15 @@
         },
         {
           "name": "structureType",
-          "type": "u32"
+          "type": {
+            "defined": "StructureType"
+          }
+        },
+        {
+          "name": "position",
+          "type": {
+            "defined": "Position"
+          }
         }
       ]
     }
@@ -188,7 +196,9 @@
           },
           {
             "name": "structureType",
-            "type": "u32"
+            "type": {
+              "defined": "StructureType"
+            }
           },
           {
             "name": "stats",

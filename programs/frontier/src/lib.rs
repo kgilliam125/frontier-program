@@ -1,7 +1,8 @@
 use anchor_lang::prelude::*;
 use instructions::*;
+use state::{StructureType, Position};
 
-pub mod errors; 
+pub mod errors;
 pub mod instructions;
 pub mod state;
 
@@ -15,10 +16,20 @@ pub mod frontier {
     pub fn init_player_accounts(ctx: Context<InitPlayerAccounts>) -> Result<()> {
         instructions::init_player_accounts::init_player_accounts(ctx)
     }
-    
-    // ture(ctx: Context<BuildStructure>, structure_count: u32, structure_type: u32) 
-    pub fn build_structure(ctx: Context<BuildStructure>, structure_count: u32, structure_type: u32) -> Result<()> {
-        instructions::build_structure::build_structure(ctx, structure_count, structure_type)
+
+    // ture(ctx: Context<BuildStructure>, structure_count: u32, structure_type: u32)
+    pub fn build_structure(
+        ctx: Context<BuildStructure>,
+        structure_count: u32,
+        structure_type: StructureType,
+        position: Position,
+    ) -> Result<()> {
+        instructions::build_structure::build_structure(
+            ctx,
+            structure_count,
+            structure_type,
+            position,
+        )
     }
 }
 

@@ -69,7 +69,15 @@ export type Frontier = {
         },
         {
           "name": "structureType",
-          "type": "u32"
+          "type": {
+            "defined": "StructureType"
+          }
+        },
+        {
+          "name": "position",
+          "type": {
+            "defined": "Position"
+          }
         }
       ]
     }
@@ -188,7 +196,9 @@ export type Frontier = {
           },
           {
             "name": "structureType",
-            "type": "u32"
+            "type": {
+              "defined": "StructureType"
+            }
           },
           {
             "name": "stats",
@@ -525,7 +535,15 @@ export const IDL: Frontier = {
         },
         {
           "name": "structureType",
-          "type": "u32"
+          "type": {
+            "defined": "StructureType"
+          }
+        },
+        {
+          "name": "position",
+          "type": {
+            "defined": "Position"
+          }
         }
       ]
     }
@@ -644,7 +662,9 @@ export const IDL: Frontier = {
           },
           {
             "name": "structureType",
-            "type": "u32"
+            "type": {
+              "defined": "StructureType"
+            }
           },
           {
             "name": "stats",
