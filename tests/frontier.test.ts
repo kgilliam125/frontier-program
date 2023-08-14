@@ -98,9 +98,11 @@ describe('frontier', () => {
         const structureAccount = await program.account.structure.fetch(
             structurePda
         )
+        expect(structureAccount.id).toEqual(nextStructureCount)
         expect(structureAccount.player).toEqual(playerPda)
         expect(structureAccount.playerBase).toEqual(basePda)
         expect(structureAccount.isInitialized).toEqual(true)
         expect(structureAccount.structureType).toEqual(structureType)
+        expect(structureAccount.position).toEqual({ x: 0, y: 0 })
     })
 })
