@@ -64,6 +64,7 @@ describe('frontier', () => {
     it('builds a structure', async () => {
         let baseAccount = await program.account.playerBase.fetch(basePda)
         const nextStructureCount = baseAccount.structureCount + 1
+        const structureType = { quarry: {} }
 
         const structureCountAsBuff = Buffer.allocUnsafe(4)
         structureCountAsBuff.writeUInt32LE(nextStructureCount, 0)
@@ -73,11 +74,7 @@ describe('frontier', () => {
         )
 
         await program.methods
-            .buildStructure(
-                nextStructureCount,
-                { quarry: {} },
-                { x: 0, y: 0 }
-            )
+            .buildStructure(nextStructureCount, structureType, { x: 0, y: 0 })
             .accounts({
                 playerAccount: playerPda,
                 baseAccount: basePda,
@@ -104,5 +101,6 @@ describe('frontier', () => {
         expect(structureAccount.player).toEqual(playerPda)
         expect(structureAccount.playerBase).toEqual(basePda)
         expect(structureAccount.isInitialized).toEqual(true)
+        expect(structureAccount.structureType).toEqual(structureType)
     })
 })

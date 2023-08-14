@@ -44,9 +44,6 @@ impl Structure {
             defense: 0,
             speed: 0,
             range: 0,
-            cost: 0,
-            upkeep: 0,
-            build_time: 0,
             level: 0,
             experience: 0,
             experience_to_level: 0,
@@ -59,15 +56,12 @@ impl Structure {
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone)]
 pub struct StructureStats {
+    pub level: u32,
     pub health: u32,
     pub attack: u32,
     pub defense: u32,
     pub speed: u32,
     pub range: u32,
-    pub cost: u32,
-    pub upkeep: u32,
-    pub build_time: u32,
-    pub level: u32,
     pub experience: u32,
     pub experience_to_level: u32,
 }

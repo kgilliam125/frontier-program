@@ -259,6 +259,10 @@ export type Frontier = {
         "kind": "struct",
         "fields": [
           {
+            "name": "level",
+            "type": "u32"
+          },
+          {
             "name": "health",
             "type": "u32"
           },
@@ -276,22 +280,6 @@ export type Frontier = {
           },
           {
             "name": "range",
-            "type": "u32"
-          },
-          {
-            "name": "cost",
-            "type": "u32"
-          },
-          {
-            "name": "upkeep",
-            "type": "u32"
-          },
-          {
-            "name": "buildTime",
-            "type": "u32"
-          },
-          {
-            "name": "level",
             "type": "u32"
           },
           {
@@ -725,6 +713,10 @@ export const IDL: Frontier = {
         "kind": "struct",
         "fields": [
           {
+            "name": "level",
+            "type": "u32"
+          },
+          {
             "name": "health",
             "type": "u32"
           },
@@ -742,22 +734,6 @@ export const IDL: Frontier = {
           },
           {
             "name": "range",
-            "type": "u32"
-          },
-          {
-            "name": "cost",
-            "type": "u32"
-          },
-          {
-            "name": "upkeep",
-            "type": "u32"
-          },
-          {
-            "name": "buildTime",
-            "type": "u32"
-          },
-          {
-            "name": "level",
             "type": "u32"
           },
           {
