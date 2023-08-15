@@ -69,7 +69,15 @@ export type Frontier = {
         },
         {
           "name": "structureType",
-          "type": "u32"
+          "type": {
+            "defined": "StructureType"
+          }
+        },
+        {
+          "name": "position",
+          "type": {
+            "defined": "Position"
+          }
         }
       ]
     }
@@ -188,7 +196,9 @@ export type Frontier = {
           },
           {
             "name": "structureType",
-            "type": "u32"
+            "type": {
+              "defined": "StructureType"
+            }
           },
           {
             "name": "stats",
@@ -249,6 +259,10 @@ export type Frontier = {
         "kind": "struct",
         "fields": [
           {
+            "name": "level",
+            "type": "u32"
+          },
+          {
             "name": "health",
             "type": "u32"
           },
@@ -269,28 +283,12 @@ export type Frontier = {
             "type": "u32"
           },
           {
-            "name": "cost",
+            "name": "assignedWorkers",
             "type": "u32"
           },
           {
-            "name": "upkeep",
-            "type": "u32"
-          },
-          {
-            "name": "buildTime",
-            "type": "u32"
-          },
-          {
-            "name": "level",
-            "type": "u32"
-          },
-          {
-            "name": "experience",
-            "type": "u32"
-          },
-          {
-            "name": "experienceToLevel",
-            "type": "u32"
+            "name": "lastInteractionTime",
+            "type": "i64"
           }
         ]
       }
@@ -372,6 +370,9 @@ export type Frontier = {
           },
           {
             "name": "NotInitialized"
+          },
+          {
+            "name": "InvalidPosition"
           }
         ]
       }
@@ -525,7 +526,15 @@ export const IDL: Frontier = {
         },
         {
           "name": "structureType",
-          "type": "u32"
+          "type": {
+            "defined": "StructureType"
+          }
+        },
+        {
+          "name": "position",
+          "type": {
+            "defined": "Position"
+          }
         }
       ]
     }
@@ -644,7 +653,9 @@ export const IDL: Frontier = {
           },
           {
             "name": "structureType",
-            "type": "u32"
+            "type": {
+              "defined": "StructureType"
+            }
           },
           {
             "name": "stats",
@@ -705,6 +716,10 @@ export const IDL: Frontier = {
         "kind": "struct",
         "fields": [
           {
+            "name": "level",
+            "type": "u32"
+          },
+          {
             "name": "health",
             "type": "u32"
           },
@@ -725,28 +740,12 @@ export const IDL: Frontier = {
             "type": "u32"
           },
           {
-            "name": "cost",
+            "name": "assignedWorkers",
             "type": "u32"
           },
           {
-            "name": "upkeep",
-            "type": "u32"
-          },
-          {
-            "name": "buildTime",
-            "type": "u32"
-          },
-          {
-            "name": "level",
-            "type": "u32"
-          },
-          {
-            "name": "experience",
-            "type": "u32"
-          },
-          {
-            "name": "experienceToLevel",
-            "type": "u32"
+            "name": "lastInteractionTime",
+            "type": "i64"
           }
         ]
       }
@@ -828,6 +827,9 @@ export const IDL: Frontier = {
           },
           {
             "name": "NotInitialized"
+          },
+          {
+            "name": "InvalidPosition"
           }
         ]
       }

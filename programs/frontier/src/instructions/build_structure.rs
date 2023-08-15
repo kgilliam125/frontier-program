@@ -1,29 +1,35 @@
 use crate::state::player::*;
 use crate::state::player_base::*;
 use crate::state::structure::*;
-use crate::state::Resources;
+use crate::state::structure_cost::*;
+use crate::errors::StructureError;
 use anchor_lang::prelude::*;
 
-pub fn build_structure(ctx: Context<BuildStructure>, _structure_count: u32, structure_type: u32) -> Result<()> {
-    // todo add guards
+pub fn build_structure(
+    ctx: Context<BuildStructure>,
+    _structure_count: u32,
+    structure_type: StructureType,
+    position: Position,
+) -> Result<()> {
+    // game space is [[0, 0], [16000, 16000]]
+    require_gte!(16000, position.x, StructureError::InvalidPosition);
+    require_gte!(16000, position.y, StructureError::InvalidPosition);
+
     let player_account = &mut ctx.accounts.player_account;
     let base_account = &mut ctx.accounts.base_account;
     let structure_account = &mut ctx.accounts.structure_account;
 
-    // todo implement structure cost lookup from structure_type
-    let requested_resources = Resources {
-        wood: 1,
-        stone: 1,
-        iron: 0,
-        steel: 0,
-        mana: 0,
-        gold: 0,
-    };
+    let resource_cost = get_cost(structure_type);
 
-    player_account.subtract_resources(requested_resources)?;
-    base_account.add_structure()?;
-
-    structure_account.init(player_account.key(), base_account.key(), base_account.structure_count, structure_type)?;
+    player_account.subtract_resources(resource_cost)?;
+    base_account.add_structure_to_base()?;
+    structure_account.init(
+        player_account.key(),
+        base_account.key(),
+        base_account.structure_count,
+        structure_type,
+        position,
+    )?;
 
     Ok(())
 }
