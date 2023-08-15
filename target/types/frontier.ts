@@ -80,6 +80,37 @@ export type Frontier = {
           }
         }
       ]
+    },
+    {
+      "name": "collectResources",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "playerAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "baseAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "structureAccount",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "structureCount",
+          "type": "u32"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -191,10 +222,6 @@ export type Frontier = {
             "type": "publicKey"
           },
           {
-            "name": "rank",
-            "type": "u32"
-          },
-          {
             "name": "structureType",
             "type": {
               "defined": "StructureType"
@@ -259,32 +286,36 @@ export type Frontier = {
         "kind": "struct",
         "fields": [
           {
-            "name": "level",
-            "type": "u32"
+            "name": "rank",
+            "type": "u16"
           },
           {
             "name": "health",
-            "type": "u32"
+            "type": "u16"
           },
           {
             "name": "attack",
-            "type": "u32"
+            "type": "u16"
           },
           {
             "name": "defense",
-            "type": "u32"
+            "type": "u16"
           },
           {
             "name": "speed",
-            "type": "u32"
+            "type": "u16"
           },
           {
             "name": "range",
-            "type": "u32"
+            "type": "u16"
           },
           {
             "name": "assignedWorkers",
-            "type": "u32"
+            "type": "u8"
+          },
+          {
+            "name": "collectionInterval",
+            "type": "u16"
           },
           {
             "name": "lastInteractionTime",
@@ -300,11 +331,11 @@ export type Frontier = {
         "fields": [
           {
             "name": "x",
-            "type": "u32"
+            "type": "u16"
           },
           {
             "name": "y",
-            "type": "u32"
+            "type": "u16"
           }
         ]
       }
@@ -373,6 +404,9 @@ export type Frontier = {
           },
           {
             "name": "InvalidPosition"
+          },
+          {
+            "name": "CollectionTimerNotExpired"
           }
         ]
       }
@@ -537,6 +571,37 @@ export const IDL: Frontier = {
           }
         }
       ]
+    },
+    {
+      "name": "collectResources",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "playerAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "baseAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "structureAccount",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "structureCount",
+          "type": "u32"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -648,10 +713,6 @@ export const IDL: Frontier = {
             "type": "publicKey"
           },
           {
-            "name": "rank",
-            "type": "u32"
-          },
-          {
             "name": "structureType",
             "type": {
               "defined": "StructureType"
@@ -716,32 +777,36 @@ export const IDL: Frontier = {
         "kind": "struct",
         "fields": [
           {
-            "name": "level",
-            "type": "u32"
+            "name": "rank",
+            "type": "u16"
           },
           {
             "name": "health",
-            "type": "u32"
+            "type": "u16"
           },
           {
             "name": "attack",
-            "type": "u32"
+            "type": "u16"
           },
           {
             "name": "defense",
-            "type": "u32"
+            "type": "u16"
           },
           {
             "name": "speed",
-            "type": "u32"
+            "type": "u16"
           },
           {
             "name": "range",
-            "type": "u32"
+            "type": "u16"
           },
           {
             "name": "assignedWorkers",
-            "type": "u32"
+            "type": "u8"
+          },
+          {
+            "name": "collectionInterval",
+            "type": "u16"
           },
           {
             "name": "lastInteractionTime",
@@ -757,11 +822,11 @@ export const IDL: Frontier = {
         "fields": [
           {
             "name": "x",
-            "type": "u32"
+            "type": "u16"
           },
           {
             "name": "y",
-            "type": "u32"
+            "type": "u16"
           }
         ]
       }
@@ -830,6 +895,9 @@ export const IDL: Frontier = {
           },
           {
             "name": "InvalidPosition"
+          },
+          {
+            "name": "CollectionTimerNotExpired"
           }
         ]
       }
