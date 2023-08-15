@@ -101,7 +101,7 @@ export type Frontier = {
         },
         {
           "name": "structureAccount",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         }
       ],
@@ -592,7 +592,7 @@ export const IDL: Frontier = {
         },
         {
           "name": "structureAccount",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         }
       ],

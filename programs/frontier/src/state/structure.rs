@@ -66,6 +66,10 @@ impl Structure {
         let seconds_since_last_interaction =
             clock.unix_timestamp - self.stats.last_interaction_time;
 
+        msg!("Seconds since last interaction: {}", seconds_since_last_interaction);
+        msg!("Collection interval: {}", self.stats.collection_interval);
+        msg!("Last interaction: {}", self.stats.last_interaction_time);
+
         require_gte!(
             seconds_since_last_interaction,
             self.stats.collection_interval as i64,

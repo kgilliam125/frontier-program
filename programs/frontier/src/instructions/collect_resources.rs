@@ -11,6 +11,7 @@ pub fn collect_resources(
     let player_account = &mut ctx.accounts.player_account;
     let structure_account = &mut ctx.accounts.structure_account;
 
+    // todo having this error may be annoying. Consider just doing nothing instead
     let resources_collected: Resources = structure_account.try_collect_resources()?;
     player_account.add_resources(resources_collected)?;
 
@@ -35,6 +36,7 @@ pub struct CollectResources<'info> {
     )]
     pub base_account: Account<'info, PlayerBase>,
     #[account(
+        mut,
         seeds=[structure_count.to_le_bytes().as_ref(), base_account.key().as_ref()],
         bump,
     )]
