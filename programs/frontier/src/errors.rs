@@ -33,6 +33,7 @@ pub enum StructureError {
     AlreadyInitialized,
     NotInitialized,
     InvalidPosition,
+    CollectionTimerNotExpired,
 }
 
 #[error_code]
