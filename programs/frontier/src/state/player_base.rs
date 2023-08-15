@@ -15,6 +15,8 @@ impl PlayerBase {
     // Set to maximum account size to leave expansion room, find what it is
     pub const MAXIMUM_SIZE: usize = 5000;
     pub const MAX_RATING: u32 = 2;
+    // pub const MAX_POSITION: Position = Position { x: 100, y: 100 };
+    // pub const MIN_POSITION: Position = Position { x: -100, y: -100 };
 
     // making up some values for now
     pub fn get_max_base_size(&self) -> u32 {
@@ -49,7 +51,7 @@ impl PlayerBase {
         Ok(())
     }
 
-    pub fn add_structure(&mut self) -> Result<()> {
+    pub fn add_structure_to_base(&mut self) -> Result<()> {
         require_eq!(self.is_initialized, true, BaseError::NotInitialized);
         require!(self.base_size <= self.get_max_base_size(), BaseError::BaseSizeExceeded);
 
@@ -59,7 +61,7 @@ impl PlayerBase {
         Ok(())
     }
 
-    pub fn remove_structure(&mut self) -> Result<()> {
+    pub fn remove_structure_from_base(&mut self) -> Result<()> {
         require_eq!(self.is_initialized, true, BaseError::NotInitialized);
         require!(self.structure_count > 0, BaseError::NoStructures);
 

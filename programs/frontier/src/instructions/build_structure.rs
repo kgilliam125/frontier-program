@@ -2,6 +2,7 @@ use crate::state::player::*;
 use crate::state::player_base::*;
 use crate::state::structure::*;
 use crate::state::structure_cost::*;
+use crate::errors::StructureError;
 use anchor_lang::prelude::*;
 
 pub fn build_structure(
@@ -10,7 +11,10 @@ pub fn build_structure(
     structure_type: StructureType,
     position: Position,
 ) -> Result<()> {
-    // todo add guards
+    // game space is [[0, 0], [16000, 16000]]
+    require_gte!(16000, position.x, StructureError::InvalidPosition);
+    require_gte!(16000, position.y, StructureError::InvalidPosition);
+
     let player_account = &mut ctx.accounts.player_account;
     let base_account = &mut ctx.accounts.base_account;
     let structure_account = &mut ctx.accounts.structure_account;
@@ -18,10 +22,7 @@ pub fn build_structure(
     let resource_cost = get_cost(structure_type);
 
     player_account.subtract_resources(resource_cost)?;
-    base_account.add_structure()?;
-
-    // todo check position is valid
-
+    base_account.add_structure_to_base()?;
     structure_account.init(
         player_account.key(),
         base_account.key(),

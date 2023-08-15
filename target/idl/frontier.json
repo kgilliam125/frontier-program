@@ -283,12 +283,12 @@
             "type": "u32"
           },
           {
-            "name": "experience",
+            "name": "assignedWorkers",
             "type": "u32"
           },
           {
-            "name": "experienceToLevel",
-            "type": "u32"
+            "name": "lastInteractionTime",
+            "type": "i64"
           }
         ]
       }
@@ -370,6 +370,9 @@
           },
           {
             "name": "NotInitialized"
+          },
+          {
+            "name": "InvalidPosition"
           }
         ]
       }

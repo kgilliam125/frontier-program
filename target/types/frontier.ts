@@ -283,12 +283,12 @@ export type Frontier = {
             "type": "u32"
           },
           {
-            "name": "experience",
+            "name": "assignedWorkers",
             "type": "u32"
           },
           {
-            "name": "experienceToLevel",
-            "type": "u32"
+            "name": "lastInteractionTime",
+            "type": "i64"
           }
         ]
       }
@@ -370,6 +370,9 @@ export type Frontier = {
           },
           {
             "name": "NotInitialized"
+          },
+          {
+            "name": "InvalidPosition"
           }
         ]
       }
@@ -737,12 +740,12 @@ export const IDL: Frontier = {
             "type": "u32"
           },
           {
-            "name": "experience",
+            "name": "assignedWorkers",
             "type": "u32"
           },
           {
-            "name": "experienceToLevel",
-            "type": "u32"
+            "name": "lastInteractionTime",
+            "type": "i64"
           }
         ]
       }
@@ -824,6 +827,9 @@ export const IDL: Frontier = {
           },
           {
             "name": "NotInitialized"
+          },
+          {
+            "name": "InvalidPosition"
           }
         ]
       }

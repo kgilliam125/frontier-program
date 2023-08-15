@@ -32,6 +32,7 @@ pub enum GameMatchError {
 pub enum StructureError {
     AlreadyInitialized,
     NotInitialized,
+    InvalidPosition,
 }
 
 #[error_code]

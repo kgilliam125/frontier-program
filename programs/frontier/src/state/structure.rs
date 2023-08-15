@@ -39,14 +39,14 @@ impl Structure {
         self.rank = 0;
         self.structure_type = structure_type;
         self.stats = StructureStats {
+            level: 0,
             health: 100,
             attack: 0,
             defense: 0,
             speed: 0,
             range: 0,
-            level: 0,
-            experience: 0,
-            experience_to_level: 0,
+            assigned_workers: 0,
+            last_interaction_time: 0,
         };
         self.position = position;
 
@@ -54,6 +54,9 @@ impl Structure {
     }
 }
 
+// Using the same stats for all structures, so not all
+// will be used. Likely want to separate into instructions
+// per structure class at some point
 #[derive(AnchorSerialize, AnchorDeserialize, Clone)]
 pub struct StructureStats {
     pub level: u32,
@@ -62,8 +65,8 @@ pub struct StructureStats {
     pub defense: u32,
     pub speed: u32,
     pub range: u32,
-    pub experience: u32,
-    pub experience_to_level: u32,
+    pub assigned_workers: u32,
+    pub last_interaction_time: i64, // UnixTimestamp as i64 or IDL will fail
 }
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone)]
@@ -74,7 +77,6 @@ pub struct Position {
 
 // NOTE: enum order cannot be changed, only extended
 #[derive(AnchorSerialize, AnchorDeserialize, Copy, Clone)]
-
 pub enum StructureType {
     // --- Utility ---
     ThroneHall,
