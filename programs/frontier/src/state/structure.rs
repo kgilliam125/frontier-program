@@ -45,13 +45,14 @@ impl Structure {
         self.is_initialized = true;
         self.structure_type = structure_type;
         self.stats = StructureStats {
-            rank: 0,
+            rank: 1,
             health: 100,
             attack: 0,
             defense: 0,
             speed: 0,
             range: 0,
-            assigned_workers: 0,
+            // todo set to 1 for testing
+            assigned_workers: 1,
             collection_interval,
             last_interaction_time: 0,
         };

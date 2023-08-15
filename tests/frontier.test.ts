@@ -38,8 +38,8 @@ describe('frontier', () => {
         expect(playerAccount.rank).toEqual(0)
         expect(playerAccount.isInitialized).toEqual(true)
         expect(playerAccount.resources).toEqual({
-            wood: 100,
-            stone: 100,
+            wood: 500,
+            stone: 500,
             iron: 0,
             steel: 0,
             mana: 0,
@@ -87,8 +87,8 @@ describe('frontier', () => {
 
         const playerAccount = await program.account.player.fetch(playerPda)
         expect(playerAccount.resources).toEqual({
-            wood: 0,
-            stone: 0,
+            wood: 400,
+            stone: 400,
             iron: 0,
             steel: 0,
             mana: 0,
@@ -104,5 +104,36 @@ describe('frontier', () => {
         expect(structureAccount.isInitialized).toEqual(true)
         expect(structureAccount.structureType).toEqual(structureType)
         expect(structureAccount.position).toEqual({ x: 0, y: 0 })
+    })
+
+    it('collects resources from a structure', async () => {
+        let baseAccount = await program.account.playerBase.fetch(basePda)
+        const structureId = baseAccount.structureCount
+        const structureCountAsBuff = Buffer.allocUnsafe(4)
+        structureCountAsBuff.writeUInt32LE(structureId, 0)
+        const [structurePda] = anchor.web3.PublicKey.findProgramAddressSync(
+            [structureCountAsBuff, basePda.toBuffer()],
+            program.programId
+        )
+
+        await program.methods
+            .collectResources(structureId)
+            .accounts({
+                playerAccount: playerPda,
+                baseAccount: basePda,
+                structureAccount: structurePda,
+            })
+            .rpc()
+
+        const playerAccount = await program.account.player.fetch(playerPda)
+        expect(playerAccount.resources).toEqual({
+            wood: 400,
+            stone: 650,
+            iron: 0,
+            steel: 0,
+            mana: 0,
+            gold: 0,
+        })
+
     })
 })

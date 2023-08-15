@@ -80,6 +80,37 @@ export type Frontier = {
           }
         }
       ]
+    },
+    {
+      "name": "collectResources",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "playerAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "baseAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "structureAccount",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "structureCount",
+          "type": "u32"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -538,6 +569,37 @@ export const IDL: Frontier = {
           "type": {
             "defined": "Position"
           }
+        }
+      ]
+    },
+    {
+      "name": "collectResources",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "playerAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "baseAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "structureAccount",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "structureCount",
+          "type": "u32"
         }
       ]
     }
