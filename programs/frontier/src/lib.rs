@@ -34,4 +34,8 @@ pub mod frontier {
     pub fn collect_resources(ctx: Context<CollectResources>, structure_count: u32) -> Result<()> {
         instructions::collect_resources::collect_resources(ctx, structure_count)
     }
+
+    pub fn assign_worker(ctx: Context<AssignWorker>, from_structure_count: u32, to_structure_count: u32) -> Result<()> {
+        instructions::assign_worker(ctx, from_structure_count, to_structure_count)
+    }
 }

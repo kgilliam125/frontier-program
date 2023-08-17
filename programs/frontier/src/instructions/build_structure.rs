@@ -22,14 +22,14 @@ pub fn build_structure(
     let resource_cost = get_cost(structure_type);
 
     player_account.subtract_resources(resource_cost)?;
-    base_account.add_structure_to_base()?;
     structure_account.init(
         player_account.key(),
         base_account.key(),
-        base_account.structure_count,
+        base_account.structure_count + 1, // we actually update this next, but need structure to exist first
         structure_type,
         position,
     )?;
+    base_account.add_structure_to_base(structure_account.structure_type, structure_account.stats)?;
 
     Ok(())
 }

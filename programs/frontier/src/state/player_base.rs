@@ -1,4 +1,5 @@
 use crate::errors::BaseError;
+use crate::state::{StructureStats, StructureType};
 use anchor_lang::prelude::*;
 
 #[account]
@@ -7,24 +8,35 @@ pub struct PlayerBase {
     pub structure_count: u32,
     pub base_size: u32,
     max_base_size: u32,
-    pub rating: u32,
+    max_workers: u32,
+    pub rating: u16,
     is_initialized: bool
 }
 
 impl PlayerBase {
     // Set to maximum account size to leave expansion room, find what it is
     pub const MAXIMUM_SIZE: usize = 5000;
-    pub const MAX_RATING: u32 = 2;
-    // pub const MAX_POSITION: Position = Position { x: 100, y: 100 };
-    // pub const MIN_POSITION: Position = Position { x: -100, y: -100 };
+    pub const MAX_RATING: u16 = 50;
 
-    // making up some values for now
+    // Is there a restriction on structures in a base?
     pub fn get_max_base_size(&self) -> u32 {
         match self.rating {
             0 => 3,
             1 => 5,
             2 => 7,
             _ => 100 // Should error instead
+        }
+    }
+
+    // Note: The base ratings mirrors the rank of the ThroneHall
+    pub fn get_max_workers(&self) -> u32 {
+        match self.rating {
+            0 => 0, // must build throne hall to get workers
+            1 => 5,
+            2 => 7,
+            3 => 10,
+            4 ..= 5 => 15,
+            _ => 20 // Max level is 50, but treat anything about as the same
         }
     }
 
@@ -35,7 +47,11 @@ impl PlayerBase {
         self.structure_count = 0;
         self.base_size = 0;
         self.rating = 0;
+
+        let worker_count = self.get_max_workers();
+
         self.max_base_size = self.get_max_base_size();
+        self.max_workers = worker_count;
         self.is_initialized = true;
 
         Ok(())
@@ -51,8 +67,20 @@ impl PlayerBase {
         Ok(())
     }
 
-    pub fn add_structure_to_base(&mut self) -> Result<()> {
+    pub fn add_structure_to_base(&mut self, structure_type: StructureType, structure_stats: StructureStats) -> Result<()> {
         require_eq!(self.is_initialized, true, BaseError::NotInitialized);
+
+        match structure_type {
+            StructureType::ThroneHall => {
+                self.rating = structure_stats.rank;
+                
+                let worker_count = self.get_max_workers();
+                self.max_base_size = self.get_max_base_size(); 
+                self.max_workers = worker_count;
+            }
+            _ => {}
+        }
+        
         require!(self.base_size <= self.get_max_base_size(), BaseError::BaseSizeExceeded);
 
         self.structure_count = self.structure_count.checked_add(1).unwrap();

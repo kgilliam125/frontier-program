@@ -111,6 +111,46 @@
           "type": "u32"
         }
       ]
+    },
+    {
+      "name": "assignWorker",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "playerAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "baseAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "fromStructureAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "toStructureAccount",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "fromStructureCount",
+          "type": "u32"
+        },
+        {
+          "name": "toStructureCount",
+          "type": "u32"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -164,8 +204,12 @@
             "type": "u32"
           },
           {
-            "name": "rating",
+            "name": "maxWorkers",
             "type": "u32"
+          },
+          {
+            "name": "rating",
+            "type": "u16"
           },
           {
             "name": "isInitialized",
@@ -407,6 +451,15 @@
           },
           {
             "name": "CollectionTimerNotExpired"
+          },
+          {
+            "name": "CannotAssignWorker"
+          },
+          {
+            "name": "NoWorkersAssigned"
+          },
+          {
+            "name": "StructureHasNoWorkers"
           }
         ]
       }
@@ -486,8 +539,5 @@
       "code": 6002,
       "name": "NotEnoughResources"
     }
-  ],
-  "metadata": {
-    "address": "3FKoVbicsX7moGuqVPCY1qkZ4adA85tTpYVFEe9Vs2ei"
-  }
+  ]
 }
