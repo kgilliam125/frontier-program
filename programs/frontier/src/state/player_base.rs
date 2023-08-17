@@ -9,7 +9,6 @@ pub struct PlayerBase {
     pub base_size: u32,
     max_base_size: u32,
     max_workers: u32,
-    available_workers: u32,
     pub rating: u16,
     is_initialized: bool
 }
@@ -53,7 +52,6 @@ impl PlayerBase {
 
         self.max_base_size = self.get_max_base_size();
         self.max_workers = worker_count;
-        self.available_workers = worker_count;
         self.is_initialized = true;
 
         Ok(())
@@ -79,7 +77,6 @@ impl PlayerBase {
                 let worker_count = self.get_max_workers();
                 self.max_base_size = self.get_max_base_size(); 
                 self.max_workers = worker_count;
-                self.available_workers = worker_count;
             }
             _ => {}
         }
