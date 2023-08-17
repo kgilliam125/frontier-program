@@ -33,9 +33,7 @@ pub enum StructureError {
     AlreadyInitialized,
     NotInitialized,
     InvalidPosition,
-    CollectionTimerNotExpired,
     CannotAssignWorker,
-    NoWorkersAssigned,
     StructureHasNoWorkers
 }
 

@@ -450,13 +450,7 @@
             "name": "InvalidPosition"
           },
           {
-            "name": "CollectionTimerNotExpired"
-          },
-          {
             "name": "CannotAssignWorker"
-          },
-          {
-            "name": "NoWorkersAssigned"
           },
           {
             "name": "StructureHasNoWorkers"
@@ -539,5 +533,8 @@
       "code": 6002,
       "name": "NotEnoughResources"
     }
-  ]
+  ],
+  "metadata": {
+    "address": "3FKoVbicsX7moGuqVPCY1qkZ4adA85tTpYVFEe9Vs2ei"
+  }
 }
