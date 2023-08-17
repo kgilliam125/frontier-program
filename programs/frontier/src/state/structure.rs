@@ -39,6 +39,11 @@ impl Structure {
             _ => 0,
         };
 
+        let assigned_workers = match structure_type {
+            StructureType::ThroneHall => 5, // todo move to shared and ref instead of hard code
+            _ => 0
+        };
+
         self.id = id;
         self.player = player_pubkey;
         self.player_base = base_pubkey;
@@ -52,7 +57,7 @@ impl Structure {
             speed: 0,
             range: 0,
             // todo set to 1 for testing
-            assigned_workers: 1,
+            assigned_workers,
             collection_interval,
             last_interaction_time: 0,
         };
@@ -61,7 +66,41 @@ impl Structure {
         Ok(())
     }
 
+    // May need more logic here, using Result type
+    pub fn add_worker(&mut self) -> Result<()> {
+        require!(self.is_assignable(), StructureError::CannotAssignWorker);
+
+        self.stats.assigned_workers += 1;
+
+        Ok(())
+    }
+
+    pub fn remove_worker(&mut self) -> Result<()> {
+        require!(self.is_assignable(), StructureError::CannotAssignWorker);
+        require_gt!(self.stats.assigned_workers, 0, StructureError::StructureHasNoWorkers);
+
+        self.stats.assigned_workers -= 1;
+
+        Ok(())
+    }
+
+    fn is_assignable(&self) -> bool {
+        match self.structure_type {
+            StructureType::LumberMill
+            | StructureType::Mine
+            | StructureType::Quarry
+            | StructureType::ThroneHall => true,
+            _ => false
+        }
+    }
+
     pub fn try_collect_resources(&mut self) -> Result<Resources> {
+        require_gt!(
+            self.stats.assigned_workers,
+            0,
+            StructureError::NoWorkersAssigned
+        );
+
         let clock = Clock::get()?;
         let seconds_since_last_interaction =
             clock.unix_timestamp - self.stats.last_interaction_time;
@@ -75,6 +114,7 @@ impl Structure {
             self.stats.collection_interval as i64,
             StructureError::CollectionTimerNotExpired
         );
+
 
         self.stats.last_interaction_time = clock.unix_timestamp;
 
@@ -151,7 +191,7 @@ pub struct Position {
 #[derive(AnchorSerialize, AnchorDeserialize, Copy, Clone)]
 pub enum StructureType {
     // --- Utility ---
-    ThroneHall,
+    ThroneHall, 
     Barracks,
     Blacksmith,   // after beta
     ManaWell,     // after beta

@@ -18,10 +18,8 @@ impl PlayerBase {
     // Set to maximum account size to leave expansion room, find what it is
     pub const MAXIMUM_SIZE: usize = 5000;
     pub const MAX_RATING: u16 = 50;
-    // pub const MAX_POSITION: Position = Position { x: 100, y: 100 };
-    // pub const MIN_POSITION: Position = Position { x: -100, y: -100 };
 
-    // making up some values for now
+    // Is there a restriction on structures in a base?
     pub fn get_max_base_size(&self) -> u32 {
         match self.rating {
             0 => 3,
@@ -50,9 +48,12 @@ impl PlayerBase {
         self.structure_count = 0;
         self.base_size = 0;
         self.rating = 0;
+
+        let worker_count = self.get_max_workers();
+
         self.max_base_size = self.get_max_base_size();
-        self.max_workers = self.get_max_workers();
-        self.available_workers = self.get_max_workers();
+        self.max_workers = worker_count;
+        self.available_workers = worker_count;
         self.is_initialized = true;
 
         Ok(())
@@ -74,12 +75,15 @@ impl PlayerBase {
         match structure_type {
             StructureType::ThroneHall => {
                 self.rating = structure_stats.rank;
+                
+                let worker_count = self.get_max_workers();
                 self.max_base_size = self.get_max_base_size(); 
-                self.max_workers = self.get_max_workers();
+                self.max_workers = worker_count;
+                self.available_workers = worker_count;
             }
             _ => {}
         }
-
+        
         require!(self.base_size <= self.get_max_base_size(), BaseError::BaseSizeExceeded);
 
         self.structure_count = self.structure_count.checked_add(1).unwrap();

@@ -13,7 +13,7 @@ pub enum BaseError {
     NotInitialized,
     BaseSizeExceeded,
     MaxRatingExceeded,
-    NoStructures
+    NoStructures,
 }
 
 #[error_code]
@@ -34,6 +34,9 @@ pub enum StructureError {
     NotInitialized,
     InvalidPosition,
     CollectionTimerNotExpired,
+    CannotAssignWorker,
+    NoWorkersAssigned,
+    StructureHasNoWorkers
 }
 
 #[error_code]

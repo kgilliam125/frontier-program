@@ -111,6 +111,46 @@ export type Frontier = {
           "type": "u32"
         }
       ]
+    },
+    {
+      "name": "assignWorker",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "playerAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "baseAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "fromStructureAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "toStructureAccount",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "fromStructureCount",
+          "type": "u32"
+        },
+        {
+          "name": "toStructureCount",
+          "type": "u32"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -415,6 +455,15 @@ export type Frontier = {
           },
           {
             "name": "CollectionTimerNotExpired"
+          },
+          {
+            "name": "CannotAssignWorker"
+          },
+          {
+            "name": "NoWorkersAssigned"
+          },
+          {
+            "name": "StructureHasNoWorkers"
           }
         ]
       }
@@ -610,6 +659,46 @@ export const IDL: Frontier = {
           "type": "u32"
         }
       ]
+    },
+    {
+      "name": "assignWorker",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "playerAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "baseAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "fromStructureAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "toStructureAccount",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "fromStructureCount",
+          "type": "u32"
+        },
+        {
+          "name": "toStructureCount",
+          "type": "u32"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -914,6 +1003,15 @@ export const IDL: Frontier = {
           },
           {
             "name": "CollectionTimerNotExpired"
+          },
+          {
+            "name": "CannotAssignWorker"
+          },
+          {
+            "name": "NoWorkersAssigned"
+          },
+          {
+            "name": "StructureHasNoWorkers"
           }
         ]
       }

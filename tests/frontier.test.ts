@@ -22,6 +22,10 @@ describe('frontier', () => {
         program.programId
     )
 
+    const sleep = async (msToSleep: number) => {
+        new Promise((resolve) => setTimeout(resolve, msToSleep))
+    }
+
     it('It initializes player accounts!', async () => {
         const tx = await program.methods
             .initPlayerAccounts()
@@ -108,7 +112,6 @@ describe('frontier', () => {
         expect(structureAccount.structureType).toEqual(structureType)
         expect(structureAccount.position).toEqual({ x: 0, y: 0 })
     })
-
 
     it('builds a quarry', async () => {
         let baseAccount = await program.account.playerBase.fetch(basePda)
@@ -198,6 +201,124 @@ describe('frontier', () => {
         expect(structureAccount.isInitialized).toEqual(true)
         expect(structureAccount.structureType).toEqual(structureType)
         expect(structureAccount.position).toEqual({ x: 0, y: 0 })
+    })
+
+    it('does not collect resources if no worker assigned', async () => {
+        await sleep(4000) // resource timer is 60 seconds
+        const quarryId = 2 // quarry id
+        const quarryCountAsBuff = Buffer.allocUnsafe(4)
+        quarryCountAsBuff.writeUInt32LE(quarryId, 0)
+        const [quarryPda] = anchor.web3.PublicKey.findProgramAddressSync(
+            [quarryCountAsBuff, basePda.toBuffer()],
+            program.programId
+        )
+
+        const lumberMillId = 3 // lumberMill id
+        const lumberMillCountAsBuff = Buffer.allocUnsafe(4)
+        lumberMillCountAsBuff.writeUInt32LE(lumberMillId, 0)
+        const [lumberMillPda] = anchor.web3.PublicKey.findProgramAddressSync(
+            [lumberMillCountAsBuff, basePda.toBuffer()],
+            program.programId
+        )
+
+        const quaryIx = await program.methods
+            .collectResources(quarryId)
+            .accounts({
+                playerAccount: playerPda,
+                baseAccount: basePda,
+                structureAccount: quarryPda,
+            })
+            .transaction()
+        const lumberMillIx = await program.methods
+            .collectResources(lumberMillId)
+            .accounts({
+                playerAccount: playerPda,
+                baseAccount: basePda,
+                structureAccount: lumberMillPda,
+            })
+            .transaction()
+
+        const transaction = new anchor.web3.Transaction()
+        transaction.add(quaryIx)
+        transaction.add(lumberMillIx)
+
+        try {
+            await program.provider.sendAndConfirm(transaction)
+
+            expect(true).toBe(false)
+        } catch (err) {
+            expect(err.toString()).toContain('0x1775')
+        }
+
+        // Should it error if no worker?
+        const playerAccount = await program.account.player.fetch(playerPda)
+        expect(playerAccount.resources).toEqual({
+            wood: 300,
+            stone: 300,
+            iron: 0,
+            steel: 0,
+            mana: 0,
+            gold: 0,
+        })
+    })
+
+    it('assigns workers to structures', async () => {
+        const throneHallId = 1 // quarry id
+        const throneHallCountAsBuff = Buffer.allocUnsafe(4)
+        throneHallCountAsBuff.writeUInt32LE(throneHallId, 0)
+        const [throneHallPda] = anchor.web3.PublicKey.findProgramAddressSync(
+            [throneHallCountAsBuff, basePda.toBuffer()],
+            program.programId
+        )
+
+        const quarryId = 2 // quarry id
+        const quarryCountAsBuff = Buffer.allocUnsafe(4)
+        quarryCountAsBuff.writeUInt32LE(quarryId, 0)
+        const [quarryPda] = anchor.web3.PublicKey.findProgramAddressSync(
+            [quarryCountAsBuff, basePda.toBuffer()],
+            program.programId
+        )
+
+        const lumberMillId = 3 // lumberMill id
+        const lumberMillCountAsBuff = Buffer.allocUnsafe(4)
+        lumberMillCountAsBuff.writeUInt32LE(lumberMillId, 0)
+        const [lumberMillPda] = anchor.web3.PublicKey.findProgramAddressSync(
+            [lumberMillCountAsBuff, basePda.toBuffer()],
+            program.programId
+        )
+
+        const quaryIx = await program.methods
+            .assignWorker(throneHallId, quarryId)
+            .accounts({
+                playerAccount: playerPda,
+                baseAccount: basePda,
+                fromStructureAccount: throneHallPda,
+                toStructureAccount: quarryPda,
+            })
+            .transaction()
+        const lumberMillIx = await program.methods
+            .assignWorker(throneHallId, lumberMillId)
+            .accounts({
+                playerAccount: playerPda,
+                baseAccount: basePda,
+                fromStructureAccount: throneHallPda,
+                toStructureAccount: lumberMillPda,
+            })
+            .transaction()
+
+        const transaction = new anchor.web3.Transaction()
+        transaction.add(quaryIx)
+        transaction.add(lumberMillIx)
+        await program.provider.sendAndConfirm(transaction)
+
+        const throneHallAccount = await program.account.structure.fetch(throneHallPda)
+        expect(throneHallAccount.stats.assignedWorkers).toBe(3)
+
+        const quarryAccount = await program.account.structure.fetch(quarryPda)
+        expect(quarryAccount.stats.assignedWorkers).toBe(1)
+
+        const lumberMillAccount = await program.account.structure.fetch(lumberMillPda)
+        expect(lumberMillAccount.stats.assignedWorkers).toBe(1)
     })
 
     it('collects resources from structures', async () => {
