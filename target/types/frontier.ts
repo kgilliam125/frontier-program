@@ -450,13 +450,7 @@ export type Frontier = {
             "name": "InvalidPosition"
           },
           {
-            "name": "CollectionTimerNotExpired"
-          },
-          {
             "name": "CannotAssignWorker"
-          },
-          {
-            "name": "NoWorkersAssigned"
           },
           {
             "name": "StructureHasNoWorkers"
@@ -994,13 +988,7 @@ export const IDL: Frontier = {
             "name": "InvalidPosition"
           },
           {
-            "name": "CollectionTimerNotExpired"
-          },
-          {
             "name": "CannotAssignWorker"
-          },
-          {
-            "name": "NoWorkersAssigned"
           },
           {
             "name": "StructureHasNoWorkers"

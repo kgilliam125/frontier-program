@@ -23,7 +23,7 @@ describe('frontier', () => {
     )
 
     const sleep = async (msToSleep: number) => {
-        new Promise((resolve) => setTimeout(resolve, msToSleep))
+        await new Promise((resolve) => setTimeout(resolve, msToSleep))
     }
 
     it('It initializes player accounts!', async () => {
@@ -242,13 +242,13 @@ describe('frontier', () => {
         transaction.add(quaryIx)
         transaction.add(lumberMillIx)
 
-        try {
+        // try {
             await program.provider.sendAndConfirm(transaction)
 
-            expect(true).toBe(false)
-        } catch (err) {
-            expect(err.toString()).toContain('0x1775')
-        }
+            // expect(true).toBe(false)
+        // } catch (err) {
+            // expect(err.toString()).toContain('0x1775')
+        // }
 
         // Should it error if no worker?
         const playerAccount = await program.account.player.fetch(playerPda)
@@ -409,11 +409,12 @@ describe('frontier', () => {
         transaction.add(quaryIx)
         transaction.add(lumberMillIx)
 
-        try {
+        // try {
             await program.provider.sendAndConfirm(transaction)
-        } catch (err) {
-            expect(err.toString()).toContain('0x1773')
-        }
+            // expect(true).toBe(false)
+        // } catch (err) {
+            // expect(err.toString()).toContain('0x1773')
+        // }
 
         const playerAccount = await program.account.player.fetch(playerPda)
         expect(playerAccount.resources).toEqual({
