@@ -164,8 +164,16 @@ export type Frontier = {
             "type": "u32"
           },
           {
-            "name": "rating",
+            "name": "maxWorkers",
             "type": "u32"
+          },
+          {
+            "name": "availableWorkers",
+            "type": "u32"
+          },
+          {
+            "name": "rating",
+            "type": "u16"
           },
           {
             "name": "isInitialized",
@@ -655,8 +663,16 @@ export const IDL: Frontier = {
             "type": "u32"
           },
           {
-            "name": "rating",
+            "name": "maxWorkers",
             "type": "u32"
+          },
+          {
+            "name": "availableWorkers",
+            "type": "u32"
+          },
+          {
+            "name": "rating",
+            "type": "u16"
           },
           {
             "name": "isInitialized",

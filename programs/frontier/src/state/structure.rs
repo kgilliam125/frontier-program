@@ -4,13 +4,13 @@ use anchor_lang::prelude::*;
 
 #[account]
 pub struct Structure {
-    id: u32,
-    player_base: Pubkey,
-    player: Pubkey,
-    structure_type: StructureType, // todo check if enum extension breaks pre-existing accounts
-    stats: StructureStats,
-    position: Position,
-    is_initialized: bool,
+    pub id: u32,
+    pub player_base: Pubkey,
+    pub player: Pubkey,
+    pub structure_type: StructureType, // todo check if enum extension breaks pre-existing accounts
+    pub stats: StructureStats,
+    pub position: Position,
+    pub is_initialized: bool,
 }
 
 impl Structure {
@@ -128,7 +128,7 @@ impl Structure {
 // Using the same stats for all structures, so not all
 // will be used. Likely want to separate into instructions
 // per structure class at some point
-#[derive(AnchorSerialize, AnchorDeserialize, Clone)]
+#[derive(AnchorSerialize, AnchorDeserialize, Copy, Clone)]
 pub struct StructureStats {
     pub rank: u16,
     pub health: u16,
