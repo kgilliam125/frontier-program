@@ -41,7 +41,7 @@ impl Structure {
 
         let assigned_workers = match structure_type {
             StructureType::ThroneHall => 5, // todo move to shared and ref instead of hard code
-            _ => 0
+            _ => 0,
         };
 
         self.id = id;
@@ -77,7 +77,11 @@ impl Structure {
 
     pub fn remove_worker(&mut self) -> Result<()> {
         require!(self.is_assignable(), StructureError::CannotAssignWorker);
-        require_gt!(self.stats.assigned_workers, 0, StructureError::StructureHasNoWorkers);
+        require_gt!(
+            self.stats.assigned_workers,
+            0,
+            StructureError::StructureHasNoWorkers
+        );
 
         self.stats.assigned_workers -= 1;
 
@@ -90,31 +94,43 @@ impl Structure {
             | StructureType::Mine
             | StructureType::Quarry
             | StructureType::ThroneHall => true,
-            _ => false
+            _ => false,
         }
     }
 
     pub fn try_collect_resources(&mut self) -> Result<Resources> {
-        require_gt!(
-            self.stats.assigned_workers,
-            0,
-            StructureError::NoWorkersAssigned
-        );
+        if self.stats.assigned_workers <= 0 {
+            return Ok(Resources {
+                wood: 0,
+                stone: 0,
+                iron: 0,
+                steel: 0,
+                mana: 0,
+                gold: 0,
+            });
+        }
 
         let clock = Clock::get()?;
         let seconds_since_last_interaction =
             clock.unix_timestamp - self.stats.last_interaction_time;
 
-        msg!("Seconds since last interaction: {}", seconds_since_last_interaction);
+        msg!(
+            "Seconds since last interaction: {}",
+            seconds_since_last_interaction
+        );
         msg!("Collection interval: {}", self.stats.collection_interval);
         msg!("Last interaction: {}", self.stats.last_interaction_time);
 
-        require_gte!(
-            seconds_since_last_interaction,
-            self.stats.collection_interval as i64,
-            StructureError::CollectionTimerNotExpired
-        );
-
+        if seconds_since_last_interaction < self.stats.collection_interval as i64 {
+            return Ok(Resources {
+                wood: 0,
+                stone: 0,
+                iron: 0,
+                steel: 0,
+                mana: 0,
+                gold: 0,
+            });
+        }
 
         self.stats.last_interaction_time = clock.unix_timestamp;
 
@@ -122,9 +138,13 @@ impl Structure {
     }
 
     fn calculate_resource_distribution(&mut self, value: u32) -> u32 {
-        let rank_multiplier = value.checked_mul(self.stats.rank as u32).unwrap_or(u32::MAX);
+        let rank_multiplier = value
+            .checked_mul(self.stats.rank as u32)
+            .unwrap_or(u32::MAX);
 
-        rank_multiplier.checked_mul(self.stats.assigned_workers as u32).unwrap_or(u32::MAX)
+        rank_multiplier
+            .checked_mul(self.stats.assigned_workers as u32)
+            .unwrap_or(u32::MAX)
     }
 
     fn collect_resources(&mut self) -> Resources {
@@ -177,7 +197,7 @@ pub struct StructureStats {
     pub speed: u16,
     pub range: u16,
     pub assigned_workers: u8,
-    pub collection_interval: u16, // seconds
+    pub collection_interval: u16,   // seconds
     pub last_interaction_time: i64, // UnixTimestamp as i64 or IDL will fail
 }
 
@@ -191,7 +211,7 @@ pub struct Position {
 #[derive(AnchorSerialize, AnchorDeserialize, Copy, Clone)]
 pub enum StructureType {
     // --- Utility ---
-    ThroneHall, 
+    ThroneHall,
     Barracks,
     Blacksmith,   // after beta
     ManaWell,     // after beta
