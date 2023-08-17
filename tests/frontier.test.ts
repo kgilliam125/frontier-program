@@ -426,4 +426,33 @@ describe('frontier', () => {
             gold: 0,
         })
     })
+
+    it('moves a structure', async () => {
+        const throneHallId = 1 // quarry id
+        const throneHallCountAsBuff = Buffer.allocUnsafe(4)
+        throneHallCountAsBuff.writeUInt32LE(throneHallId, 0)
+        const [throneHallPda] = anchor.web3.PublicKey.findProgramAddressSync(
+            [throneHallCountAsBuff, basePda.toBuffer()],
+            program.programId
+        )
+
+        await program.methods
+            .moveStructure(throneHallId, { x: 10, y: 10 })
+            .accounts({
+                playerAccount: playerPda,
+                baseAccount: basePda,
+                structureAccount: throneHallPda,
+            })
+            .rpc()
+
+        const structureAccount = await program.account.structure.fetch(
+            throneHallPda
+        )
+        expect(structureAccount.id).toEqual(throneHallId)
+        expect(structureAccount.player).toEqual(playerPda)
+        expect(structureAccount.playerBase).toEqual(basePda)
+        expect(structureAccount.isInitialized).toEqual(true)
+        expect(structureAccount.structureType).toEqual({ throneHall: {}})
+        expect(structureAccount.position).toEqual({ x: 10, y: 10 })
+    })
 })

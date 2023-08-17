@@ -113,6 +113,43 @@ export type Frontier = {
       ]
     },
     {
+      "name": "moveStructure",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "playerAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "baseAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "structureAccount",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "structureCount",
+          "type": "u32"
+        },
+        {
+          "name": "newPos",
+          "type": {
+            "defined": "Position"
+          }
+        }
+      ]
+    },
+    {
       "name": "assignWorker",
       "accounts": [
         {
@@ -647,6 +684,43 @@ export const IDL: Frontier = {
         {
           "name": "structureCount",
           "type": "u32"
+        }
+      ]
+    },
+    {
+      "name": "moveStructure",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "playerAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "baseAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "structureAccount",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "structureCount",
+          "type": "u32"
+        },
+        {
+          "name": "newPos",
+          "type": {
+            "defined": "Position"
+          }
         }
       ]
     },

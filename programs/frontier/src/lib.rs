@@ -35,7 +35,11 @@ pub mod frontier {
         instructions::collect_resources::collect_resources(ctx, structure_count)
     }
 
+    pub fn move_structure(ctx: Context<MoveStructure>, structure_count: u32, new_pos: Position) -> Result<()> {
+        instructions::move_structure::move_structure(ctx, structure_count, new_pos)
+    }
+
     pub fn assign_worker(ctx: Context<AssignWorker>, from_structure_count: u32, to_structure_count: u32) -> Result<()> {
-        instructions::assign_worker(ctx, from_structure_count, to_structure_count)
+        instructions::assign_worker::assign_worker(ctx, from_structure_count, to_structure_count)
     }
 }

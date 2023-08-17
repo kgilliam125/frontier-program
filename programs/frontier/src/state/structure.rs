@@ -66,6 +66,11 @@ impl Structure {
         Ok(())
     }
 
+    pub fn move_structure(&mut self, new_pos: Position) -> Result<()> {
+        self.position = new_pos;
+
+        Ok(())
+    }
     // May need more logic here, using Result type
     pub fn add_worker(&mut self) -> Result<()> {
         require!(self.is_assignable(), StructureError::CannotAssignWorker);
