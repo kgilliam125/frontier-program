@@ -201,11 +201,11 @@ export type Frontier = {
             "type": "publicKey"
           },
           {
-            "name": "unitCount",
+            "name": "armySize",
             "type": "u32"
           },
           {
-            "name": "armySize",
+            "name": "armyMaxSize",
             "type": "u32"
           },
           {
@@ -776,11 +776,11 @@ export const IDL: Frontier = {
             "type": "publicKey"
           },
           {
-            "name": "unitCount",
+            "name": "armySize",
             "type": "u32"
           },
           {
-            "name": "armySize",
+            "name": "armyMaxSize",
             "type": "u32"
           },
           {

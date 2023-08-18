@@ -4,8 +4,8 @@ use anchor_lang::prelude::*;
 #[account]
 pub struct Army {
     player_account: Pubkey,
-    unit_count: u32,
     army_size: u32,
+    army_max_size: u32,
     rating: u32,
     is_initialized: bool
 }
@@ -18,8 +18,8 @@ impl Army {
         require_eq!(self.is_initialized, false, ArmyError::AlreadyInitialized);
 
         self.player_account = player_account;
-        self.unit_count = 0;
         self.army_size = 0;
+        self.army_max_size = 10;
         self.rating = 0;
         self.is_initialized = true;
 

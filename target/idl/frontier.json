@@ -201,11 +201,11 @@
             "type": "publicKey"
           },
           {
-            "name": "unitCount",
+            "name": "armySize",
             "type": "u32"
           },
           {
-            "name": "armySize",
+            "name": "armyMaxSize",
             "type": "u32"
           },
           {
@@ -570,8 +570,5 @@
       "code": 6002,
       "name": "NotEnoughResources"
     }
-  ],
-  "metadata": {
-    "address": "3FKoVbicsX7moGuqVPCY1qkZ4adA85tTpYVFEe9Vs2ei"
-  }
+  ]
 }
