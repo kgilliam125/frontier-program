@@ -3,6 +3,32 @@
   "name": "frontier",
   "instructions": [
     {
+      "name": "initSeason",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "seasonAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seasonId",
+          "type": "u32"
+        }
+      ]
+    },
+    {
       "name": "initPlayerAccounts",
       "accounts": [
         {
@@ -262,6 +288,36 @@
       }
     },
     {
+      "name": "GameMatch",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "u32"
+          },
+          {
+            "name": "state",
+            "type": {
+              "defined": "MatchState"
+            }
+          },
+          {
+            "name": "attackingArmy",
+            "type": "publicKey"
+          },
+          {
+            "name": "defendingBase",
+            "type": "publicKey"
+          },
+          {
+            "name": "isInitialized",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
       "name": "PlayerBase",
       "type": {
         "kind": "struct",
@@ -318,6 +374,40 @@
             "name": "resources",
             "type": {
               "defined": "Resources"
+            }
+          },
+          {
+            "name": "isInitialized",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Season",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "seasonId",
+            "type": "u32"
+          },
+          {
+            "name": "seasonInitializer",
+            "type": "publicKey"
+          },
+          {
+            "name": "matchCount",
+            "type": "u32"
+          },
+          {
+            "name": "playerCount",
+            "type": "u32"
+          },
+          {
+            "name": "state",
+            "type": {
+              "defined": "SeasonState"
             }
           },
           {
@@ -621,6 +711,37 @@
           },
           {
             "name": "NotInitialized"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MatchState",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Created"
+          },
+          {
+            "name": "InProgress"
+          },
+          {
+            "name": "Finished"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SeasonState",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Open"
+          },
+          {
+            "name": "Closed"
           }
         ]
       }

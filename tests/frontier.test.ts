@@ -4,11 +4,20 @@ import { Frontier } from '../target/types/frontier'
 
 describe('frontier', () => {
     // Configure the client to use the local cluster.
+    // The "provider" in this case will be a player building a base and training units
     const provider = anchor.AnchorProvider.env()
     anchor.setProvider(provider)
 
     const program = anchor.workspace.Frontier as Program<Frontier>
 
+    const seasonCreatorKeypair = anchor.web3.Keypair.generate()
+    const seasonNumber = 0
+    const buff = Buffer.allocUnsafe(4)
+    buff.writeUInt32LE(seasonNumber, 0)
+    const [seasonPda] = anchor.web3.PublicKey.findProgramAddressSync(
+        [Buffer.from('season'), buff, seasonCreatorKeypair.publicKey.toBuffer()],
+        program.programId
+    )
     const [playerPda] = anchor.web3.PublicKey.findProgramAddressSync(
         [Buffer.from('player'), provider.publicKey.toBuffer()],
         program.programId
@@ -47,6 +56,37 @@ describe('frontier', () => {
 
         return pda
     }
+
+    it('initializes a season', async () => {
+        // Fund the account since this is the first time it has been used.
+        const tx = new anchor.web3.Transaction()
+        tx.add(anchor.web3.SystemProgram.transfer({
+            fromPubkey: provider.publicKey,
+            toPubkey: seasonCreatorKeypair.publicKey,
+            lamports: 1 * anchor.web3.LAMPORTS_PER_SOL,
+        }))
+
+        await provider.sendAndConfirm(tx)
+        await program.methods
+        .initSeason(seasonNumber)
+        .accounts({
+            seasonAccount: seasonPda,
+            owner: seasonCreatorKeypair.publicKey,
+        })
+        .signers([seasonCreatorKeypair])
+        .rpc()
+
+        const seasonAccount = await program.account.season.fetch(seasonPda)
+        expect(seasonAccount.seasonInitializer).toEqual(seasonCreatorKeypair.publicKey)
+        expect(seasonAccount.isInitialized).toEqual(true)
+        expect(seasonAccount.seasonId).toEqual(seasonNumber)
+        expect(seasonAccount.matchCount).toEqual(0)
+        expect(seasonAccount.playerCount).toEqual(0)
+        expect(seasonAccount.state).toEqual({ open: {}})
+
+
+    })
+
 
     it('It initializes player accounts!', async () => {
         const tx = await program.methods

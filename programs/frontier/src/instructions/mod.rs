@@ -4,6 +4,7 @@ pub use collect_resources::*;
 pub use assign_worker::*;
 pub use move_structure::*;
 pub use train_unit::*;
+pub use init_season::*;
 
 pub mod init_player_accounts;
 pub mod build_structure;
@@ -11,3 +12,4 @@ pub mod collect_resources;
 pub mod assign_worker;
 pub mod move_structure;
 pub mod train_unit;
+pub mod init_season;

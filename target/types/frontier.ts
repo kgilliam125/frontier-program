@@ -3,6 +3,32 @@ export type Frontier = {
   "name": "frontier",
   "instructions": [
     {
+      "name": "initSeason",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "seasonAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seasonId",
+          "type": "u32"
+        }
+      ]
+    },
+    {
       "name": "initPlayerAccounts",
       "accounts": [
         {
@@ -262,6 +288,36 @@ export type Frontier = {
       }
     },
     {
+      "name": "gameMatch",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "u32"
+          },
+          {
+            "name": "state",
+            "type": {
+              "defined": "MatchState"
+            }
+          },
+          {
+            "name": "attackingArmy",
+            "type": "publicKey"
+          },
+          {
+            "name": "defendingBase",
+            "type": "publicKey"
+          },
+          {
+            "name": "isInitialized",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
       "name": "playerBase",
       "type": {
         "kind": "struct",
@@ -318,6 +374,40 @@ export type Frontier = {
             "name": "resources",
             "type": {
               "defined": "Resources"
+            }
+          },
+          {
+            "name": "isInitialized",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "season",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "seasonId",
+            "type": "u32"
+          },
+          {
+            "name": "seasonInitializer",
+            "type": "publicKey"
+          },
+          {
+            "name": "matchCount",
+            "type": "u32"
+          },
+          {
+            "name": "playerCount",
+            "type": "u32"
+          },
+          {
+            "name": "state",
+            "type": {
+              "defined": "SeasonState"
             }
           },
           {
@@ -621,6 +711,37 @@ export type Frontier = {
           },
           {
             "name": "NotInitialized"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MatchState",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Created"
+          },
+          {
+            "name": "InProgress"
+          },
+          {
+            "name": "Finished"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SeasonState",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Open"
+          },
+          {
+            "name": "Closed"
           }
         ]
       }
@@ -714,6 +835,32 @@ export const IDL: Frontier = {
   "name": "frontier",
   "instructions": [
     {
+      "name": "initSeason",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "seasonAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seasonId",
+          "type": "u32"
+        }
+      ]
+    },
+    {
       "name": "initPlayerAccounts",
       "accounts": [
         {
@@ -973,6 +1120,36 @@ export const IDL: Frontier = {
       }
     },
     {
+      "name": "gameMatch",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "u32"
+          },
+          {
+            "name": "state",
+            "type": {
+              "defined": "MatchState"
+            }
+          },
+          {
+            "name": "attackingArmy",
+            "type": "publicKey"
+          },
+          {
+            "name": "defendingBase",
+            "type": "publicKey"
+          },
+          {
+            "name": "isInitialized",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
       "name": "playerBase",
       "type": {
         "kind": "struct",
@@ -1029,6 +1206,40 @@ export const IDL: Frontier = {
             "name": "resources",
             "type": {
               "defined": "Resources"
+            }
+          },
+          {
+            "name": "isInitialized",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "season",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "seasonId",
+            "type": "u32"
+          },
+          {
+            "name": "seasonInitializer",
+            "type": "publicKey"
+          },
+          {
+            "name": "matchCount",
+            "type": "u32"
+          },
+          {
+            "name": "playerCount",
+            "type": "u32"
+          },
+          {
+            "name": "state",
+            "type": {
+              "defined": "SeasonState"
             }
           },
           {
@@ -1332,6 +1543,37 @@ export const IDL: Frontier = {
           },
           {
             "name": "NotInitialized"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MatchState",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Created"
+          },
+          {
+            "name": "InProgress"
+          },
+          {
+            "name": "Finished"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SeasonState",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Open"
+          },
+          {
+            "name": "Closed"
           }
         ]
       }

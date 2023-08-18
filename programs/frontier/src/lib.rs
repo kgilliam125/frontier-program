@@ -13,6 +13,10 @@ declare_id!("3FKoVbicsX7moGuqVPCY1qkZ4adA85tTpYVFEe9Vs2ei");
 pub mod frontier {
     use super::*;
 
+    pub fn init_season(ctx: Context<InitSeason>, season_id: u32) -> Result<()> {
+        instructions::init_season::init_season(ctx, season_id)
+    }
+
     pub fn init_player_accounts(ctx: Context<InitPlayerAccounts>) -> Result<()> {
         instructions::init_player_accounts::init_player_accounts(ctx)
     }
