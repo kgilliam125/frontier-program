@@ -4,6 +4,8 @@ This is a monolithic program which serves as a game server for the Frontier OPOS
 
 In future iterations, once the core game logic is established, this monolith should be decomposed into individually deployed programs.
 
+Unreal C# SDK: [https://github.com/Bifrost-Technologies/Frontier-SDK](https://github.com/Bifrost-Technologies/Frontier-SDK)
+
 ## Contributing
 
 1. Set up your local Solana/Anchor tools: https://www.anchor-lang.com/docs/installation
