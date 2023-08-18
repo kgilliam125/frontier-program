@@ -174,9 +174,9 @@ impl Structure {
                 wood: 0,
                 stone: 0,
                 iron: self.calculate_resource_distribution(250),
-                steel: 0,
+                steel: self.calculate_resource_distribution(250),
                 mana: 0,
-                gold: 0,
+                gold: self.calculate_resource_distribution(250),
             },
             _ => Resources {
                 wood: 0,
