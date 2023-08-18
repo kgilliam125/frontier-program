@@ -188,6 +188,48 @@ export type Frontier = {
           "type": "u32"
         }
       ]
+    },
+    {
+      "name": "trainUnit",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "playerAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "armyAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "unitAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "unitCount",
+          "type": "u32"
+        },
+        {
+          "name": "unitType",
+          "type": {
+            "defined": "UnitType"
+          }
+        }
+      ]
     }
   ],
   "accounts": [
@@ -326,6 +368,42 @@ export type Frontier = {
           }
         ]
       }
+    },
+    {
+      "name": "unit",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "u32"
+          },
+          {
+            "name": "player",
+            "type": "publicKey"
+          },
+          {
+            "name": "army",
+            "type": "publicKey"
+          },
+          {
+            "name": "unitType",
+            "type": {
+              "defined": "UnitType"
+            }
+          },
+          {
+            "name": "stats",
+            "type": {
+              "defined": "UnitStats"
+            }
+          },
+          {
+            "name": "isInitialized",
+            "type": "bool"
+          }
+        ]
+      }
     }
   ],
   "types": [
@@ -422,6 +500,38 @@ export type Frontier = {
       }
     },
     {
+      "name": "UnitStats",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "rank",
+            "type": "u16"
+          },
+          {
+            "name": "health",
+            "type": "u16"
+          },
+          {
+            "name": "attack",
+            "type": "u16"
+          },
+          {
+            "name": "defense",
+            "type": "u16"
+          },
+          {
+            "name": "speed",
+            "type": "u16"
+          },
+          {
+            "name": "range",
+            "type": "u16"
+          }
+        ]
+      }
+    },
+    {
       "name": "BaseError",
       "type": {
         "kind": "enum",
@@ -454,6 +564,12 @@ export type Frontier = {
           },
           {
             "name": "NotInitialized"
+          },
+          {
+            "name": "SizeExceeded"
+          },
+          {
+            "name": "ArmyEmpty"
           }
         ]
       }
@@ -552,6 +668,26 @@ export type Frontier = {
           },
           {
             "name": "SentryCreature"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UnitType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Soldier"
+          },
+          {
+            "name": "Archer"
+          },
+          {
+            "name": "Siege"
+          },
+          {
+            "name": "Healer"
           }
         ]
       }
@@ -763,6 +899,48 @@ export const IDL: Frontier = {
           "type": "u32"
         }
       ]
+    },
+    {
+      "name": "trainUnit",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "playerAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "armyAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "unitAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "unitCount",
+          "type": "u32"
+        },
+        {
+          "name": "unitType",
+          "type": {
+            "defined": "UnitType"
+          }
+        }
+      ]
     }
   ],
   "accounts": [
@@ -901,6 +1079,42 @@ export const IDL: Frontier = {
           }
         ]
       }
+    },
+    {
+      "name": "unit",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "u32"
+          },
+          {
+            "name": "player",
+            "type": "publicKey"
+          },
+          {
+            "name": "army",
+            "type": "publicKey"
+          },
+          {
+            "name": "unitType",
+            "type": {
+              "defined": "UnitType"
+            }
+          },
+          {
+            "name": "stats",
+            "type": {
+              "defined": "UnitStats"
+            }
+          },
+          {
+            "name": "isInitialized",
+            "type": "bool"
+          }
+        ]
+      }
     }
   ],
   "types": [
@@ -997,6 +1211,38 @@ export const IDL: Frontier = {
       }
     },
     {
+      "name": "UnitStats",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "rank",
+            "type": "u16"
+          },
+          {
+            "name": "health",
+            "type": "u16"
+          },
+          {
+            "name": "attack",
+            "type": "u16"
+          },
+          {
+            "name": "defense",
+            "type": "u16"
+          },
+          {
+            "name": "speed",
+            "type": "u16"
+          },
+          {
+            "name": "range",
+            "type": "u16"
+          }
+        ]
+      }
+    },
+    {
       "name": "BaseError",
       "type": {
         "kind": "enum",
@@ -1029,6 +1275,12 @@ export const IDL: Frontier = {
           },
           {
             "name": "NotInitialized"
+          },
+          {
+            "name": "SizeExceeded"
+          },
+          {
+            "name": "ArmyEmpty"
           }
         ]
       }
@@ -1127,6 +1379,26 @@ export const IDL: Frontier = {
           },
           {
             "name": "SentryCreature"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UnitType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Soldier"
+          },
+          {
+            "name": "Archer"
+          },
+          {
+            "name": "Siege"
+          },
+          {
+            "name": "Healer"
           }
         ]
       }

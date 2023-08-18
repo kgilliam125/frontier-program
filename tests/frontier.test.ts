@@ -26,6 +26,28 @@ describe('frontier', () => {
         await new Promise((resolve) => setTimeout(resolve, msToSleep))
     }
 
+    const getStructurePdaFromId = (id: number) => {
+        const buff = Buffer.allocUnsafe(4)
+        buff.writeUInt32LE(id, 0)
+        const [pda] = anchor.web3.PublicKey.findProgramAddressSync(
+            [buff, basePda.toBuffer()],
+            program.programId
+        )
+
+        return pda
+    }
+
+    const getUnitPdaFromId = (id: number) => {
+        const buff = Buffer.allocUnsafe(4)
+        buff.writeUInt32LE(id, 0)
+        const [pda] = anchor.web3.PublicKey.findProgramAddressSync(
+            [buff, armyPda.toBuffer()],
+            program.programId
+        )
+
+        return pda
+    }
+
     it('It initializes player accounts!', async () => {
         const tx = await program.methods
             .initPlayerAccounts()
@@ -61,8 +83,8 @@ describe('frontier', () => {
         expect(armyAccount.playerAccount).toEqual(playerPda)
         expect(armyAccount.isInitialized).toEqual(true)
         expect(armyAccount.rating).toEqual(0)
-        expect(armyAccount.unitCount).toEqual(0)
         expect(armyAccount.armySize).toEqual(0)
+        expect(armyAccount.armyMaxSize).toEqual(10)
     })
 
     it('builds a throne hall', async () => {
@@ -203,6 +225,51 @@ describe('frontier', () => {
         expect(structureAccount.position).toEqual({ x: 0, y: 0 })
     })
 
+    it('builds a mine', async () => {
+        let baseAccount = await program.account.playerBase.fetch(basePda)
+        const nextStructureCount = baseAccount.structureCount + 1
+        const structureType = { mine: {} }
+
+        const structureCountAsBuff = Buffer.allocUnsafe(4)
+        structureCountAsBuff.writeUInt32LE(nextStructureCount, 0)
+        const [structurePda] = anchor.web3.PublicKey.findProgramAddressSync(
+            [structureCountAsBuff, basePda.toBuffer()],
+            program.programId
+        )
+
+        await program.methods
+            .buildStructure(nextStructureCount, structureType, { x: 0, y: 0 })
+            .accounts({
+                playerAccount: playerPda,
+                baseAccount: basePda,
+                structureAccount: structurePda,
+            })
+            .rpc()
+
+        baseAccount = await program.account.playerBase.fetch(basePda)
+        expect(baseAccount.structureCount).toEqual(nextStructureCount)
+
+        const playerAccount = await program.account.player.fetch(playerPda)
+        expect(playerAccount.resources).toEqual({
+            wood: 250,
+            stone: 50,
+            iron: 0,
+            steel: 0,
+            mana: 0,
+            gold: 0,
+        })
+
+        const structureAccount = await program.account.structure.fetch(
+            structurePda
+        )
+        expect(structureAccount.id).toEqual(nextStructureCount)
+        expect(structureAccount.player).toEqual(playerPda)
+        expect(structureAccount.playerBase).toEqual(basePda)
+        expect(structureAccount.isInitialized).toEqual(true)
+        expect(structureAccount.structureType).toEqual(structureType)
+        expect(structureAccount.position).toEqual({ x: 0, y: 0 })
+    })
+
     it('does not collect resources if no worker assigned', async () => {
         await sleep(4000) // resource timer is 60 seconds
         const quarryId = 2 // quarry id
@@ -253,8 +320,8 @@ describe('frontier', () => {
         // Should it error if no worker?
         const playerAccount = await program.account.player.fetch(playerPda)
         expect(playerAccount.resources).toEqual({
-            wood: 300,
-            stone: 300,
+            wood: 250,
+            stone: 50,
             iron: 0,
             steel: 0,
             mana: 0,
@@ -287,6 +354,9 @@ describe('frontier', () => {
             program.programId
         )
 
+        const mineId = 4
+        const minePda = getStructurePdaFromId(mineId)
+
         const quaryIx = await program.methods
             .assignWorker(throneHallId, quarryId)
             .accounts({
@@ -305,20 +375,33 @@ describe('frontier', () => {
                 toStructureAccount: lumberMillPda,
             })
             .transaction()
+        const mineIx = await program.methods
+            .assignWorker(throneHallId, mineId)
+            .accounts({
+                playerAccount: playerPda,
+                baseAccount: basePda,
+                fromStructureAccount: throneHallPda,
+                toStructureAccount: minePda,
+            })
+            .transaction()
 
         const transaction = new anchor.web3.Transaction()
         transaction.add(quaryIx)
         transaction.add(lumberMillIx)
+        transaction.add(mineIx)
         await program.provider.sendAndConfirm(transaction)
 
         const throneHallAccount = await program.account.structure.fetch(throneHallPda)
-        expect(throneHallAccount.stats.assignedWorkers).toBe(3)
+        expect(throneHallAccount.stats.assignedWorkers).toBe(2)
 
         const quarryAccount = await program.account.structure.fetch(quarryPda)
         expect(quarryAccount.stats.assignedWorkers).toBe(1)
 
         const lumberMillAccount = await program.account.structure.fetch(lumberMillPda)
         expect(lumberMillAccount.stats.assignedWorkers).toBe(1)
+
+        const mineAccount = await program.account.structure.fetch(minePda)
+        expect(mineAccount.stats.assignedWorkers).toBe(1)
     })
 
     it('collects resources from structures', async () => {
@@ -338,6 +421,9 @@ describe('frontier', () => {
             program.programId
         )
 
+        const mineId = 4
+        const minePda = getStructurePdaFromId(mineId)
+
         const quaryIx = await program.methods
             .collectResources(quarryId)
             .accounts({
@@ -354,20 +440,29 @@ describe('frontier', () => {
                 structureAccount: lumberMillPda,
             })
             .transaction()
+            const mineIx = await program.methods
+            .collectResources(mineId)
+            .accounts({
+                playerAccount: playerPda,
+                baseAccount: basePda,
+                structureAccount: minePda,
+            })
+            .transaction()
 
         const transaction = new anchor.web3.Transaction()
         transaction.add(quaryIx)
         transaction.add(lumberMillIx)
+        transaction.add(mineIx)
         await program.provider.sendAndConfirm(transaction)
 
         const playerAccount = await program.account.player.fetch(playerPda)
         expect(playerAccount.resources).toEqual({
-            wood: 550,
-            stone: 550,
-            iron: 0,
-            steel: 0,
+            wood: 500,
+            stone: 300,
+            iron: 250,
+            steel: 250,
             mana: 0,
-            gold: 0,
+            gold: 250,
         })
     })
 
@@ -418,12 +513,12 @@ describe('frontier', () => {
 
         const playerAccount = await program.account.player.fetch(playerPda)
         expect(playerAccount.resources).toEqual({
-            wood: 550,
-            stone: 550,
-            iron: 0,
-            steel: 0,
+            wood: 500,
+            stone: 300,
+            iron: 250,
+            steel: 250,
             mana: 0,
-            gold: 0,
+            gold: 250,
         })
     })
 
@@ -454,5 +549,50 @@ describe('frontier', () => {
         expect(structureAccount.isInitialized).toEqual(true)
         expect(structureAccount.structureType).toEqual({ throneHall: {}})
         expect(structureAccount.position).toEqual({ x: 10, y: 10 })
+    })
+
+    it('trains a unit', async () => {
+        let armyAccount = await program.account.army.fetch(armyPda)
+        const nextUnitCount = armyAccount.armySize + 1
+        const unitType = { soldier: {} }
+
+        // todo just make a damn helper function for this already
+        const unitCountAsBuff = Buffer.allocUnsafe(4)
+        unitCountAsBuff.writeUInt32LE(nextUnitCount, 0)
+        const [unitPda] = anchor.web3.PublicKey.findProgramAddressSync(
+            [unitCountAsBuff, armyPda.toBuffer()],
+            program.programId
+        )
+
+        await program.methods
+            .trainUnit(nextUnitCount, unitType)
+            .accounts({
+                playerAccount: playerPda,
+                armyAccount: armyPda,
+                unitAccount: unitPda,
+            })
+            .rpc()
+
+        armyAccount = await program.account.army.fetch(armyPda)
+        expect(armyAccount.armySize).toEqual(nextUnitCount)
+
+        const playerAccount = await program.account.player.fetch(playerPda)
+        expect(playerAccount.resources).toEqual({
+            wood: 500,
+            stone: 300,
+            iron: 150,
+            steel: 250,
+            mana: 0,
+            gold: 150,
+        })
+
+        const unitAccount = await program.account.unit.fetch(
+            unitPda
+        )
+        expect(unitAccount.id).toEqual(nextUnitCount)
+        expect(unitAccount.player).toEqual(playerPda)
+        expect(unitAccount.army).toEqual(armyPda)
+        expect(unitAccount.isInitialized).toEqual(true)
+        expect(unitAccount.unitType).toEqual(unitType)
     })
 })

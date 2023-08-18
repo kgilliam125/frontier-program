@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 use instructions::*;
-use state::{StructureType, Position};
+use state::{Position, StructureType, UnitType};
 
 pub mod errors;
 pub mod instructions;
@@ -35,11 +35,23 @@ pub mod frontier {
         instructions::collect_resources::collect_resources(ctx, structure_count)
     }
 
-    pub fn move_structure(ctx: Context<MoveStructure>, structure_count: u32, new_pos: Position) -> Result<()> {
+    pub fn move_structure(
+        ctx: Context<MoveStructure>,
+        structure_count: u32,
+        new_pos: Position,
+    ) -> Result<()> {
         instructions::move_structure::move_structure(ctx, structure_count, new_pos)
     }
 
-    pub fn assign_worker(ctx: Context<AssignWorker>, from_structure_count: u32, to_structure_count: u32) -> Result<()> {
+    pub fn assign_worker(
+        ctx: Context<AssignWorker>,
+        from_structure_count: u32,
+        to_structure_count: u32,
+    ) -> Result<()> {
         instructions::assign_worker::assign_worker(ctx, from_structure_count, to_structure_count)
+    }
+
+    pub fn train_unit(ctx: Context<TrainUnit>, unit_count: u32, unit_type: UnitType) -> Result<()> {
+        instructions::train_unit::train_unit(ctx, unit_count, unit_type)
     }
 }

@@ -1,26 +1,22 @@
-use crate::errors::GameError;
+use crate::errors::UnitError;
 use anchor_lang::prelude::*;
 
 #[account]
 pub struct Unit {
-    player: Player,
-    army: Army,
-    unit_type: UnitType,
-    stats: UnitStats,
-    is_initialized: bool
+    id: u32,
+    player: Pubkey,
+    army: Pubkey,
+    pub unit_type: UnitType,
+    pub stats: UnitStats,
+    is_initialized: bool,
 }
 
 impl Unit {
     // Set to maximum account size to leave expansion room, find what it is
     pub const MAXIMUM_SIZE: usize = 5000;
 
-    pub fn init(&mut self, player: Pubkey, base_pubkey: Pubkey, unit_type: UnitType) -> Result<()> {
-        require_eq!(self.is_initialized, false, UnitError::AlreadyInitialized);
-
-        self.player = player;
-        self.unit_type = unit_type;
-        self.is_initialized = true;
-        self.stats = match unit_type {
+    pub fn get_stats(unit_type: UnitType) -> UnitStats {
+        match unit_type {
             UnitType::Soldier => UnitStats {
                 rank: 1,
                 health: 100,
@@ -53,7 +49,25 @@ impl Unit {
                 speed: 10,
                 range: 10,
             },
-        };
+        }
+    }
+
+    pub fn init(
+        &mut self,
+        player: Pubkey,
+        army: Pubkey,
+        unit_id: u32,
+        unit_type: UnitType,
+        unit_stats: UnitStats,
+    ) -> Result<()> {
+        require_eq!(self.is_initialized, false, UnitError::AlreadyInitialized);
+
+        self.id = unit_id;
+        self.player = player.key();
+        self.army = army.key();
+        self.unit_type = unit_type;
+        self.is_initialized = true;
+        self.stats = unit_stats;
 
         Ok(())
     }
@@ -80,4 +94,3 @@ pub enum UnitType {
     Siege,
     Healer,
 }
-

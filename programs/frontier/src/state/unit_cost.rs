@@ -35,8 +35,8 @@ const SIEGE_BASE_COST: Resources = Resources {
     gold: 200,
 };
 
-pub fn get_cost(structure_type: UnitType) -> Resources {
-    match structure_type {
+pub fn get_cost(unit_type: UnitType) -> Resources {
+    match unit_type {
         UnitType::Soldier => SOLDIER_BASE_COST,
         UnitType::Archer => ARCHER_BASE_COST,
         UnitType::Healer => HEALER_BASE_COST,

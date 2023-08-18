@@ -20,6 +20,8 @@ pub enum BaseError {
 pub enum ArmyError {
     AlreadyInitialized,
     NotInitialized,
+    SizeExceeded,
+    ArmyEmpty,
 }
 
 #[error_code]
