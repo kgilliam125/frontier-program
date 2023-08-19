@@ -13,6 +13,7 @@ declare_id!("3FKoVbicsX7moGuqVPCY1qkZ4adA85tTpYVFEe9Vs2ei");
 pub mod frontier {
     use super::*;
 
+    // game setup instructions
     pub fn init_season(ctx: Context<InitSeason>, season_id: u32) -> Result<()> {
         instructions::init_season::init_season(ctx, season_id)
     }
@@ -21,6 +22,7 @@ pub mod frontier {
         instructions::init_player_accounts::init_player_accounts(ctx)
     }
 
+    // Base building instructions
     pub fn build_structure(
         ctx: Context<BuildStructure>,
         structure_count: u32,
@@ -57,5 +59,10 @@ pub mod frontier {
 
     pub fn train_unit(ctx: Context<TrainUnit>, unit_count: u32, unit_type: UnitType) -> Result<()> {
         instructions::train_unit::train_unit(ctx, unit_count, unit_type)
+    }
+
+    // attacking instructions
+    pub fn start_match(ctx: Context<StartMatch>, season_id: u32, match_id: u32, pvp_structure_id: u32) -> Result<()> {
+        instructions::start_match::start_match(ctx, season_id, match_id, pvp_structure_id)
     }
 }

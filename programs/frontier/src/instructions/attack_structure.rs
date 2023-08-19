@@ -18,13 +18,13 @@ pub fn attack_structure(
 #[instruction(unit_count: u32, structure_count: u32)]
 pub struct AttackStructure<'info> {
     #[account(mut)]
-    pub owner: Signer<'info>,
+    pub attacker: Signer<'info>,
     #[account(
         mut,
-        seeds=["player".as_bytes(), owner.key().as_ref()],
+        seeds=["player".as_bytes(), attacker.key().as_ref()],
         bump,
     )]
-    pub player_account: Account<'info, Player>,
+    pub defender: Account<'info, Player>,
     #[account(
         mut,
         seeds=["army".as_bytes(), player_account.key().as_ref()],
@@ -50,4 +50,12 @@ pub struct AttackStructure<'info> {
         space=1000,
     )]
     pub defending_structure: Account<'info, Structure>,
+    #[account(
+        init,
+        seeds=[match_id.to_le_bytes().as_ref(), season_account.as_ref(), attacking_army.key().as_ref(), defending_base.key().as_ref],
+        bump,
+        payer=attacker,
+        space=1000,
+    )]
+    pub game_match: Account<'info, GameMatch>,
 }

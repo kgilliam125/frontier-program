@@ -1,4 +1,4 @@
-use crate::errors::GameMatchError;
+use crate::errors::SeasonError;
 use anchor_lang::prelude::*;
 
 // There is currently one season. This account is used to track how many matches
@@ -8,7 +8,7 @@ use anchor_lang::prelude::*;
 pub struct Season {
     season_id: u32,
     season_initializer: Pubkey,
-    match_count: u32,
+    pub match_count: u32,
     player_count: u32,
     state: SeasonState,
     is_initialized: bool
@@ -19,7 +19,7 @@ impl Season {
     pub const MAXIMUM_SIZE: usize = 5000;
 
     pub fn init(&mut self, creator: Pubkey, season_id: u32) -> Result<()> {
-        require_eq!(self.is_initialized, false, GameMatchError::AlreadyInitialized);
+        require_eq!(self.is_initialized, false, SeasonError::AlreadyInitialized);
 
         self.season_id = season_id;
         self.season_initializer = creator;
@@ -32,10 +32,19 @@ impl Season {
 
         Ok(())
     }
+
+    pub fn add_match(&mut self) -> Result<()> {
+        require_eq!(self.is_initialized, true, SeasonError::NotInitialized);
+        require!(self.state == SeasonState::Open, SeasonError::SeasonClosed);
+
+        self.match_count += 1;
+
+        Ok(())
+    }
 }
 
 // Using enum in case there are some other states a season could be in
-#[derive(AnchorSerialize, AnchorDeserialize, Copy, Clone)]
+#[derive(AnchorSerialize, AnchorDeserialize, Copy, Clone, PartialEq)]
 pub enum SeasonState {
     Open,
     Closed,

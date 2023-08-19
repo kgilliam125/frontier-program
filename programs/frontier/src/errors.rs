@@ -28,6 +28,7 @@ pub enum ArmyError {
 pub enum GameMatchError {
     AlreadyInitialized,
     NotInitialized,
+    InvalidDefenderPvpPortal,
 }
 
 #[error_code]
@@ -43,4 +44,11 @@ pub enum StructureError {
 pub enum UnitError {
     AlreadyInitialized,
     NotInitialized,
+}
+
+#[error_code]
+pub enum SeasonError {
+    AlreadyInitialized,
+    NotInitialized,
+    SeasonClosed,
 }

@@ -256,6 +256,80 @@
           }
         }
       ]
+    },
+    {
+      "name": "startMatch",
+      "accounts": [
+        {
+          "name": "attacker",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "attackerAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defender",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defenderAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingPvpStructure",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonOwner",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "gameMatch",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seasonId",
+          "type": "u32"
+        },
+        {
+          "name": "matchId",
+          "type": "u32"
+        },
+        {
+          "name": "pvpStructureId",
+          "type": "u32"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -674,6 +748,9 @@
           },
           {
             "name": "NotInitialized"
+          },
+          {
+            "name": "InvalidDefenderPvpPortal"
           }
         ]
       }
@@ -716,18 +793,35 @@
       }
     },
     {
+      "name": "SeasonError",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "AlreadyInitialized"
+          },
+          {
+            "name": "NotInitialized"
+          },
+          {
+            "name": "SeasonClosed"
+          }
+        ]
+      }
+    },
+    {
       "name": "MatchState",
       "type": {
         "kind": "enum",
         "variants": [
           {
-            "name": "Created"
-          },
-          {
             "name": "InProgress"
           },
           {
-            "name": "Finished"
+            "name": "Cancelled"
+          },
+          {
+            "name": "Completed"
           }
         ]
       }

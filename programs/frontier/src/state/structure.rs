@@ -213,7 +213,7 @@ pub struct Position {
 }
 
 // NOTE: enum order cannot be changed, only extended
-#[derive(AnchorSerialize, AnchorDeserialize, Copy, Clone)]
+#[derive(AnchorSerialize, AnchorDeserialize, Copy, Clone, PartialEq)]
 pub enum StructureType {
     // --- Utility ---
     ThroneHall,
