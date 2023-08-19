@@ -13,15 +13,21 @@ pub fn start_match(ctx: Context<StartMatch>, _season_id: u32, _match_id: u32, _p
     require!(pvp_structure.structure_type == StructureType::PvpPortal, GameMatchError::InvalidDefenderPvpPortal);
 
     let season_account = &mut ctx.accounts.season_account;
-    let attacking_army = & ctx.accounts.attacking_army;
-    let defending_base = & ctx.accounts.defending_base;
+    let match_attacking_army = & ctx.accounts.match_attacking_army;
+    let match_defending_base = & ctx.accounts.match_defending_base;
 
     season_account.add_match()?;
     
     ctx.accounts.game_match.init(
         season_account.match_count,
-        attacking_army.key(),
-        defending_base.key(),
+        match_attacking_army.key(),
+        match_defending_base.key(),
+    )?;
+    ctx.accounts.match_defending_base.init(
+        ctx.accounts.game_match.key(),
+    )?;
+    ctx.accounts.match_attacking_army.init(
+        ctx.accounts.game_match.key(),
     )?;
 
     Ok(())
@@ -38,7 +44,7 @@ pub struct StartMatch<'info> {
         bump,
     )]
     pub attacker_account: Account<'info, Player>,
-        #[account(
+    #[account(
         seeds=["army".as_bytes(), attacker_account.key().as_ref()],
         bump,
     )]
@@ -63,7 +69,7 @@ pub struct StartMatch<'info> {
     )]
     pub defending_pvp_structure: Account<'info, Structure>,
 
-    // game accounots
+    // game accounots used for match
     /// CHECK: Used for PDA validation and derivation of the various game accounts
     pub season_owner: UncheckedAccount<'info>,
     #[account(
@@ -80,5 +86,23 @@ pub struct StartMatch<'info> {
         space=1000,
     )]
     pub game_match: Account<'info, GameMatch>,
+    #[account(
+        init,
+        payer=attacker,
+        seeds=["base".as_bytes(), game_match.key().as_ref(), defender_account.key().as_ref()],
+        bump,
+        space=1000
+    )]
+    pub match_defending_base: Account<'info, PlayerBase>,
+    #[account(
+        init,
+        payer=attacker,
+        seeds=["army".as_bytes(), game_match.key().as_ref(), attacker_account.key().as_ref()],
+        bump,
+        space=1000,
+    )]
+    pub match_attacking_army: Account<'info, Army>,
+
+    // program accounts
     pub system_program: Program<'info, System>,
 }

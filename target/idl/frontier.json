@@ -311,6 +311,16 @@
           "isSigner": false
         },
         {
+          "name": "matchDefendingBase",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "matchAttackingArmy",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -1056,6 +1066,9 @@
       "type": {
         "kind": "enum",
         "variants": [
+          {
+            "name": "Started"
+          },
           {
             "name": "InProgress"
           },

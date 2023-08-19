@@ -311,6 +311,16 @@ export type Frontier = {
           "isSigner": false
         },
         {
+          "name": "matchDefendingBase",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "matchAttackingArmy",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -1056,6 +1066,9 @@ export type Frontier = {
       "type": {
         "kind": "enum",
         "variants": [
+          {
+            "name": "Started"
+          },
           {
             "name": "InProgress"
           },
@@ -1479,6 +1492,16 @@ export const IDL: Frontier = {
           "isSigner": false
         },
         {
+          "name": "matchDefendingBase",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "matchAttackingArmy",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -2224,6 +2247,9 @@ export const IDL: Frontier = {
       "type": {
         "kind": "enum",
         "variants": [
+          {
+            "name": "Started"
+          },
           {
             "name": "InProgress"
           },
