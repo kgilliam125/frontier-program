@@ -14,7 +14,7 @@ pub fn train_unit(
     let unit_account = &mut ctx.accounts.unit_account;
 
     let resource_cost = get_cost(unit_type);
-    let stats = Unit::get_stats(unit_type);
+    let stats = Unit::get_base_stats(unit_type);
 
     // todo: make sure production buildings are in the player_base
 
@@ -23,7 +23,7 @@ pub fn train_unit(
     unit_account.init(
         player_account.key(),
         army_account.key(),
-        army_account.army_size, // we actually update this next, but need structure to exist first
+        army_account.army_size, 
         unit_type,
         stats
     )?;

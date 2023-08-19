@@ -19,11 +19,100 @@ impl Structure {
     pub const MAXIMUM_SIZE: usize = 5000;
     pub const MAX_RATING: u32 = 3;
 
+    pub fn get_base_stats(structure_type: StructureType) -> StructureStats {
+        match structure_type {
+            StructureType::ArcherTower => StructureStats {
+                rank: 1,
+                health: 100,
+                attack: 10,
+                defense: 0,
+                speed: 0,
+                range: 0,
+                assigned_workers: 0,
+                collection_interval: 0,
+                last_interaction_time: 0,
+            },
+            StructureType::MageTower => StructureStats {
+                rank: 1,
+                health: 50,
+                attack: 20,
+                defense: 0,
+                speed: 0,
+                range: 0,
+                assigned_workers: 0,
+                collection_interval: 0,
+                last_interaction_time: 0,
+            },
+            StructureType::SentryCreature => StructureStats {
+                rank: 1,
+                health: 150,
+                attack: 20,
+                defense: 0,
+                speed: 0,
+                range: 0,
+                assigned_workers: 0,
+                collection_interval: 0,
+                last_interaction_time: 0,
+            },
+            StructureType::Wall => StructureStats {
+                rank: 1,
+                health: 500,
+                attack: 0,
+                defense: 0,
+                speed: 0,
+                range: 0,
+                assigned_workers: 0,
+                collection_interval: 0,
+                last_interaction_time: 0,
+            },
+            StructureType::ThroneHall => StructureStats {
+                rank: 1,
+                health: 200,
+                attack: 0,
+                defense: 0,
+                speed: 0,
+                range: 0,
+                assigned_workers: 5,
+                collection_interval: 0,
+                last_interaction_time: 0,
+            },
+            StructureType::Barracks
+            | StructureType::Blacksmith
+            | StructureType::ManaWell
+            | StructureType::CarpenterHut
+            | StructureType::PvpPortal => StructureStats {
+                rank: 1,
+                health: 100,
+                attack: 0,
+                defense: 0,
+                speed: 0,
+                range: 0,
+                assigned_workers: 0,
+                collection_interval: 0,
+                last_interaction_time: 0,
+            },
+            StructureType::Mine | StructureType::Quarry | StructureType::LumberMill => {
+                StructureStats {
+                    rank: 1,
+                    health: 100,
+                    attack: 0,
+                    defense: 0,
+                    speed: 0,
+                    range: 0,
+                    assigned_workers: 0,
+                    collection_interval: 60,
+                    last_interaction_time: 0,
+                }
+            }
+        }
+    }
+
     pub fn init(
         &mut self,
         player_pubkey: Pubkey,
         base_pubkey: Pubkey,
         id: u32,
+        structure_stats: StructureStats,
         structure_type: StructureType,
         position: Position,
     ) -> Result<()> {
@@ -33,37 +122,12 @@ impl Structure {
             StructureError::AlreadyInitialized
         );
 
-        let collection_interval = match structure_type {
-            StructureType::Quarry => 60,
-            StructureType::LumberMill => 60,
-            StructureType::Mine => 60,
-            _ => 0,
-        };
-
-        let assigned_workers = match structure_type {
-            StructureType::ThroneHall => 5, // todo move to shared and ref instead of hard code
-            _ => 0,
-        };
-
         self.id = id;
         self.player = player_pubkey;
         self.player_base = base_pubkey;
         self.is_initialized = true;
         self.structure_type = structure_type;
-        self.stats = StructureStats {
-            rank: 1,
-            health: 100,
-            // todo set values for actual structures that can attack
-            attack: 0,
-            // todo set values for actual structures
-            defense: 0,
-            speed: 0,
-            range: 0,
-            // todo set to 1 for testing
-            assigned_workers,
-            collection_interval,
-            last_interaction_time: 0,
-        };
+        self.stats = structure_stats;
         self.position = position;
         self.is_destroyed = false;
 
@@ -194,10 +258,7 @@ impl Structure {
     }
 
     pub fn try_take_damage(&mut self, attacking_power: u16) -> Result<()> {
-        require!(
-            self.is_initialized,
-            StructureError::NotInitialized
-        );
+        require!(self.is_initialized, StructureError::NotInitialized);
         // todo need to add checks for which units can attack which structures. now its an ffa
 
         let damage = attacking_power;
@@ -216,6 +277,20 @@ impl Structure {
         }
 
         Ok(())
+    }
+
+    pub fn can_attack(&self) -> bool {
+        if self.is_destroyed {
+            return false;
+        }
+
+        match self.structure_type {
+            StructureType::ArcherTower
+            | StructureType::MageTower
+            | StructureType::Wall
+            | StructureType::SentryCreature => true,
+            _ => false,
+        }
     }
 }
 

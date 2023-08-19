@@ -483,6 +483,84 @@ export type Frontier = {
           "type": "u32"
         }
       ]
+    },
+    {
+      "name": "attackUnit",
+      "accounts": [
+        {
+          "name": "attacker",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "attackerAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingUnit",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "defender",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defenderAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingStructure",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonOwner",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "gameMatch",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seasonId",
+          "type": "u32"
+        },
+        {
+          "name": "matchId",
+          "type": "u32"
+        },
+        {
+          "name": "unitId",
+          "type": "u32"
+        },
+        {
+          "name": "structureId",
+          "type": "u32"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -718,6 +796,10 @@ export type Frontier = {
             "type": {
               "defined": "UnitStats"
             }
+          },
+          {
+            "name": "isDestroyed",
+            "type": "bool"
           },
           {
             "name": "isInitialized",
@@ -1569,6 +1651,84 @@ export const IDL: Frontier = {
           "type": "u32"
         }
       ]
+    },
+    {
+      "name": "attackUnit",
+      "accounts": [
+        {
+          "name": "attacker",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "attackerAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingUnit",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "defender",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defenderAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingStructure",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonOwner",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "gameMatch",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seasonId",
+          "type": "u32"
+        },
+        {
+          "name": "matchId",
+          "type": "u32"
+        },
+        {
+          "name": "unitId",
+          "type": "u32"
+        },
+        {
+          "name": "structureId",
+          "type": "u32"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -1804,6 +1964,10 @@ export const IDL: Frontier = {
             "type": {
               "defined": "UnitStats"
             }
+          },
+          {
+            "name": "isDestroyed",
+            "type": "bool"
           },
           {
             "name": "isInitialized",

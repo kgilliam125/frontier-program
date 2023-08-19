@@ -8,6 +8,7 @@ pub use init_season::*;
 pub use start_match::*;
 pub use end_match::*;
 pub use attack_structure::*;
+pub use attack_unit::*;
 
 pub mod init_player_accounts;
 pub mod build_structure;
@@ -19,3 +20,4 @@ pub mod init_season;
 pub mod start_match;
 pub mod end_match;
 pub mod attack_structure;
+pub mod attack_unit;
