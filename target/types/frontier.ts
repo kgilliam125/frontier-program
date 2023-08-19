@@ -611,11 +611,6 @@ export type Frontier = {
           "isSigner": false
         },
         {
-          "name": "attackingUnit",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
           "name": "defender",
           "isMut": false,
           "isSigner": false
@@ -631,11 +626,6 @@ export type Frontier = {
           "isSigner": false
         },
         {
-          "name": "defendingStructure",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "seasonOwner",
           "isMut": false,
           "isSigner": false
@@ -648,6 +638,26 @@ export type Frontier = {
         {
           "name": "gameMatch",
           "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "matchAttackingArmy",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "attackingMatchUnit",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "matchDefendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingMatchStructure",
+          "isMut": true,
           "isSigner": false
         }
       ],
@@ -1968,11 +1978,6 @@ export const IDL: Frontier = {
           "isSigner": false
         },
         {
-          "name": "attackingUnit",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
           "name": "defender",
           "isMut": false,
           "isSigner": false
@@ -1988,11 +1993,6 @@ export const IDL: Frontier = {
           "isSigner": false
         },
         {
-          "name": "defendingStructure",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "seasonOwner",
           "isMut": false,
           "isSigner": false
@@ -2005,6 +2005,26 @@ export const IDL: Frontier = {
         {
           "name": "gameMatch",
           "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "matchAttackingArmy",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "attackingMatchUnit",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "matchDefendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingMatchStructure",
+          "isMut": true,
           "isSigner": false
         }
       ],

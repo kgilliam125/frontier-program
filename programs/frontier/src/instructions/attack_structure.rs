@@ -11,23 +11,23 @@ pub fn attack_structure(
     ctx: Context<AttackStructure>,
     _season_id: u32,
     _match_id: u32,
-    _unit_count: u32,
-    _structure_count: u32,
+    _match_unit_id: u32,
+    _match_structure_id: u32,
 ) -> Result<()> {
-    let defending_structure = &mut ctx.accounts.defending_structure;
-    let attacking_unit = &ctx.accounts.attacking_unit;
+    let defending_match_structure = &mut ctx.accounts.defending_match_structure;
+    let attacking_match_unit = &ctx.accounts.attacking_match_unit;
 
-    let can_attack = attacking_unit.can_attack();
+    let can_attack = attacking_match_unit.can_attack();
 
     if can_attack {
-        defending_structure.try_take_damage(attacking_unit.stats.attack)?;
+        defending_match_structure.try_take_damage(attacking_match_unit.stats.attack)?;
     }
 
     Ok(())
 }
 
 #[derive(Accounts)]
-#[instruction(season_id: u32, match_id: u32, unit_count: u32, structure_count: u32)]
+#[instruction(season_id: u32, match_id: u32, match_unit_id: u32, match_structure_id: u32)]
 pub struct AttackStructure<'info> {
     // attacker accounts
     #[account(mut)]
@@ -42,11 +42,7 @@ pub struct AttackStructure<'info> {
         bump,
     )]
     pub attacking_army: Account<'info, Army>,
-    #[account(
-        seeds=[unit_count.to_le_bytes().as_ref(), attacking_army.key().as_ref()],
-        bump,
-    )]
-    pub attacking_unit: Account<'info, Unit>,
+
 
     // defender accounts
     /// CHECK: Used for PDA validation and derivation of the various defender accounts
@@ -61,12 +57,6 @@ pub struct AttackStructure<'info> {
         bump,
     )]
     pub defending_base: Account<'info, PlayerBase>,
-    #[account(
-        mut,
-        seeds=[structure_count.to_le_bytes().as_ref(), defending_base.key().as_ref()],
-        bump,
-    )]
-    pub defending_structure: Account<'info, Structure>,
 
     // game accounots
     /// CHECK: Used for PDA validation and derivation of the various game accounts
@@ -81,4 +71,27 @@ pub struct AttackStructure<'info> {
         bump,
     )]
     pub game_match: Account<'info, GameMatch>,
+    #[account(
+        mut,
+        seeds=["army".as_bytes(), game_match.key().as_ref(), attacker_account.key().as_ref()],
+        bump,
+    )]
+    pub match_attacking_army: Account<'info, Army>,
+    #[account(
+        seeds=[match_unit_id.to_le_bytes().as_ref(), match_attacking_army.key().as_ref()],
+        bump,
+    )]
+    pub attacking_match_unit: Account<'info, Unit>,
+    #[account(
+        seeds=["base".as_bytes(), game_match.key().as_ref(), defender_account.key().as_ref()],
+        bump,
+    )]
+    pub match_defending_base: Account<'info, PlayerBase>,
+    #[account(
+        mut,
+        seeds=[match_structure_id.to_le_bytes().as_ref(), match_defending_base.key().as_ref()],
+        bump,
+    )]
+    pub defending_match_structure: Account<'info, Structure>,
 }
+
