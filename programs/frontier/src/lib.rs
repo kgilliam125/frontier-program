@@ -71,6 +71,38 @@ pub mod frontier {
         instructions::start_match::start_match(ctx, season_id, match_id, pvp_structure_id)
     }
 
+    pub fn add_structure_to_match(
+        ctx: Context<AddStructureToMatch>,
+        season_id: u32,
+        match_id: u32,
+        added_structure_id: u32,
+        match_structure_id: u32,
+    ) -> Result<()> {
+        instructions::add_structure_to_match::add_structure_to_match(
+            ctx,
+            season_id,
+            match_id,
+            added_structure_id,
+            match_structure_id,
+        )
+    }
+
+    pub fn add_unit_to_match(
+        ctx: Context<AddUnitToMatch>,
+        season_id: u32,
+        match_id: u32,
+        added_unit_id: u32,
+        match_unit_id: u32,
+    ) -> Result<()> {
+        instructions::add_unit_to_match::add_unit_to_match(
+            ctx,
+            season_id,
+            match_id,
+            added_unit_id,
+            match_unit_id,
+        )
+    }
+
     pub fn end_match(
         ctx: Context<EndMatch>,
         season_id: u32,
@@ -85,15 +117,15 @@ pub mod frontier {
         ctx: Context<AttackStructure>,
         season_id: u32,
         match_id: u32,
-        unit_id: u32,
-        structure_id: u32,
+        match_unit_id: u32,
+        match_structure_id: u32,
     ) -> Result<()> {
         instructions::attack_structure::attack_structure(
             ctx,
             season_id,
             match_id,
-            unit_id,
-            structure_id,
+            match_unit_id,
+            match_structure_id,
         )
     }
 
@@ -101,15 +133,15 @@ pub mod frontier {
         ctx: Context<AttackUnit>,
         season_id: u32,
         match_id: u32,
-        unit_id: u32,
-        structure_id: u32,
+        match_unit_id: u32,
+        match_structure_id: u32,
     ) -> Result<()> {
         instructions::attack_unit::attack_unit(
             ctx,
             season_id,
             match_id,
-            unit_id,
-            structure_id,
+            match_unit_id,
+            match_structure_id,
         )
     }
 }

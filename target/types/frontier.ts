@@ -311,6 +311,16 @@ export type Frontier = {
           "isSigner": false
         },
         {
+          "name": "matchDefendingBase",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "matchAttackingArmy",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -327,6 +337,182 @@ export type Frontier = {
         },
         {
           "name": "pvpStructureId",
+          "type": "u32"
+        }
+      ]
+    },
+    {
+      "name": "addStructureToMatch",
+      "accounts": [
+        {
+          "name": "attacker",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "attackerAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defender",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defenderAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "structureToAdd",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonOwner",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "gameMatch",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "matchDefendingBase",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "matchStructureAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seasonId",
+          "type": "u32"
+        },
+        {
+          "name": "matchId",
+          "type": "u32"
+        },
+        {
+          "name": "addedStructureId",
+          "type": "u32"
+        },
+        {
+          "name": "matchStructureId",
+          "type": "u32"
+        }
+      ]
+    },
+    {
+      "name": "addUnitToMatch",
+      "accounts": [
+        {
+          "name": "attacker",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "attackerAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "unitToAdd",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "defender",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defenderAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonOwner",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "gameMatch",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "matchAttackingArmy",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "matchUnitAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seasonId",
+          "type": "u32"
+        },
+        {
+          "name": "matchId",
+          "type": "u32"
+        },
+        {
+          "name": "addedUnitId",
+          "type": "u32"
+        },
+        {
+          "name": "matchUnitId",
           "type": "u32"
         }
       ]
@@ -425,11 +611,6 @@ export type Frontier = {
           "isSigner": false
         },
         {
-          "name": "attackingUnit",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
           "name": "defender",
           "isMut": false,
           "isSigner": false
@@ -442,11 +623,6 @@ export type Frontier = {
         {
           "name": "defendingBase",
           "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "defendingStructure",
-          "isMut": true,
           "isSigner": false
         },
         {
@@ -463,6 +639,26 @@ export type Frontier = {
           "name": "gameMatch",
           "isMut": false,
           "isSigner": false
+        },
+        {
+          "name": "matchAttackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingMatchUnit",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "matchDefendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingMatchStructure",
+          "isMut": true,
+          "isSigner": false
         }
       ],
       "args": [
@@ -475,11 +671,11 @@ export type Frontier = {
           "type": "u32"
         },
         {
-          "name": "unitId",
+          "name": "matchUnitId",
           "type": "u32"
         },
         {
-          "name": "structureId",
+          "name": "matchStructureId",
           "type": "u32"
         }
       ]
@@ -503,11 +699,6 @@ export type Frontier = {
           "isSigner": false
         },
         {
-          "name": "attackingUnit",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "defender",
           "isMut": false,
           "isSigner": false
@@ -519,11 +710,6 @@ export type Frontier = {
         },
         {
           "name": "defendingBase",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "defendingStructure",
           "isMut": false,
           "isSigner": false
         },
@@ -541,6 +727,26 @@ export type Frontier = {
           "name": "gameMatch",
           "isMut": false,
           "isSigner": false
+        },
+        {
+          "name": "matchAttackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingMatchUnit",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "matchDefendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingMatchStructure",
+          "isMut": false,
+          "isSigner": false
         }
       ],
       "args": [
@@ -553,11 +759,11 @@ export type Frontier = {
           "type": "u32"
         },
         {
-          "name": "unitId",
+          "name": "matchUnitId",
           "type": "u32"
         },
         {
-          "name": "structureId",
+          "name": "matchStructureId",
           "type": "u32"
         }
       ]
@@ -1056,6 +1262,9 @@ export type Frontier = {
       "type": {
         "kind": "enum",
         "variants": [
+          {
+            "name": "Started"
+          },
           {
             "name": "InProgress"
           },
@@ -1479,6 +1688,16 @@ export const IDL: Frontier = {
           "isSigner": false
         },
         {
+          "name": "matchDefendingBase",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "matchAttackingArmy",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -1495,6 +1714,182 @@ export const IDL: Frontier = {
         },
         {
           "name": "pvpStructureId",
+          "type": "u32"
+        }
+      ]
+    },
+    {
+      "name": "addStructureToMatch",
+      "accounts": [
+        {
+          "name": "attacker",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "attackerAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defender",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defenderAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "structureToAdd",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonOwner",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "gameMatch",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "matchDefendingBase",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "matchStructureAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seasonId",
+          "type": "u32"
+        },
+        {
+          "name": "matchId",
+          "type": "u32"
+        },
+        {
+          "name": "addedStructureId",
+          "type": "u32"
+        },
+        {
+          "name": "matchStructureId",
+          "type": "u32"
+        }
+      ]
+    },
+    {
+      "name": "addUnitToMatch",
+      "accounts": [
+        {
+          "name": "attacker",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "attackerAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "unitToAdd",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "defender",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defenderAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonOwner",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "gameMatch",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "matchAttackingArmy",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "matchUnitAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seasonId",
+          "type": "u32"
+        },
+        {
+          "name": "matchId",
+          "type": "u32"
+        },
+        {
+          "name": "addedUnitId",
+          "type": "u32"
+        },
+        {
+          "name": "matchUnitId",
           "type": "u32"
         }
       ]
@@ -1593,11 +1988,6 @@ export const IDL: Frontier = {
           "isSigner": false
         },
         {
-          "name": "attackingUnit",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
           "name": "defender",
           "isMut": false,
           "isSigner": false
@@ -1610,11 +2000,6 @@ export const IDL: Frontier = {
         {
           "name": "defendingBase",
           "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "defendingStructure",
-          "isMut": true,
           "isSigner": false
         },
         {
@@ -1631,6 +2016,26 @@ export const IDL: Frontier = {
           "name": "gameMatch",
           "isMut": false,
           "isSigner": false
+        },
+        {
+          "name": "matchAttackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingMatchUnit",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "matchDefendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingMatchStructure",
+          "isMut": true,
+          "isSigner": false
         }
       ],
       "args": [
@@ -1643,11 +2048,11 @@ export const IDL: Frontier = {
           "type": "u32"
         },
         {
-          "name": "unitId",
+          "name": "matchUnitId",
           "type": "u32"
         },
         {
-          "name": "structureId",
+          "name": "matchStructureId",
           "type": "u32"
         }
       ]
@@ -1671,11 +2076,6 @@ export const IDL: Frontier = {
           "isSigner": false
         },
         {
-          "name": "attackingUnit",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "defender",
           "isMut": false,
           "isSigner": false
@@ -1687,11 +2087,6 @@ export const IDL: Frontier = {
         },
         {
           "name": "defendingBase",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "defendingStructure",
           "isMut": false,
           "isSigner": false
         },
@@ -1709,6 +2104,26 @@ export const IDL: Frontier = {
           "name": "gameMatch",
           "isMut": false,
           "isSigner": false
+        },
+        {
+          "name": "matchAttackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingMatchUnit",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "matchDefendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingMatchStructure",
+          "isMut": false,
+          "isSigner": false
         }
       ],
       "args": [
@@ -1721,11 +2136,11 @@ export const IDL: Frontier = {
           "type": "u32"
         },
         {
-          "name": "unitId",
+          "name": "matchUnitId",
           "type": "u32"
         },
         {
-          "name": "structureId",
+          "name": "matchStructureId",
           "type": "u32"
         }
       ]
@@ -2224,6 +2639,9 @@ export const IDL: Frontier = {
       "type": {
         "kind": "enum",
         "variants": [
+          {
+            "name": "Started"
+          },
           {
             "name": "InProgress"
           },

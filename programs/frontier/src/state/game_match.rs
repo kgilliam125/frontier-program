@@ -18,7 +18,7 @@ impl GameMatch {
         require_eq!(self.is_initialized, false, GameMatchError::AlreadyInitialized);
 
         self.id = match_id;
-        self.state = MatchState::InProgress;
+        self.state = MatchState::Started;
         self.attacking_army = attacking_army;
         self.defending_base = defending_base;
         self.is_initialized = true;
@@ -37,6 +37,7 @@ impl GameMatch {
 
 #[derive(AnchorSerialize, AnchorDeserialize, Copy, Clone, PartialEq)]
 pub enum MatchState {
+    Started,
     InProgress,
     Cancelled,
     Completed,

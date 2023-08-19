@@ -4,50 +4,50 @@ use crate::state::army::*;
 use crate::state::game_match::*;
 use crate::state::season::*;
 use crate::state::structure::*;
-use crate::errors::{GameMatchError, StructureError};
 use anchor_lang::prelude::*;
 
-pub fn start_match(ctx: Context<StartMatch>, _season_id: u32, _match_id: u32, _pvp_structure_id: u32) -> Result<()> {
-    let pvp_structure  = & ctx.accounts.defending_pvp_structure;
-    require!(pvp_structure.is_initialized, StructureError::NotInitialized);
-    require!(pvp_structure.structure_type == StructureType::PvpPortal, GameMatchError::InvalidDefenderPvpPortal);
+pub fn add_structure_to_match(
+    ctx: Context<AddStructureToMatch>,
+    _season_id: u32,
+    _match_id: u32,
+    _added_structure_id: u32,
+    _match_structure_id: u32,
+) -> Result<()> {
+    let game_match = &ctx.accounts.game_match;
+    let structure_to_add = &ctx.accounts.structure_to_add;
+    let match_defending_base = &mut ctx.accounts.match_defending_base;
+    let match_structure_account = &mut ctx.accounts.match_structure_account;
 
-    let season_account = &mut ctx.accounts.season_account;
-    let match_attacking_army = & ctx.accounts.match_attacking_army;
-    let match_defending_base = & ctx.accounts.match_defending_base;
-
-    season_account.add_match()?;
-    
-    ctx.accounts.game_match.init(
-        season_account.match_count,
-        match_attacking_army.key(),
+    // Ignore resource cost since this is an ephemeral account
+    match_defending_base
+        .add_structure_to_base(structure_to_add.structure_type, structure_to_add.stats)?;
+    match_structure_account.init(
+        game_match.key(),
         match_defending_base.key(),
-    )?;
-    ctx.accounts.match_defending_base.init(
-        ctx.accounts.game_match.key(),
-    )?;
-    ctx.accounts.match_attacking_army.init(
-        ctx.accounts.game_match.key(),
+        match_defending_base.structure_count,
+        structure_to_add.stats,
+        structure_to_add.structure_type,
+        structure_to_add.position,
     )?;
 
     Ok(())
 }
 
 #[derive(Accounts)]
-#[instruction(season_id: u32, match_id: u32, pvp_structure_id: u32)]
-pub struct StartMatch<'info> {
+#[instruction(season_id: u32, match_id: u32, added_structure_id: u32, match_structure_id: u32)]
+pub struct AddStructureToMatch<'info> {
     // attacker accounts
     #[account(mut)]
     pub attacker: Signer<'info>,
     #[account(
-        seeds=["player".as_bytes(), attacker.key().as_ref()],
-        bump,
-    )]
+            seeds=["player".as_bytes(), attacker.key().as_ref()],
+            bump,
+        )]
     pub attacker_account: Account<'info, Player>,
     #[account(
-        seeds=["army".as_bytes(), attacker_account.key().as_ref()],
-        bump,
-    )]
+            seeds=["army".as_bytes(), attacker_account.key().as_ref()],
+            bump,
+        )]
     pub attacking_army: Account<'info, Army>,
 
     // defender accounts
@@ -64,44 +64,38 @@ pub struct StartMatch<'info> {
     )]
     pub defending_base: Account<'info, PlayerBase>,
     #[account(
-        seeds=[pvp_structure_id.to_le_bytes().as_ref(), defending_base.key().as_ref()],
+        seeds=[added_structure_id.to_le_bytes().as_ref(), defending_base.key().as_ref()],
         bump,
     )]
-    pub defending_pvp_structure: Account<'info, Structure>,
+    pub structure_to_add: Account<'info, Structure>,
 
     // game accounots used for match
     /// CHECK: Used for PDA validation and derivation of the various game accounts
     pub season_owner: UncheckedAccount<'info>,
     #[account(
-        mut,
         seeds=["season".as_bytes(), season_id.to_le_bytes().as_ref(), season_owner.key().as_ref()],
         bump,
     )]
     pub season_account: Account<'info, Season>,
     #[account(
-        init,
         seeds=[match_id.to_le_bytes().as_ref(), season_account.key().as_ref(), attacking_army.key().as_ref(), defending_base.key().as_ref()],
         bump,
-        payer=attacker,
-        space=1000,
     )]
     pub game_match: Account<'info, GameMatch>,
     #[account(
-        init,
-        payer=attacker,
+        mut,
         seeds=["base".as_bytes(), game_match.key().as_ref(), defender_account.key().as_ref()],
         bump,
-        space=1000
     )]
     pub match_defending_base: Account<'info, PlayerBase>,
     #[account(
         init,
         payer=attacker,
-        seeds=["army".as_bytes(), game_match.key().as_ref(), attacker_account.key().as_ref()],
+        seeds=[match_structure_id.to_le_bytes().as_ref(), match_defending_base.key().as_ref()],
         bump,
         space=1000,
     )]
-    pub match_attacking_army: Account<'info, Army>,
+    pub match_structure_account: Account<'info, Structure>,
 
     // program accounts
     pub system_program: Program<'info, System>,
