@@ -642,7 +642,7 @@
         },
         {
           "name": "matchAttackingArmy",
-          "isMut": true,
+          "isMut": false,
           "isSigner": false
         },
         {
@@ -671,11 +671,11 @@
           "type": "u32"
         },
         {
-          "name": "unitId",
+          "name": "matchUnitId",
           "type": "u32"
         },
         {
-          "name": "structureId",
+          "name": "matchStructureId",
           "type": "u32"
         }
       ]
@@ -699,11 +699,6 @@
           "isSigner": false
         },
         {
-          "name": "attackingUnit",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "defender",
           "isMut": false,
           "isSigner": false
@@ -715,11 +710,6 @@
         },
         {
           "name": "defendingBase",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "defendingStructure",
           "isMut": false,
           "isSigner": false
         },
@@ -737,6 +727,26 @@
           "name": "gameMatch",
           "isMut": false,
           "isSigner": false
+        },
+        {
+          "name": "matchAttackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingMatchUnit",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "matchDefendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingMatchStructure",
+          "isMut": false,
+          "isSigner": false
         }
       ],
       "args": [
@@ -749,11 +759,11 @@
           "type": "u32"
         },
         {
-          "name": "unitId",
+          "name": "matchUnitId",
           "type": "u32"
         },
         {
-          "name": "structureId",
+          "name": "matchStructureId",
           "type": "u32"
         }
       ]

@@ -72,7 +72,6 @@ pub struct AttackStructure<'info> {
     )]
     pub game_match: Account<'info, GameMatch>,
     #[account(
-        mut,
         seeds=["army".as_bytes(), game_match.key().as_ref(), attacker_account.key().as_ref()],
         bump,
     )]

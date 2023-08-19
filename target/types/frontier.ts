@@ -642,7 +642,7 @@ export type Frontier = {
         },
         {
           "name": "matchAttackingArmy",
-          "isMut": true,
+          "isMut": false,
           "isSigner": false
         },
         {
@@ -671,11 +671,11 @@ export type Frontier = {
           "type": "u32"
         },
         {
-          "name": "unitId",
+          "name": "matchUnitId",
           "type": "u32"
         },
         {
-          "name": "structureId",
+          "name": "matchStructureId",
           "type": "u32"
         }
       ]
@@ -699,11 +699,6 @@ export type Frontier = {
           "isSigner": false
         },
         {
-          "name": "attackingUnit",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "defender",
           "isMut": false,
           "isSigner": false
@@ -715,11 +710,6 @@ export type Frontier = {
         },
         {
           "name": "defendingBase",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "defendingStructure",
           "isMut": false,
           "isSigner": false
         },
@@ -737,6 +727,26 @@ export type Frontier = {
           "name": "gameMatch",
           "isMut": false,
           "isSigner": false
+        },
+        {
+          "name": "matchAttackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingMatchUnit",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "matchDefendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingMatchStructure",
+          "isMut": false,
+          "isSigner": false
         }
       ],
       "args": [
@@ -749,11 +759,11 @@ export type Frontier = {
           "type": "u32"
         },
         {
-          "name": "unitId",
+          "name": "matchUnitId",
           "type": "u32"
         },
         {
-          "name": "structureId",
+          "name": "matchStructureId",
           "type": "u32"
         }
       ]
@@ -2009,7 +2019,7 @@ export const IDL: Frontier = {
         },
         {
           "name": "matchAttackingArmy",
-          "isMut": true,
+          "isMut": false,
           "isSigner": false
         },
         {
@@ -2038,11 +2048,11 @@ export const IDL: Frontier = {
           "type": "u32"
         },
         {
-          "name": "unitId",
+          "name": "matchUnitId",
           "type": "u32"
         },
         {
-          "name": "structureId",
+          "name": "matchStructureId",
           "type": "u32"
         }
       ]
@@ -2066,11 +2076,6 @@ export const IDL: Frontier = {
           "isSigner": false
         },
         {
-          "name": "attackingUnit",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "defender",
           "isMut": false,
           "isSigner": false
@@ -2082,11 +2087,6 @@ export const IDL: Frontier = {
         },
         {
           "name": "defendingBase",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "defendingStructure",
           "isMut": false,
           "isSigner": false
         },
@@ -2104,6 +2104,26 @@ export const IDL: Frontier = {
           "name": "gameMatch",
           "isMut": false,
           "isSigner": false
+        },
+        {
+          "name": "matchAttackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingMatchUnit",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "matchDefendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingMatchStructure",
+          "isMut": false,
+          "isSigner": false
         }
       ],
       "args": [
@@ -2116,11 +2136,11 @@ export const IDL: Frontier = {
           "type": "u32"
         },
         {
-          "name": "unitId",
+          "name": "matchUnitId",
           "type": "u32"
         },
         {
-          "name": "structureId",
+          "name": "matchStructureId",
           "type": "u32"
         }
       ]

@@ -117,15 +117,15 @@ pub mod frontier {
         ctx: Context<AttackStructure>,
         season_id: u32,
         match_id: u32,
-        unit_id: u32,
-        structure_id: u32,
+        match_unit_id: u32,
+        match_structure_id: u32,
     ) -> Result<()> {
         instructions::attack_structure::attack_structure(
             ctx,
             season_id,
             match_id,
-            unit_id,
-            structure_id,
+            match_unit_id,
+            match_structure_id,
         )
     }
 
@@ -133,15 +133,15 @@ pub mod frontier {
         ctx: Context<AttackUnit>,
         season_id: u32,
         match_id: u32,
-        unit_id: u32,
-        structure_id: u32,
+        match_unit_id: u32,
+        match_structure_id: u32,
     ) -> Result<()> {
         instructions::attack_unit::attack_unit(
             ctx,
             season_id,
             match_id,
-            unit_id,
-            structure_id,
+            match_unit_id,
+            match_structure_id,
         )
     }
 }
