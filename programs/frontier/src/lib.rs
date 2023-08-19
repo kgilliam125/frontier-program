@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 use instructions::*;
-use state::{Position, StructureType, UnitType};
+use state::{MatchState, Position, StructureType, UnitType};
 
 pub mod errors;
 pub mod instructions;
@@ -13,10 +13,16 @@ declare_id!("3FKoVbicsX7moGuqVPCY1qkZ4adA85tTpYVFEe9Vs2ei");
 pub mod frontier {
     use super::*;
 
+    // game setup instructions
+    pub fn init_season(ctx: Context<InitSeason>, season_id: u32) -> Result<()> {
+        instructions::init_season::init_season(ctx, season_id)
+    }
+
     pub fn init_player_accounts(ctx: Context<InitPlayerAccounts>) -> Result<()> {
         instructions::init_player_accounts::init_player_accounts(ctx)
     }
 
+    // Base building instructions
     pub fn build_structure(
         ctx: Context<BuildStructure>,
         structure_count: u32,
@@ -53,5 +59,41 @@ pub mod frontier {
 
     pub fn train_unit(ctx: Context<TrainUnit>, unit_count: u32, unit_type: UnitType) -> Result<()> {
         instructions::train_unit::train_unit(ctx, unit_count, unit_type)
+    }
+
+    // attacking instructions
+    pub fn start_match(
+        ctx: Context<StartMatch>,
+        season_id: u32,
+        match_id: u32,
+        pvp_structure_id: u32,
+    ) -> Result<()> {
+        instructions::start_match::start_match(ctx, season_id, match_id, pvp_structure_id)
+    }
+
+    pub fn end_match(
+        ctx: Context<EndMatch>,
+        season_id: u32,
+        match_id: u32,
+        pvp_structure_id: u32,
+        match_state: MatchState,
+    ) -> Result<()> {
+        instructions::end_match::end_match(ctx, season_id, match_id, pvp_structure_id, match_state)
+    }
+
+    pub fn attack_structure(
+        ctx: Context<AttackStructure>,
+        season_id: u32,
+        match_id: u32,
+        unit_id: u32,
+        structure_id: u32,
+    ) -> Result<()> {
+        instructions::attack_structure::attack_structure(
+            ctx,
+            season_id,
+            match_id,
+            unit_id,
+            structure_id,
+        )
     }
 }

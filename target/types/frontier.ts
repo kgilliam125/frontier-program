@@ -3,6 +3,32 @@ export type Frontier = {
   "name": "frontier",
   "instructions": [
     {
+      "name": "initSeason",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "seasonAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seasonId",
+          "type": "u32"
+        }
+      ]
+    },
+    {
       "name": "initPlayerAccounts",
       "accounts": [
         {
@@ -230,6 +256,233 @@ export type Frontier = {
           }
         }
       ]
+    },
+    {
+      "name": "startMatch",
+      "accounts": [
+        {
+          "name": "attacker",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "attackerAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defender",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defenderAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingPvpStructure",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonOwner",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "gameMatch",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seasonId",
+          "type": "u32"
+        },
+        {
+          "name": "matchId",
+          "type": "u32"
+        },
+        {
+          "name": "pvpStructureId",
+          "type": "u32"
+        }
+      ]
+    },
+    {
+      "name": "endMatch",
+      "accounts": [
+        {
+          "name": "attacker",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "attackerAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defender",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defenderAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingPvpStructure",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonOwner",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "gameMatch",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seasonId",
+          "type": "u32"
+        },
+        {
+          "name": "matchId",
+          "type": "u32"
+        },
+        {
+          "name": "pvpStructureId",
+          "type": "u32"
+        },
+        {
+          "name": "matchState",
+          "type": {
+            "defined": "MatchState"
+          }
+        }
+      ]
+    },
+    {
+      "name": "attackStructure",
+      "accounts": [
+        {
+          "name": "attacker",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "attackerAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingUnit",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defender",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defenderAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingStructure",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "seasonOwner",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "gameMatch",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seasonId",
+          "type": "u32"
+        },
+        {
+          "name": "matchId",
+          "type": "u32"
+        },
+        {
+          "name": "unitId",
+          "type": "u32"
+        },
+        {
+          "name": "structureId",
+          "type": "u32"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -253,6 +506,36 @@ export type Frontier = {
           {
             "name": "rating",
             "type": "u32"
+          },
+          {
+            "name": "isInitialized",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "gameMatch",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "u32"
+          },
+          {
+            "name": "state",
+            "type": {
+              "defined": "MatchState"
+            }
+          },
+          {
+            "name": "attackingArmy",
+            "type": "publicKey"
+          },
+          {
+            "name": "defendingBase",
+            "type": "publicKey"
           },
           {
             "name": "isInitialized",
@@ -328,6 +611,40 @@ export type Frontier = {
       }
     },
     {
+      "name": "season",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "seasonId",
+            "type": "u32"
+          },
+          {
+            "name": "seasonInitializer",
+            "type": "publicKey"
+          },
+          {
+            "name": "matchCount",
+            "type": "u32"
+          },
+          {
+            "name": "playerCount",
+            "type": "u32"
+          },
+          {
+            "name": "state",
+            "type": {
+              "defined": "SeasonState"
+            }
+          },
+          {
+            "name": "isInitialized",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
       "name": "structure",
       "type": {
         "kind": "struct",
@@ -361,6 +678,10 @@ export type Frontier = {
             "type": {
               "defined": "Position"
             }
+          },
+          {
+            "name": "isDestroyed",
+            "type": "bool"
           },
           {
             "name": "isInitialized",
@@ -584,6 +905,12 @@ export type Frontier = {
           },
           {
             "name": "NotInitialized"
+          },
+          {
+            "name": "InvalidDefenderPvpPortal"
+          },
+          {
+            "name": "MatchAlreadyEnded"
           }
         ]
       }
@@ -621,6 +948,54 @@ export type Frontier = {
           },
           {
             "name": "NotInitialized"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SeasonError",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "AlreadyInitialized"
+          },
+          {
+            "name": "NotInitialized"
+          },
+          {
+            "name": "SeasonClosed"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MatchState",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "InProgress"
+          },
+          {
+            "name": "Cancelled"
+          },
+          {
+            "name": "Completed"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SeasonState",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Open"
+          },
+          {
+            "name": "Closed"
           }
         ]
       }
@@ -714,6 +1089,32 @@ export const IDL: Frontier = {
   "name": "frontier",
   "instructions": [
     {
+      "name": "initSeason",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "seasonAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seasonId",
+          "type": "u32"
+        }
+      ]
+    },
+    {
       "name": "initPlayerAccounts",
       "accounts": [
         {
@@ -941,6 +1342,233 @@ export const IDL: Frontier = {
           }
         }
       ]
+    },
+    {
+      "name": "startMatch",
+      "accounts": [
+        {
+          "name": "attacker",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "attackerAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defender",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defenderAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingPvpStructure",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonOwner",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "gameMatch",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seasonId",
+          "type": "u32"
+        },
+        {
+          "name": "matchId",
+          "type": "u32"
+        },
+        {
+          "name": "pvpStructureId",
+          "type": "u32"
+        }
+      ]
+    },
+    {
+      "name": "endMatch",
+      "accounts": [
+        {
+          "name": "attacker",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "attackerAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defender",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defenderAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingPvpStructure",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonOwner",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "gameMatch",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seasonId",
+          "type": "u32"
+        },
+        {
+          "name": "matchId",
+          "type": "u32"
+        },
+        {
+          "name": "pvpStructureId",
+          "type": "u32"
+        },
+        {
+          "name": "matchState",
+          "type": {
+            "defined": "MatchState"
+          }
+        }
+      ]
+    },
+    {
+      "name": "attackStructure",
+      "accounts": [
+        {
+          "name": "attacker",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "attackerAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingUnit",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defender",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defenderAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingStructure",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "seasonOwner",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "gameMatch",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seasonId",
+          "type": "u32"
+        },
+        {
+          "name": "matchId",
+          "type": "u32"
+        },
+        {
+          "name": "unitId",
+          "type": "u32"
+        },
+        {
+          "name": "structureId",
+          "type": "u32"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -964,6 +1592,36 @@ export const IDL: Frontier = {
           {
             "name": "rating",
             "type": "u32"
+          },
+          {
+            "name": "isInitialized",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "gameMatch",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "u32"
+          },
+          {
+            "name": "state",
+            "type": {
+              "defined": "MatchState"
+            }
+          },
+          {
+            "name": "attackingArmy",
+            "type": "publicKey"
+          },
+          {
+            "name": "defendingBase",
+            "type": "publicKey"
           },
           {
             "name": "isInitialized",
@@ -1039,6 +1697,40 @@ export const IDL: Frontier = {
       }
     },
     {
+      "name": "season",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "seasonId",
+            "type": "u32"
+          },
+          {
+            "name": "seasonInitializer",
+            "type": "publicKey"
+          },
+          {
+            "name": "matchCount",
+            "type": "u32"
+          },
+          {
+            "name": "playerCount",
+            "type": "u32"
+          },
+          {
+            "name": "state",
+            "type": {
+              "defined": "SeasonState"
+            }
+          },
+          {
+            "name": "isInitialized",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
       "name": "structure",
       "type": {
         "kind": "struct",
@@ -1072,6 +1764,10 @@ export const IDL: Frontier = {
             "type": {
               "defined": "Position"
             }
+          },
+          {
+            "name": "isDestroyed",
+            "type": "bool"
           },
           {
             "name": "isInitialized",
@@ -1295,6 +1991,12 @@ export const IDL: Frontier = {
           },
           {
             "name": "NotInitialized"
+          },
+          {
+            "name": "InvalidDefenderPvpPortal"
+          },
+          {
+            "name": "MatchAlreadyEnded"
           }
         ]
       }
@@ -1332,6 +2034,54 @@ export const IDL: Frontier = {
           },
           {
             "name": "NotInitialized"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SeasonError",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "AlreadyInitialized"
+          },
+          {
+            "name": "NotInitialized"
+          },
+          {
+            "name": "SeasonClosed"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MatchState",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "InProgress"
+          },
+          {
+            "name": "Cancelled"
+          },
+          {
+            "name": "Completed"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SeasonState",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Open"
+          },
+          {
+            "name": "Closed"
           }
         ]
       }

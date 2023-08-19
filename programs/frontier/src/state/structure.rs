@@ -10,6 +10,7 @@ pub struct Structure {
     pub structure_type: StructureType, // todo check if enum extension breaks pre-existing accounts
     pub stats: StructureStats,
     pub position: Position,
+    pub is_destroyed: bool,
     pub is_initialized: bool,
 }
 
@@ -52,7 +53,9 @@ impl Structure {
         self.stats = StructureStats {
             rank: 1,
             health: 100,
+            // todo set values for actual structures that can attack
             attack: 0,
+            // todo set values for actual structures
             defense: 0,
             speed: 0,
             range: 0,
@@ -62,6 +65,7 @@ impl Structure {
             last_interaction_time: 0,
         };
         self.position = position;
+        self.is_destroyed = false;
 
         Ok(())
     }
@@ -188,6 +192,31 @@ impl Structure {
             },
         }
     }
+
+    pub fn try_take_damage(&mut self, attacking_power: u16) -> Result<()> {
+        require!(
+            self.is_initialized,
+            StructureError::NotInitialized
+        );
+        // todo need to add checks for which units can attack which structures. now its an ffa
+
+        let damage = attacking_power;
+        let defense = self.stats.defense;
+
+        let damage_taken = if damage > defense {
+            damage - defense
+        } else {
+            0
+        };
+
+        self.stats.health = self.stats.health.saturating_sub(damage_taken);
+
+        if self.stats.health == 0 {
+            self.is_destroyed = true;
+        }
+
+        Ok(())
+    }
 }
 
 // Using the same stats for all structures, so not all
@@ -213,7 +242,7 @@ pub struct Position {
 }
 
 // NOTE: enum order cannot be changed, only extended
-#[derive(AnchorSerialize, AnchorDeserialize, Copy, Clone)]
+#[derive(AnchorSerialize, AnchorDeserialize, Copy, Clone, PartialEq)]
 pub enum StructureType {
     // --- Utility ---
     ThroneHall,
