@@ -748,7 +748,7 @@ describe('frontier', () => {
         expect(matchAccount.state).toEqual({ inProgress: {} })
     })
 
-    it('attacks a structure', async () => {
+    it('unit attacks a structure', async () => {
         const unitId = 1
         const unitPda = getUnitPdaFromId(unitId, armyPda)
         
@@ -782,6 +782,61 @@ describe('frontier', () => {
         expect(structureAccount.stats.health).toEqual(90)
         expect(structureAccount.isDestroyed).toEqual(false)
 
+    })
+
+    it('structure attacks a unit', async () => {
+        // Need to build a defensive structure first since there are none at this point
+        let defenderBaseAccount = await program.account.playerBase.fetch(defenderBasePda)
+        const archerTowerId = defenderBaseAccount.structureCount + 1
+        const structureType = { archerTower: {} }
+
+        const archerTowerAsBuff = Buffer.allocUnsafe(4)
+        archerTowerAsBuff.writeUInt32LE(archerTowerId, 0)
+        const [archerTowerPda] = anchor.web3.PublicKey.findProgramAddressSync(
+            [archerTowerAsBuff, defenderBasePda.toBuffer()],
+            program.programId
+        )
+
+        await program.methods
+            .buildStructure(archerTowerId, structureType, { x: 0, y: 0 })
+            .accounts({
+                owner: defenderKeypair.publicKey,
+                playerAccount: defenderPda,
+                baseAccount: defenderBasePda,
+                structureAccount: archerTowerPda,
+            })
+            .signers([defenderKeypair])
+            .rpc()
+
+        const unitId = 1
+        const unitPda = getUnitPdaFromId(unitId, armyPda)
+        let unitAccount = await program.account.unit.fetch(unitPda)
+
+        expect(unitAccount.stats.attack).toEqual(10)
+        let structureAccount = await program.account.structure.fetch(archerTowerPda)
+        expect(structureAccount.stats.health).toEqual(100)
+        expect(structureAccount.isDestroyed).toEqual(false)
+
+        await program.methods
+            .attackUnit(seasonNumber, matchNumber, unitId, archerTowerId)
+            .accounts({
+                attacker: provider.publicKey,
+                attackerAccount: playerPda,
+                attackingArmy: armyPda,
+                attackingUnit: unitPda,
+                defender: defenderKeypair.publicKey,
+                defenderAccount: defenderPda,
+                defendingBase: defenderBasePda,
+                defendingStructure: archerTowerPda,
+                seasonOwner: seasonCreatorKeypair.publicKey,
+                seasonAccount: seasonPda,
+                gameMatch: matchPda,
+            })
+            .rpc()
+
+        unitAccount = await program.account.unit.fetch(unitPda)
+        expect(unitAccount.stats.health).toEqual(90)
+        expect(unitAccount.isDestroyed).toEqual(false)
     })
 
     it('destroys a structure', async () => {

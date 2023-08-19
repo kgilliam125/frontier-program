@@ -96,4 +96,20 @@ pub mod frontier {
             structure_id,
         )
     }
+
+    pub fn attack_unit(
+        ctx: Context<AttackUnit>,
+        season_id: u32,
+        match_id: u32,
+        unit_id: u32,
+        structure_id: u32,
+    ) -> Result<()> {
+        instructions::attack_unit::attack_unit(
+            ctx,
+            season_id,
+            match_id,
+            unit_id,
+            structure_id,
+        )
+    }
 }

@@ -9,14 +9,14 @@ use anchor_lang::prelude::*;
 
 // The defending structure attacks the attacking unit
 pub fn attack_unit(
-    ctx: Context<AttackStructure>,
+    ctx: Context<AttackUnit>,
     _season_id: u32,
     _match_id: u32,
     _unit_count: u32,
     _structure_count: u32,
 ) -> Result<()> {
     let defending_structure = &mut ctx.accounts.defending_structure;
-    let attacking_unit = &ctx.accounts.attacking_unit;
+    let attacking_unit = &mut ctx.accounts.attacking_unit;
 
     let can_attack = defending_structure.can_attack();
 
@@ -29,7 +29,7 @@ pub fn attack_unit(
 
 #[derive(Accounts)]
 #[instruction(season_id: u32, match_id: u32, unit_count: u32, structure_count: u32)]
-pub struct AttackStructure<'info> {
+pub struct AttackUnit<'info> {
     // attacker accounts
     #[account(mut)]
     pub attacker: Signer<'info>,
