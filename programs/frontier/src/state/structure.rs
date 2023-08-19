@@ -310,7 +310,7 @@ pub struct StructureStats {
     pub last_interaction_time: i64, // UnixTimestamp as i64 or IDL will fail
 }
 
-#[derive(AnchorSerialize, AnchorDeserialize, Clone)]
+#[derive(AnchorSerialize, AnchorDeserialize, Copy, Clone)]
 pub struct Position {
     pub x: u16,
     pub y: u16,

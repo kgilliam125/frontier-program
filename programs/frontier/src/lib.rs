@@ -71,6 +71,22 @@ pub mod frontier {
         instructions::start_match::start_match(ctx, season_id, match_id, pvp_structure_id)
     }
 
+    pub fn add_structure_to_match(
+        ctx: Context<AddStructureToMatch>,
+        season_id: u32,
+        match_id: u32,
+        added_structure_id: u32,
+        match_structure_id: u32,
+    ) -> Result<()> {
+        instructions::add_structure_to_match::add_structure_to_match(
+            ctx,
+            season_id,
+            match_id,
+            added_structure_id,
+            match_structure_id,
+        )
+    }
+
     pub fn end_match(
         ctx: Context<EndMatch>,
         season_id: u32,

@@ -80,6 +80,38 @@ describe('frontier', () => {
         return pda
     }
 
+    const getMatchArmyPda = (gameMatchPda, ownerPda) => {
+        const [pda] = anchor.web3.PublicKey.findProgramAddressSync(
+            [Buffer.from('army'), gameMatchPda.toBuffer(), ownerPda.toBuffer()],
+            program.programId
+        )
+        return pda
+    }
+
+    const getMatchBasePda = (gameMatchPda, ownerPda) => {
+        const [pda] = anchor.web3.PublicKey.findProgramAddressSync(
+            [Buffer.from('base'), gameMatchPda.toBuffer(), ownerPda.toBuffer()],
+            program.programId
+        )
+        return pda
+    }
+
+    const matchNumber = 1
+    const getMatchPda = (matchNumber, seasonPda, arymPda, basePda) => {
+        const matchBuff = Buffer.allocUnsafe(4)
+        matchBuff.writeUInt32LE(matchNumber, 0)
+        const [matchPda] = anchor.web3.PublicKey.findProgramAddressSync(
+            [
+                matchBuff,
+                seasonPda.toBuffer(),
+                arymPda.toBuffer(),
+                basePda.toBuffer(),
+            ],
+            program.programId
+        )
+        return matchPda
+    }
+
     it('initializes a season', async () => {
         // Fund the account since this is the first time it has been used.
         const tx = new anchor.web3.Transaction()
@@ -662,37 +694,6 @@ describe('frontier', () => {
         expect(unitAccount.unitType).toEqual(unitType)
     })
 
-    const getMatchArmyPda = (gameMatchPda, ownerPda) => {
-        const [pda] = anchor.web3.PublicKey.findProgramAddressSync(
-            [Buffer.from('army'), gameMatchPda.toBuffer(), ownerPda.toBuffer()],
-            program.programId
-        )
-        return pda
-    }
-
-    const getMatchBasePda = (gameMatchPda, ownerPda) => {
-        const [pda] = anchor.web3.PublicKey.findProgramAddressSync(
-            [Buffer.from('base'), gameMatchPda.toBuffer(), ownerPda.toBuffer()],
-            program.programId
-        )
-        return pda
-    }
-
-    const getMatchPda = (matchNumber, seasonPda, arymPda, basePda) => {
-        const matchBuff = Buffer.allocUnsafe(4)
-        matchBuff.writeUInt32LE(matchNumber, 0)
-        const [matchPda] = anchor.web3.PublicKey.findProgramAddressSync(
-            [
-                matchBuff,
-                seasonPda.toBuffer(),
-                arymPda.toBuffer(),
-                basePda.toBuffer(),
-            ],
-            program.programId
-        )
-        return matchPda
-    }
-
     // todo test can't start match w/o pvp portal in defending base
     it('starts a match', async () => {
         // Fund the account since this is the first time it has been used.
@@ -738,8 +739,12 @@ describe('frontier', () => {
             .signers([defenderKeypair])
             .rpc()
 
-        const matchNumber = 1
-        const matchPda = getMatchPda(matchNumber, seasonPda, armyPda, defenderBasePda)
+        const matchPda = getMatchPda(
+            matchNumber,
+            seasonPda,
+            armyPda,
+            defenderBasePda
+        )
         const matchArmyPda = getMatchArmyPda(matchPda, playerPda)
         const matchBasePda = getMatchBasePda(matchPda, defenderPda)
 
@@ -787,6 +792,74 @@ describe('frontier', () => {
         expect(armyAccount.armyMaxSize).toEqual(10)
     })
 
+    it('adds a structure to a started match', async () => {
+        // Need to build a defensive structure first since there are none at this point
+        let defenderBaseAccount = await program.account.playerBase.fetch(
+            defenderBasePda
+        )
+        const archerTowerId = defenderBaseAccount.structureCount + 1
+        const structureType = { archerTower: {} }
+        const archerTowerPda = getStructurePdaFromId(archerTowerId, defenderBasePda)
+
+        await program.methods
+            .buildStructure(archerTowerId, structureType, { x: 0, y: 0 })
+            .accounts({
+                owner: defenderKeypair.publicKey,
+                playerAccount: defenderPda,
+                baseAccount: defenderBasePda,
+                structureAccount: archerTowerPda,
+            })
+            .signers([defenderKeypair])
+            .rpc()
+
+        // verify structure was built
+        let structureAccount = await program.account.structure.fetch(
+            archerTowerPda
+        )
+        expect(structureAccount.stats.health).toEqual(100)
+        expect(structureAccount.isDestroyed).toEqual(false)
+
+        const matchStructureId = 1
+        const matchPda = getMatchPda(
+            matchNumber,
+            seasonPda,
+            armyPda,
+            defenderBasePda
+        )
+        const matchBasePda = getMatchBasePda(matchPda, defenderPda)
+        const matchStructurePda = getStructurePdaFromId(matchStructureId, matchBasePda)
+
+        await program.methods
+            .addStructureToMatch(seasonNumber, matchNumber, archerTowerId, matchStructureId)
+            .accounts({
+                attacker: provider.publicKey,
+                attackerAccount: playerPda,
+                attackingArmy: armyPda,
+                defender: defenderKeypair.publicKey,
+                defenderAccount: defenderPda,
+                defendingBase: defenderBasePda,
+                structureToAdd: archerTowerPda,
+                seasonOwner: seasonCreatorKeypair.publicKey,
+                seasonAccount: seasonPda,
+                gameMatch: matchPda,
+                matchDefendingBase: matchBasePda,
+                matchStructureAccount: matchStructurePda,
+            })
+            .rpc()
+
+        const matchArcherTowerAccount = await program.account.structure.fetch(matchStructurePda)
+        const archerTowerAccount = await program.account.structure.fetch(archerTowerPda)
+        expect(matchArcherTowerAccount.isInitialized).toEqual(true)
+        expect(matchArcherTowerAccount.player).toEqual(matchPda)
+        expect(matchArcherTowerAccount.stats).toEqual(archerTowerAccount.stats)
+        expect(matchArcherTowerAccount.stats).toEqual(archerTowerAccount.position)
+        expect(matchArcherTowerAccount.stats).toEqual(archerTowerAccount.structureType)
+        expect(matchArcherTowerAccount.isDestroyed).toEqual(false)
+
+        const matchBasePdaAccount = await program.account.playerBase.fetch(matchBasePda)
+        expect(matchBasePdaAccount.structureCount).toEqual(1)
+    })
+
     // it('unit attacks a structure', async () => {
     //     const unitId = 1
     //     const unitPda = getUnitPdaFromId(unitId, armyPda)
@@ -825,31 +898,6 @@ describe('frontier', () => {
     // })
 
     // it('structure attacks a unit', async () => {
-    //     // Need to build a defensive structure first since there are none at this point
-    //     let defenderBaseAccount = await program.account.playerBase.fetch(
-    //         defenderBasePda
-    //     )
-    //     const archerTowerId = defenderBaseAccount.structureCount + 1
-    //     const structureType = { archerTower: {} }
-
-    //     const archerTowerAsBuff = Buffer.allocUnsafe(4)
-    //     archerTowerAsBuff.writeUInt32LE(archerTowerId, 0)
-    //     const [archerTowerPda] = anchor.web3.PublicKey.findProgramAddressSync(
-    //         [archerTowerAsBuff, defenderBasePda.toBuffer()],
-    //         program.programId
-    //     )
-
-    //     await program.methods
-    //         .buildStructure(archerTowerId, structureType, { x: 0, y: 0 })
-    //         .accounts({
-    //             owner: defenderKeypair.publicKey,
-    //             playerAccount: defenderPda,
-    //             baseAccount: defenderBasePda,
-    //             structureAccount: archerTowerPda,
-    //         })
-    //         .signers([defenderKeypair])
-    //         .rpc()
-
     //     const unitId = 1
     //     const unitPda = getUnitPdaFromId(unitId, armyPda)
     //     let unitAccount = await program.account.unit.fetch(unitPda)
