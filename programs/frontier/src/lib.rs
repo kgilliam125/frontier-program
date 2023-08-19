@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 use instructions::*;
-use state::{Position, StructureType, UnitType};
+use state::{Position, StructureType, UnitType, MatchState};
 
 pub mod errors;
 pub mod instructions;
@@ -11,6 +11,8 @@ declare_id!("3FKoVbicsX7moGuqVPCY1qkZ4adA85tTpYVFEe9Vs2ei");
 
 #[program]
 pub mod frontier {
+    use crate::state::MatchState;
+
     use super::*;
 
     // game setup instructions
@@ -64,5 +66,9 @@ pub mod frontier {
     // attacking instructions
     pub fn start_match(ctx: Context<StartMatch>, season_id: u32, match_id: u32, pvp_structure_id: u32) -> Result<()> {
         instructions::start_match::start_match(ctx, season_id, match_id, pvp_structure_id)
+    }
+
+    pub fn end_match(ctx: Context<EndMatch>, season_id: u32, match_id: u32, pvp_structure_id: u32, match_state: MatchState) -> Result<()> {
+        instructions::end_match::end_match(ctx, season_id, match_id, pvp_structure_id, match_state)
     }
 }

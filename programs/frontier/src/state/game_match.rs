@@ -24,9 +24,18 @@ impl GameMatch {
         self.is_initialized = true;
         Ok(())
     }
+
+    pub fn end_match(&mut self, match_state: MatchState) -> Result<()> {
+        require_eq!(self.is_initialized, true, GameMatchError::NotInitialized);
+        require!(self.state == MatchState::InProgress, GameMatchError::MatchAlreadyEnded);
+
+        self.state = match_state;
+
+        Ok(())
+    }
 }
 
-#[derive(AnchorSerialize, AnchorDeserialize, Copy, Clone)]
+#[derive(AnchorSerialize, AnchorDeserialize, Copy, Clone, PartialEq)]
 pub enum MatchState {
     InProgress,
     Cancelled,

@@ -330,6 +330,81 @@ export type Frontier = {
           "type": "u32"
         }
       ]
+    },
+    {
+      "name": "endMatch",
+      "accounts": [
+        {
+          "name": "attacker",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "attackerAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defender",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defenderAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingPvpStructure",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonOwner",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "gameMatch",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seasonId",
+          "type": "u32"
+        },
+        {
+          "name": "matchId",
+          "type": "u32"
+        },
+        {
+          "name": "pvpStructureId",
+          "type": "u32"
+        },
+        {
+          "name": "matchState",
+          "type": {
+            "defined": "MatchState"
+          }
+        }
+      ]
     }
   ],
   "accounts": [
@@ -751,6 +826,9 @@ export type Frontier = {
           },
           {
             "name": "InvalidDefenderPvpPortal"
+          },
+          {
+            "name": "MatchAlreadyEnded"
           }
         ]
       }
@@ -1256,6 +1334,81 @@ export const IDL: Frontier = {
           "type": "u32"
         }
       ]
+    },
+    {
+      "name": "endMatch",
+      "accounts": [
+        {
+          "name": "attacker",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "attackerAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defender",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defenderAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingPvpStructure",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonOwner",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "gameMatch",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seasonId",
+          "type": "u32"
+        },
+        {
+          "name": "matchId",
+          "type": "u32"
+        },
+        {
+          "name": "pvpStructureId",
+          "type": "u32"
+        },
+        {
+          "name": "matchState",
+          "type": {
+            "defined": "MatchState"
+          }
+        }
+      ]
     }
   ],
   "accounts": [
@@ -1677,6 +1830,9 @@ export const IDL: Frontier = {
           },
           {
             "name": "InvalidDefenderPvpPortal"
+          },
+          {
+            "name": "MatchAlreadyEnded"
           }
         ]
       }

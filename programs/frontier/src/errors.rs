@@ -29,6 +29,7 @@ pub enum GameMatchError {
     AlreadyInitialized,
     NotInitialized,
     InvalidDefenderPvpPortal,
+    MatchAlreadyEnded,
 }
 
 #[error_code]

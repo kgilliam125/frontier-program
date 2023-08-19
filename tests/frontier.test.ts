@@ -23,7 +23,6 @@ describe('frontier', () => {
         program.programId
     )
 
-
     // This player will defend an attack from the "provider"
     const defenderKeypair = anchor.web3.Keypair.generate()
     const [defenderPda] = anchor.web3.PublicKey.findProgramAddressSync(
@@ -58,7 +57,12 @@ describe('frontier', () => {
     const matchBuff = Buffer.allocUnsafe(4)
     matchBuff.writeUInt32LE(matchNumber, 0)
     const [matchPda] = anchor.web3.PublicKey.findProgramAddressSync(
-        [matchBuff, seasonPda.toBuffer(), armyPda.toBuffer(), defenderBasePda.toBuffer()],
+        [
+            matchBuff,
+            seasonPda.toBuffer(),
+            armyPda.toBuffer(),
+            defenderBasePda.toBuffer(),
+        ],
         program.programId
     )
 
@@ -740,5 +744,41 @@ describe('frontier', () => {
         expect(matchAccount.defendingBase).toEqual(defenderBasePda)
         expect(matchAccount.attackingArmy).toEqual(armyPda)
         expect(matchAccount.state).toEqual({ inProgress: {} })
+    })
+
+    
+    it('ends a match', async () => {
+        const pvpPortalId = 1
+
+        const defenderPvpPortal = getStructurePdaFromId(
+            pvpPortalId,
+            defenderBasePda
+        )
+        // Now finally create the match. provider is the signer
+        await program.methods
+            .endMatch(seasonNumber, matchNumber, pvpPortalId, { completed: {}})
+            .accounts({
+                attacker: provider.publicKey,
+                attackerAccount: playerPda,
+                attackingArmy: armyPda,
+                defender: defenderKeypair.publicKey,
+                defenderAccount: defenderPda,
+                defendingBase: defenderBasePda,
+                defendingPvpStructure: defenderPvpPortal,
+                seasonOwner: seasonCreatorKeypair.publicKey,
+                seasonAccount: seasonPda,
+                gameMatch: matchPda,
+            })
+            .rpc()
+
+        const seasonAccount = await program.account.season.fetch(seasonPda)
+        expect(seasonAccount.matchCount).toEqual(matchNumber)
+
+        const matchAccount = await program.account.gameMatch.fetch(matchPda)
+        expect(matchAccount.id).toEqual(matchNumber)
+        expect(matchAccount.isInitialized).toEqual(true)
+        expect(matchAccount.defendingBase).toEqual(defenderBasePda)
+        expect(matchAccount.attackingArmy).toEqual(armyPda)
+        expect(matchAccount.state).toEqual({ completed: {} })
         })
 })
