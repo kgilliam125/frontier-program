@@ -7,7 +7,8 @@ use crate::state::structure::*;
 use crate::state::unit::*;
 use anchor_lang::prelude::*;
 
-pub fn attack_structure(
+// The defending structure attacks the attacking unit
+pub fn attack_unit(
     ctx: Context<AttackStructure>,
     _season_id: u32,
     _match_id: u32,
@@ -17,10 +18,10 @@ pub fn attack_structure(
     let defending_structure = &mut ctx.accounts.defending_structure;
     let attacking_unit = &ctx.accounts.attacking_unit;
 
-    let can_attack = attacking_unit.can_attack();
+    let can_attack = defending_structure.can_attack();
 
     if can_attack {
-        defending_structure.try_take_damage(attacking_unit.stats.attack)?;
+        attacking_unit.try_take_damage(defending_structure.stats.attack)?;
     }
 
     Ok(())
@@ -43,6 +44,7 @@ pub struct AttackStructure<'info> {
     )]
     pub attacking_army: Account<'info, Army>,
     #[account(
+        mut,
         seeds=[unit_count.to_le_bytes().as_ref(), attacking_army.key().as_ref()],
         bump,
     )]
@@ -62,7 +64,6 @@ pub struct AttackStructure<'info> {
     )]
     pub defending_base: Account<'info, PlayerBase>,
     #[account(
-        mut,
         seeds=[structure_count.to_le_bytes().as_ref(), defending_base.key().as_ref()],
         bump,
     )]

@@ -720,6 +720,10 @@ export type Frontier = {
             }
           },
           {
+            "name": "isDestroyed",
+            "type": "bool"
+          },
+          {
             "name": "isInitialized",
             "type": "bool"
           }
@@ -1804,6 +1808,10 @@ export const IDL: Frontier = {
             "type": {
               "defined": "UnitStats"
             }
+          },
+          {
+            "name": "isDestroyed",
+            "type": "bool"
           },
           {
             "name": "isInitialized",

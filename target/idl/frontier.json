@@ -720,6 +720,10 @@
             }
           },
           {
+            "name": "isDestroyed",
+            "type": "bool"
+          },
+          {
             "name": "isInitialized",
             "type": "bool"
           }

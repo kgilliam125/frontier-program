@@ -20,16 +20,18 @@ pub fn build_structure(
     let structure_account = &mut ctx.accounts.structure_account;
 
     let resource_cost = get_cost(structure_type);
+    let stats = Structure::get_base_stats(structure_type);
 
     player_account.subtract_resources(resource_cost)?;
+    base_account.add_structure_to_base(structure_account.structure_type, stats)?;
     structure_account.init(
         player_account.key(),
         base_account.key(),
-        base_account.structure_count + 1, // we actually update this next, but need structure to exist first
+        base_account.structure_count, 
+        stats,
         structure_type,
         position,
     )?;
-    base_account.add_structure_to_base(structure_account.structure_type, structure_account.stats)?;
 
     Ok(())
 }
