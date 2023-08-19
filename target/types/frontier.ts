@@ -430,6 +430,94 @@ export type Frontier = {
       ]
     },
     {
+      "name": "addUnitToMatch",
+      "accounts": [
+        {
+          "name": "attacker",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "attackerAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "unitToAdd",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "defender",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defenderAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonOwner",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "gameMatch",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "matchAttackingArmy",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "matchUnitAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seasonId",
+          "type": "u32"
+        },
+        {
+          "name": "matchId",
+          "type": "u32"
+        },
+        {
+          "name": "addedUnitId",
+          "type": "u32"
+        },
+        {
+          "name": "matchUnitId",
+          "type": "u32"
+        }
+      ]
+    },
+    {
       "name": "endMatch",
       "accounts": [
         {
@@ -1694,6 +1782,94 @@ export const IDL: Frontier = {
         },
         {
           "name": "matchStructureId",
+          "type": "u32"
+        }
+      ]
+    },
+    {
+      "name": "addUnitToMatch",
+      "accounts": [
+        {
+          "name": "attacker",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "attackerAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "attackingArmy",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "unitToAdd",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "defender",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defenderAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "defendingBase",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonOwner",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "seasonAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "gameMatch",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "matchAttackingArmy",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "matchUnitAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seasonId",
+          "type": "u32"
+        },
+        {
+          "name": "matchId",
+          "type": "u32"
+        },
+        {
+          "name": "addedUnitId",
+          "type": "u32"
+        },
+        {
+          "name": "matchUnitId",
           "type": "u32"
         }
       ]

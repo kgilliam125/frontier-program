@@ -10,6 +10,7 @@ pub use end_match::*;
 pub use attack_structure::*;
 pub use attack_unit::*;
 pub use add_structure_to_match::*;
+pub use add_unit_to_match::*;
 
 pub mod init_player_accounts;
 pub mod build_structure;
@@ -23,3 +24,4 @@ pub mod end_match;
 pub mod attack_structure;
 pub mod attack_unit;
 pub mod add_structure_to_match;
+pub mod add_unit_to_match;

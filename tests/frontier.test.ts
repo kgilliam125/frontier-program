@@ -852,14 +852,57 @@ describe('frontier', () => {
         expect(matchArcherTowerAccount.isInitialized).toEqual(true)
         expect(matchArcherTowerAccount.player).toEqual(matchPda)
         expect(matchArcherTowerAccount.stats).toEqual(archerTowerAccount.stats)
-        expect(matchArcherTowerAccount.stats).toEqual(archerTowerAccount.position)
-        expect(matchArcherTowerAccount.stats).toEqual(archerTowerAccount.structureType)
+        expect(matchArcherTowerAccount.position).toEqual(archerTowerAccount.position)
+        expect(matchArcherTowerAccount.structureType).toEqual(archerTowerAccount.structureType)
         expect(matchArcherTowerAccount.isDestroyed).toEqual(false)
 
         const matchBasePdaAccount = await program.account.playerBase.fetch(matchBasePda)
         expect(matchBasePdaAccount.structureCount).toEqual(1)
     })
 
+    it('adds a unit to a started match', async () => {
+        const attackerUnitId = 1
+        const matchUnitId = 1
+        const matchPda = getMatchPda(
+            matchNumber,
+            seasonPda,
+            armyPda,
+            defenderBasePda
+        )
+        const matchArmyPda = getMatchArmyPda(matchPda, playerPda)
+        const matchUnitPda = getUnitPdaFromId(matchUnitId, matchArmyPda)
+        const unitPda = getUnitPdaFromId(attackerUnitId, armyPda)
+
+        await program.methods
+            .addUnitToMatch(seasonNumber, matchNumber, attackerUnitId, matchUnitId)
+            .accounts({
+                attacker: provider.publicKey,
+                attackerAccount: playerPda,
+                attackingArmy: armyPda,
+                unitToAdd: unitPda,
+                defender: defenderKeypair.publicKey,
+                defenderAccount: defenderPda,
+                defendingBase: defenderBasePda,
+                seasonOwner: seasonCreatorKeypair.publicKey,
+                seasonAccount: seasonPda,
+                gameMatch: matchPda,
+                matchAttackingArmy: matchArmyPda,
+                matchUnitAccount: matchUnitPda,
+            })
+            .rpc()
+
+        const matchUnitAccount = await program.account.unit.fetch(matchUnitPda)
+        const unitAccount = await program.account.unit.fetch(unitPda)
+        expect(matchUnitAccount.isInitialized).toEqual(true)
+        expect(matchUnitAccount.player).toEqual(matchPda)
+        expect(matchUnitAccount.stats).toEqual(unitAccount.stats)
+        // expect(matchUnitAccount.stats).toEqual(unitAccount.position)
+        expect(matchUnitAccount.unitType).toEqual(unitAccount.unitType)
+        expect(matchUnitAccount.isDestroyed).toEqual(false)
+
+        const matchArmyPdaAccount = await program.account.army.fetch(matchArmyPda)
+        expect(matchArmyPdaAccount.armySize).toEqual(1)
+    })
     // it('unit attacks a structure', async () => {
     //     const unitId = 1
     //     const unitPda = getUnitPdaFromId(unitId, armyPda)

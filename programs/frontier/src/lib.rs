@@ -87,6 +87,22 @@ pub mod frontier {
         )
     }
 
+    pub fn add_unit_to_match(
+        ctx: Context<AddUnitToMatch>,
+        season_id: u32,
+        match_id: u32,
+        added_unit_id: u32,
+        match_unit_id: u32,
+    ) -> Result<()> {
+        instructions::add_unit_to_match::add_unit_to_match(
+            ctx,
+            season_id,
+            match_id,
+            added_unit_id,
+            match_unit_id,
+        )
+    }
+
     pub fn end_match(
         ctx: Context<EndMatch>,
         season_id: u32,
