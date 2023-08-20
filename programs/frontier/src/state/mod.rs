@@ -8,6 +8,7 @@ pub use structure_cost::*;
 pub use unit_cost::*;
 pub use unit::*;
 pub use season::*;
+pub use faction::*;
 
 pub mod army;
 pub mod game_match;
@@ -19,3 +20,4 @@ pub mod structure_cost;
 pub mod unit_cost;
 pub mod unit;
 pub mod season;
+pub mod faction;

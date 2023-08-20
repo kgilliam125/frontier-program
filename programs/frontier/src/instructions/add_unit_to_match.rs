@@ -18,6 +18,8 @@ pub fn add_unit_to_match(
     let match_attacking_army = &mut ctx.accounts.match_attacking_army;
     let match_unit_account = &mut ctx.accounts.match_unit_account;
 
+    // game_match.can_add()?;
+
     // Ignore resource cost since this is an ephemeral account
     match_attacking_army
         .add_unit_to_army()?;

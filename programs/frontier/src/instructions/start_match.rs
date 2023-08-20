@@ -13,6 +13,8 @@ pub fn start_match(ctx: Context<StartMatch>, _season_id: u32, _match_id: u32, _p
     require!(pvp_structure.structure_type == StructureType::PvpPortal, GameMatchError::InvalidDefenderPvpPortal);
 
     let season_account = &mut ctx.accounts.season_account;
+    let atacking_army = & ctx.accounts.attacking_army;
+    let defending_base = & ctx.accounts.defending_base;
     let match_attacking_army = & ctx.accounts.match_attacking_army;
     let match_defending_base = & ctx.accounts.match_defending_base;
 
@@ -25,9 +27,12 @@ pub fn start_match(ctx: Context<StartMatch>, _season_id: u32, _match_id: u32, _p
     )?;
     ctx.accounts.match_defending_base.init(
         ctx.accounts.game_match.key(),
+        defending_base.faction
+
     )?;
     ctx.accounts.match_attacking_army.init(
         ctx.accounts.game_match.key(),
+        atacking_army.faction
     )?;
 
     Ok(())
