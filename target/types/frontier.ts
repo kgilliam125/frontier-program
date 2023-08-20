@@ -398,7 +398,7 @@ export type Frontier = {
         },
         {
           "name": "gameMatch",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -486,7 +486,7 @@ export type Frontier = {
         },
         {
           "name": "gameMatch",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -640,7 +640,7 @@ export type Frontier = {
         },
         {
           "name": "matchAttackingArmy",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -728,7 +728,7 @@ export type Frontier = {
         },
         {
           "name": "matchAttackingArmy",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -815,6 +815,30 @@ export type Frontier = {
             "name": "state",
             "type": {
               "defined": "MatchState"
+            }
+          },
+          {
+            "name": "activeUnits",
+            "type": "u32"
+          },
+          {
+            "name": "activeStructures",
+            "type": "u32"
+          },
+          {
+            "name": "throneHallActive",
+            "type": "bool"
+          },
+          {
+            "name": "victor",
+            "type": {
+              "defined": "Victor"
+            }
+          },
+          {
+            "name": "matchReward",
+            "type": {
+              "defined": "Resources"
             }
           },
           {
@@ -1224,6 +1248,24 @@ export type Frontier = {
           },
           {
             "name": "CannotRepopulateMatch"
+          },
+          {
+            "name": "MatchNotReadyForCompletion"
+          },
+          {
+            "name": "MatchNotReadyForRewardDistribution"
+          },
+          {
+            "name": "ThroneHallAlreadyActive"
+          },
+          {
+            "name": "NoActiveStructures"
+          },
+          {
+            "name": "NoActiveUnits"
+          },
+          {
+            "name": "NoActiveThroneHall"
           }
         ]
       }
@@ -1314,7 +1356,27 @@ export type Frontier = {
             "name": "Cancelled"
           },
           {
+            "name": "AwaitingRewardDistribution"
+          },
+          {
             "name": "Completed"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Victor",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "None"
+          },
+          {
+            "name": "Attacker"
+          },
+          {
+            "name": "Defender"
           }
         ]
       }
@@ -1817,7 +1879,7 @@ export const IDL: Frontier = {
         },
         {
           "name": "gameMatch",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -1905,7 +1967,7 @@ export const IDL: Frontier = {
         },
         {
           "name": "gameMatch",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -2059,7 +2121,7 @@ export const IDL: Frontier = {
         },
         {
           "name": "matchAttackingArmy",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -2147,7 +2209,7 @@ export const IDL: Frontier = {
         },
         {
           "name": "matchAttackingArmy",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -2234,6 +2296,30 @@ export const IDL: Frontier = {
             "name": "state",
             "type": {
               "defined": "MatchState"
+            }
+          },
+          {
+            "name": "activeUnits",
+            "type": "u32"
+          },
+          {
+            "name": "activeStructures",
+            "type": "u32"
+          },
+          {
+            "name": "throneHallActive",
+            "type": "bool"
+          },
+          {
+            "name": "victor",
+            "type": {
+              "defined": "Victor"
+            }
+          },
+          {
+            "name": "matchReward",
+            "type": {
+              "defined": "Resources"
             }
           },
           {
@@ -2643,6 +2729,24 @@ export const IDL: Frontier = {
           },
           {
             "name": "CannotRepopulateMatch"
+          },
+          {
+            "name": "MatchNotReadyForCompletion"
+          },
+          {
+            "name": "MatchNotReadyForRewardDistribution"
+          },
+          {
+            "name": "ThroneHallAlreadyActive"
+          },
+          {
+            "name": "NoActiveStructures"
+          },
+          {
+            "name": "NoActiveUnits"
+          },
+          {
+            "name": "NoActiveThroneHall"
           }
         ]
       }
@@ -2733,7 +2837,27 @@ export const IDL: Frontier = {
             "name": "Cancelled"
           },
           {
+            "name": "AwaitingRewardDistribution"
+          },
+          {
             "name": "Completed"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Victor",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "None"
+          },
+          {
+            "name": "Attacker"
+          },
+          {
+            "name": "Defender"
           }
         ]
       }

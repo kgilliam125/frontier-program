@@ -8,7 +8,7 @@ pub struct Unit {
     army: Pubkey,
     pub unit_type: UnitType,
     pub stats: UnitStats,
-    is_destroyed: bool,
+    pub is_destroyed: bool,
     is_initialized: bool,
 }
 

@@ -886,6 +886,9 @@ describe('frontier', () => {
             matchBasePda
         )
         expect(matchBasePdaAccount.structureCount).toEqual(1)
+
+        const matchAccount = await program.account.gameMatch.fetch(matchPda)
+        expect(matchAccount.activeStructures).toEqual(1)
     })
 
     it('adds a unit to a started match', async () => {
@@ -938,6 +941,9 @@ describe('frontier', () => {
             matchArmyPda
         )
         expect(matchArmyPdaAccount.armySize).toEqual(1)
+
+        const matchAccount = await program.account.gameMatch.fetch(matchPda)
+        expect(matchAccount.activeUnits).toEqual(1)
     })
 
     // todo test that you can't complete match if not in progress

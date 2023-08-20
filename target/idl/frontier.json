@@ -398,7 +398,7 @@
         },
         {
           "name": "gameMatch",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -486,7 +486,7 @@
         },
         {
           "name": "gameMatch",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -640,7 +640,7 @@
         },
         {
           "name": "matchAttackingArmy",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -728,7 +728,7 @@
         },
         {
           "name": "matchAttackingArmy",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -815,6 +815,30 @@
             "name": "state",
             "type": {
               "defined": "MatchState"
+            }
+          },
+          {
+            "name": "activeUnits",
+            "type": "u32"
+          },
+          {
+            "name": "activeStructures",
+            "type": "u32"
+          },
+          {
+            "name": "throneHallActive",
+            "type": "bool"
+          },
+          {
+            "name": "victor",
+            "type": {
+              "defined": "Victor"
+            }
+          },
+          {
+            "name": "matchReward",
+            "type": {
+              "defined": "Resources"
             }
           },
           {
@@ -1224,6 +1248,24 @@
           },
           {
             "name": "CannotRepopulateMatch"
+          },
+          {
+            "name": "MatchNotReadyForCompletion"
+          },
+          {
+            "name": "MatchNotReadyForRewardDistribution"
+          },
+          {
+            "name": "ThroneHallAlreadyActive"
+          },
+          {
+            "name": "NoActiveStructures"
+          },
+          {
+            "name": "NoActiveUnits"
+          },
+          {
+            "name": "NoActiveThroneHall"
           }
         ]
       }
@@ -1314,7 +1356,27 @@
             "name": "Cancelled"
           },
           {
+            "name": "AwaitingRewardDistribution"
+          },
+          {
             "name": "Completed"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Victor",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "None"
+          },
+          {
+            "name": "Attacker"
+          },
+          {
+            "name": "Defender"
           }
         ]
       }
