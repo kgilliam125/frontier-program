@@ -1,5 +1,6 @@
 use crate::errors::PlayerError;
 use crate::state::Resources;
+use crate::state::FactionType;
 use anchor_lang::prelude::*;
 
 #[account]
@@ -8,6 +9,7 @@ pub struct Player {
     rank: u8,
     experience: u32,
     resources: Resources,
+    faction: FactionType,
     is_initialized: bool,
 }
 
@@ -15,7 +17,7 @@ impl Player {
     // Set to maximum account size to leave expansion room, find what it is
     pub const MAXIMUM_SIZE: usize = 5000;
 
-    pub fn init(&mut self, owner_pubkey: Pubkey) -> Result<()> {
+    pub fn init(&mut self, owner_pubkey: Pubkey, faction_type: FactionType) -> Result<()> {
         require_eq!(self.is_initialized, false, PlayerError::AlreadyInitialized);
 
         self.owner_pubkey = owner_pubkey;
@@ -30,6 +32,7 @@ impl Player {
             mana: 0,
             gold: 0,
         };
+        self.faction = faction_type;
         self.is_initialized = true;
 
         Ok(())

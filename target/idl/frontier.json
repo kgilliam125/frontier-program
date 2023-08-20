@@ -57,7 +57,14 @@
           "isSigner": false
         }
       ],
-      "args": []
+      "args": [
+        {
+          "name": "faction",
+          "type": {
+            "defined": "FactionType"
+          }
+        }
+      ]
     },
     {
       "name": "buildStructure",
@@ -792,6 +799,12 @@
             "type": "u32"
           },
           {
+            "name": "faction",
+            "type": {
+              "defined": "FactionType"
+            }
+          },
+          {
             "name": "isInitialized",
             "type": "bool"
           }
@@ -858,6 +871,12 @@
             "type": "u16"
           },
           {
+            "name": "faction",
+            "type": {
+              "defined": "FactionType"
+            }
+          },
+          {
             "name": "isInitialized",
             "type": "bool"
           }
@@ -885,6 +904,12 @@
             "name": "resources",
             "type": {
               "defined": "Resources"
+            }
+          },
+          {
+            "name": "faction",
+            "type": {
+              "defined": "FactionType"
             }
           },
           {
@@ -1199,6 +1224,15 @@
           },
           {
             "name": "MatchAlreadyEnded"
+          },
+          {
+            "name": "MatchAlreadyStarted"
+          },
+          {
+            "name": "MatchNotInProgress"
+          },
+          {
+            "name": "CannotRepopulateMatch"
           }
         ]
       }
@@ -1258,12 +1292,29 @@
       }
     },
     {
+      "name": "FactionType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Orc"
+          },
+          {
+            "name": "Lizardmen"
+          },
+          {
+            "name": "Fishmen"
+          }
+        ]
+      }
+    },
+    {
       "name": "MatchState",
       "type": {
         "kind": "enum",
         "variants": [
           {
-            "name": "Started"
+            "name": "Populating"
           },
           {
             "name": "InProgress"

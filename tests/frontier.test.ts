@@ -37,6 +37,7 @@ describe('frontier', () => {
         [Buffer.from('army'), defenderPda.toBuffer()],
         program.programId
     )
+    const defenderFaction = { fishmen: {}}
 
     // This is the provider's player who will build a base, train units, and attack the defender
     const [playerPda] = anchor.web3.PublicKey.findProgramAddressSync(
@@ -51,6 +52,7 @@ describe('frontier', () => {
         [Buffer.from('army'), playerPda.toBuffer()],
         program.programId
     )
+    const faction = { orc: {}}
 
     // match where the provider attacks the defender
 
@@ -144,9 +146,9 @@ describe('frontier', () => {
         expect(seasonAccount.state).toEqual({ open: {} })
     })
 
-    it('initializes player accounts!', async () => {
+    it('initializes player accounts', async () => {
         const tx = await program.methods
-            .initPlayerAccounts()
+            .initPlayerAccounts(faction)
             .accounts({
                 playerAccount: playerPda,
                 baseAccount: basePda,
@@ -167,6 +169,7 @@ describe('frontier', () => {
             mana: 0,
             gold: 0,
         })
+        expect(playerAccount.faction).toEqual(faction)
 
         const baseAccount = await program.account.playerBase.fetch(basePda)
         expect(baseAccount.playerAccount).toEqual(playerPda)
@@ -181,6 +184,7 @@ describe('frontier', () => {
         expect(armyAccount.rating).toEqual(0)
         expect(armyAccount.armySize).toEqual(0)
         expect(armyAccount.armyMaxSize).toEqual(10)
+        expect(armyAccount.faction).toEqual(faction)
     })
 
     it('builds a throne hall', async () => {
@@ -709,7 +713,7 @@ describe('frontier', () => {
 
         // Create defenders base and build a pvp portal so they can be attacked
         await program.methods
-            .initPlayerAccounts()
+            .initPlayerAccounts(defenderFaction)
             .accounts({
                 owner: defenderKeypair.publicKey,
                 playerAccount: defenderPda,
@@ -775,7 +779,7 @@ describe('frontier', () => {
         expect(matchAccount.isInitialized).toEqual(true)
         expect(matchAccount.defendingBase).toEqual(matchBasePda)
         expect(matchAccount.attackingArmy).toEqual(matchArmyPda)
-        expect(matchAccount.state).toEqual({ started: {} })
+        expect(matchAccount.state).toEqual({ populating: {} })
 
         const baseAccount = await program.account.playerBase.fetch(matchBasePda)
         expect(baseAccount.playerAccount).toEqual(matchPda)
@@ -783,6 +787,7 @@ describe('frontier', () => {
         expect(baseAccount.rating).toEqual(0)
         expect(baseAccount.structureCount).toEqual(0)
         expect(baseAccount.baseSize).toEqual(0)
+        expect(baseAccount.faction).toEqual(defenderFaction)
 
         const armyAccount = await program.account.army.fetch(matchArmyPda)
         expect(armyAccount.playerAccount).toEqual(matchPda)
@@ -790,6 +795,8 @@ describe('frontier', () => {
         expect(armyAccount.rating).toEqual(0)
         expect(armyAccount.armySize).toEqual(0)
         expect(armyAccount.armyMaxSize).toEqual(10)
+        expect(armyAccount.faction).toEqual(faction)
+
     })
 
     it('adds a structure to a started match', async () => {
@@ -1114,55 +1121,6 @@ describe('frontier', () => {
         expect(matchStructureAccount.stats.health).toEqual(0)
         expect(matchStructureAccount.isDestroyed).toEqual(true)
     })
-
-    // it('destroys a structure', async () => {
-    //     const unitId = 1
-    //     const unitPda = getUnitPdaFromId(unitId, armyPda)
-
-    //     const structureId = 1
-    //     const structurePda = getStructurePdaFromId(structureId, defenderBasePda)
-
-    //     let unitAccount = await program.account.unit.fetch(unitPda)
-    //     expect(unitAccount.stats.attack).toEqual(10)
-    //     let structureAccount = await program.account.structure.fetch(
-    //         structurePda
-    //     )
-    //     expect(structureAccount.stats.health).toEqual(90)
-    //     expect(structureAccount.isDestroyed).toEqual(false)
-
-    //     const attackIx = await program.methods
-    //         .attackStructure(seasonNumber, matchNumber, unitId, structureId)
-    //         .accounts({
-    //             attacker: provider.publicKey,
-    //             attackerAccount: playerPda,
-    //             attackingArmy: armyPda,
-    //             attackingUnit: unitPda,
-    //             defender: defenderKeypair.publicKey,
-    //             defenderAccount: defenderPda,
-    //             defendingBase: defenderBasePda,
-    //             defendingStructure: structurePda,
-    //             seasonOwner: seasonCreatorKeypair.publicKey,
-    //             seasonAccount: seasonPda,
-    //             gameMatch: matchPda,
-    //         })
-    //         .instruction()
-
-    //     const tx = new anchor.web3.Transaction()
-    //     tx.add(attackIx)
-    //     tx.add(attackIx)
-    //     tx.add(attackIx)
-    //     tx.add(attackIx)
-    //     tx.add(attackIx)
-    //     tx.add(attackIx)
-    //     tx.add(attackIx)
-    //     tx.add(attackIx)
-    //     tx.add(attackIx)
-
-    //     await provider.sendAndConfirm(tx)
-    //     structureAccount = await program.account.structure.fetch(structurePda)
-    //     expect(structureAccount.stats.health).toEqual(0)
-    //     expect(structureAccount.isDestroyed).toEqual(true)
-    // })
 
     // it('ends a match', async () => {
     //     const pvpPortalId = 1

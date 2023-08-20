@@ -1,17 +1,21 @@
 use crate::state::player::*;
 use crate::state::player_base::*;
 use crate::state::army::*;
+use crate::state::FactionType;
 use anchor_lang::prelude::*;
 
-pub fn init_player_accounts(ctx: Context<InitPlayerAccounts>) -> Result<()> {
+pub fn init_player_accounts(ctx: Context<InitPlayerAccounts>, faction: FactionType) -> Result<()> {
     ctx.accounts.player_account.init(
         ctx.accounts.owner.key(),
+        faction,
     ).unwrap();
     ctx.accounts.base_account.init(
         ctx.accounts.player_account.key(),
+        faction
     ).unwrap();
     ctx.accounts.army_account.init(
         ctx.accounts.player_account.key(),
+        faction
     ).unwrap();
 
     Ok(())

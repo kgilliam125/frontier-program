@@ -1,5 +1,5 @@
 use crate::errors::BaseError;
-use crate::state::{StructureStats, StructureType};
+use crate::state::{StructureStats, StructureType, FactionType};
 use anchor_lang::prelude::*;
 
 #[account]
@@ -10,6 +10,7 @@ pub struct PlayerBase {
     max_base_size: u32,
     max_workers: u32,
     pub rating: u16,
+    pub faction: FactionType,
     is_initialized: bool
 }
 
@@ -40,7 +41,7 @@ impl PlayerBase {
         }
     }
 
-    pub fn init(&mut self, player_account: Pubkey) -> Result<()> {
+    pub fn init(&mut self, player_account: Pubkey, faction: FactionType) -> Result<()> {
         require_eq!(self.is_initialized, false, BaseError::AlreadyInitialized);
 
         self.player_account = player_account;
@@ -52,6 +53,7 @@ impl PlayerBase {
 
         self.max_base_size = self.get_max_base_size();
         self.max_workers = worker_count;
+        self.faction = faction;
         self.is_initialized = true;
 
         Ok(())

@@ -18,6 +18,8 @@ pub fn add_structure_to_match(
     let match_defending_base = &mut ctx.accounts.match_defending_base;
     let match_structure_account = &mut ctx.accounts.match_structure_account;
 
+    // game_match.can_add()?;
+
     // Ignore resource cost since this is an ephemeral account
     match_defending_base
         .add_structure_to_base(structure_to_add.structure_type, structure_to_add.stats)?;

@@ -57,7 +57,14 @@ export type Frontier = {
           "isSigner": false
         }
       ],
-      "args": []
+      "args": [
+        {
+          "name": "faction",
+          "type": {
+            "defined": "FactionType"
+          }
+        }
+      ]
     },
     {
       "name": "buildStructure",
@@ -792,6 +799,12 @@ export type Frontier = {
             "type": "u32"
           },
           {
+            "name": "faction",
+            "type": {
+              "defined": "FactionType"
+            }
+          },
+          {
             "name": "isInitialized",
             "type": "bool"
           }
@@ -858,6 +871,12 @@ export type Frontier = {
             "type": "u16"
           },
           {
+            "name": "faction",
+            "type": {
+              "defined": "FactionType"
+            }
+          },
+          {
             "name": "isInitialized",
             "type": "bool"
           }
@@ -885,6 +904,12 @@ export type Frontier = {
             "name": "resources",
             "type": {
               "defined": "Resources"
+            }
+          },
+          {
+            "name": "faction",
+            "type": {
+              "defined": "FactionType"
             }
           },
           {
@@ -1199,6 +1224,15 @@ export type Frontier = {
           },
           {
             "name": "MatchAlreadyEnded"
+          },
+          {
+            "name": "MatchAlreadyStarted"
+          },
+          {
+            "name": "MatchNotInProgress"
+          },
+          {
+            "name": "CannotRepopulateMatch"
           }
         ]
       }
@@ -1258,12 +1292,29 @@ export type Frontier = {
       }
     },
     {
+      "name": "FactionType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Orc"
+          },
+          {
+            "name": "Lizardmen"
+          },
+          {
+            "name": "Fishmen"
+          }
+        ]
+      }
+    },
+    {
       "name": "MatchState",
       "type": {
         "kind": "enum",
         "variants": [
           {
-            "name": "Started"
+            "name": "Populating"
           },
           {
             "name": "InProgress"
@@ -1434,7 +1485,14 @@ export const IDL: Frontier = {
           "isSigner": false
         }
       ],
-      "args": []
+      "args": [
+        {
+          "name": "faction",
+          "type": {
+            "defined": "FactionType"
+          }
+        }
+      ]
     },
     {
       "name": "buildStructure",
@@ -2169,6 +2227,12 @@ export const IDL: Frontier = {
             "type": "u32"
           },
           {
+            "name": "faction",
+            "type": {
+              "defined": "FactionType"
+            }
+          },
+          {
             "name": "isInitialized",
             "type": "bool"
           }
@@ -2235,6 +2299,12 @@ export const IDL: Frontier = {
             "type": "u16"
           },
           {
+            "name": "faction",
+            "type": {
+              "defined": "FactionType"
+            }
+          },
+          {
             "name": "isInitialized",
             "type": "bool"
           }
@@ -2262,6 +2332,12 @@ export const IDL: Frontier = {
             "name": "resources",
             "type": {
               "defined": "Resources"
+            }
+          },
+          {
+            "name": "faction",
+            "type": {
+              "defined": "FactionType"
             }
           },
           {
@@ -2576,6 +2652,15 @@ export const IDL: Frontier = {
           },
           {
             "name": "MatchAlreadyEnded"
+          },
+          {
+            "name": "MatchAlreadyStarted"
+          },
+          {
+            "name": "MatchNotInProgress"
+          },
+          {
+            "name": "CannotRepopulateMatch"
           }
         ]
       }
@@ -2635,12 +2720,29 @@ export const IDL: Frontier = {
       }
     },
     {
+      "name": "FactionType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Orc"
+          },
+          {
+            "name": "Lizardmen"
+          },
+          {
+            "name": "Fishmen"
+          }
+        ]
+      }
+    },
+    {
       "name": "MatchState",
       "type": {
         "kind": "enum",
         "variants": [
           {
-            "name": "Started"
+            "name": "Populating"
           },
           {
             "name": "InProgress"
