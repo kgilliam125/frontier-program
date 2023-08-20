@@ -3,14 +3,21 @@ use crate::state::game_match::*;
 use crate::state::player::*;
 use crate::state::player_base::*;
 use crate::state::season::*;
+use crate::state::MatchState;
 use anchor_lang::prelude::*;
 
+// only attackers can get rewards so leave this as is 
 pub fn distribute_match_rewards(
     ctx: Context<DistributeMatchRewards>,
     _season_id: u32,
     _match_id: u32,
 ) -> Result<()> {
-    let game_match = & ctx.accounts.game_match;
+    let game_match = &mut ctx.accounts.game_match;
+    let attacker = &mut ctx.accounts.attacker_account;
+
+    game_match.can_distribute_rewards()?;
+    attacker.add_resources(game_match.match_reward)?;
+    game_match.try_transition_state(MatchState::Completed)?;
 
     Ok(())
 }
@@ -27,6 +34,7 @@ pub struct DistributeMatchRewards<'info> {
     )]
     pub attacker_account: Account<'info, Player>,
     #[account(
+        mut,
         seeds=["army".as_bytes(), attacker_account.key().as_ref()],
         bump,
     )]
@@ -55,6 +63,7 @@ pub struct DistributeMatchRewards<'info> {
     )]
     pub season_account: Account<'info, Season>,
     #[account(
+        mut,
         seeds=[match_id.to_le_bytes().as_ref(), season_account.key().as_ref(), attacking_army.key().as_ref(), defending_base.key().as_ref()],
         bump,
     )]

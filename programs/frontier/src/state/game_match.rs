@@ -169,6 +169,16 @@ impl GameMatch {
         Ok(())
     }
 
+    pub fn can_distribute_rewards(&self) -> Result<()> {
+        require_eq!(self.is_initialized, true, GameMatchError::NotInitialized);
+        require!(
+            self.state == MatchState::AwaitingRewardDistribution,
+            GameMatchError::MatchNotReadyForRewardDistribution
+        );
+
+        Ok(())
+    }
+
     pub fn try_transition_state(&mut self, requested_state: MatchState) -> Result<()> {
         require_eq!(self.is_initialized, true, GameMatchError::NotInitialized);
 
@@ -208,12 +218,6 @@ impl GameMatch {
                         || self.state == MatchState::AwaitingRewardDistribution,
                     GameMatchError::MatchNotInProgress
                 );
-                require!(
-                    self.active_units == 0,
-                    GameMatchError::MatchNotReadyForCompletion
-                )
-
-                // todo: probably need to know if the attacker's army is destroyed or a timer elapsed. Handle client side for now
             }
             MatchState::Populating => {
                 require!(false, GameMatchError::CannotRepopulateMatch);
@@ -221,18 +225,6 @@ impl GameMatch {
         }
 
         self.state = requested_state;
-
-        Ok(())
-    }
-
-    pub fn end_match(&mut self, match_state: MatchState) -> Result<()> {
-        require_eq!(self.is_initialized, true, GameMatchError::NotInitialized);
-        require!(
-            self.state == MatchState::InProgress,
-            GameMatchError::MatchAlreadyEnded
-        );
-
-        self.state = match_state;
 
         Ok(())
     }

@@ -146,4 +146,12 @@ pub mod frontier {
             match_structure_id,
         )
     }
+
+    pub fn distribute_match_rewards(
+        ctx: Context<DistributeMatchRewards>,
+        season_id: u32,
+        match_id: u32,
+    ) -> Result<()> {
+        instructions::distribute_match_rewards::distribute_match_rewards(ctx, season_id, match_id)
+    }
 }
