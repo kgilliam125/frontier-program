@@ -1,39 +1,44 @@
-use crate::state::player::*;
-use crate::state::player_base::*;
+use crate::errors::{GameMatchError, StructureError};
 use crate::state::army::*;
 use crate::state::game_match::*;
+use crate::state::player::*;
+use crate::state::player_base::*;
 use crate::state::season::*;
 use crate::state::structure::*;
-use crate::errors::{GameMatchError, StructureError};
 use anchor_lang::prelude::*;
 
-pub fn start_match(ctx: Context<StartMatch>, _season_id: u32, _match_id: u32, _pvp_structure_id: u32) -> Result<()> {
-    let pvp_structure  = & ctx.accounts.defending_pvp_structure;
+pub fn start_match(
+    ctx: Context<StartMatch>,
+    _season_id: u32,
+    _match_id: u32,
+    _pvp_structure_id: u32,
+) -> Result<()> {
+    let pvp_structure = &ctx.accounts.defending_pvp_structure;
     require!(pvp_structure.is_initialized, StructureError::NotInitialized);
-    require!(pvp_structure.structure_type == StructureType::PvpPortal, GameMatchError::InvalidDefenderPvpPortal);
+    require!(
+        pvp_structure.structure_type == StructureType::PvpPortal,
+        GameMatchError::InvalidDefenderPvpPortal
+    );
 
     let season_account = &mut ctx.accounts.season_account;
-    let atacking_army = & ctx.accounts.attacking_army;
-    let defending_base = & ctx.accounts.defending_base;
-    let match_attacking_army = & ctx.accounts.match_attacking_army;
-    let match_defending_base = & ctx.accounts.match_defending_base;
+    let atacking_army = &ctx.accounts.attacking_army;
+    let defending_base = &ctx.accounts.defending_base;
+    let match_attacking_army = &ctx.accounts.match_attacking_army;
+    let match_defending_base = &ctx.accounts.match_defending_base;
 
     season_account.add_match()?;
-    
+
     ctx.accounts.game_match.init(
         season_account.match_count,
         match_attacking_army.key(),
         match_defending_base.key(),
     )?;
-    ctx.accounts.match_defending_base.init(
-        ctx.accounts.game_match.key(),
-        defending_base.faction
-
-    )?;
-    ctx.accounts.match_attacking_army.init(
-        ctx.accounts.game_match.key(),
-        atacking_army.faction
-    )?;
+    ctx.accounts
+        .match_defending_base
+        .init(ctx.accounts.game_match.key(), defending_base.faction)?;
+    ctx.accounts
+        .match_attacking_army
+        .init(ctx.accounts.game_match.key(), atacking_army.faction)?;
 
     Ok(())
 }

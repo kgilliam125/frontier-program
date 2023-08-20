@@ -9,7 +9,7 @@ pub struct Army {
     pub army_max_size: u32,
     rating: u32,
     pub faction: FactionType,
-    is_initialized: bool
+    is_initialized: bool,
 }
 
 impl Army {
@@ -37,7 +37,10 @@ impl Army {
     // Trying a new pattern here vs. in player_base where the count is capped and used for the unit index
     pub fn add_unit_to_army(&mut self) -> Result<()> {
         require_eq!(self.is_initialized, true, ArmyError::NotInitialized);
-        require!(self.army_size <= self.get_max_army_size(), ArmyError::SizeExceeded);
+        require!(
+            self.army_size <= self.get_max_army_size(),
+            ArmyError::SizeExceeded
+        );
 
         self.army_size += 1;
 

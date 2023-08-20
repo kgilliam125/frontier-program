@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 use instructions::*;
-use state::{MatchState, Position, StructureType, UnitType, FactionType};
+use state::{FactionType, MatchState, Position, StructureType, UnitType};
 
 pub mod errors;
 pub mod instructions;
@@ -18,7 +18,10 @@ pub mod frontier {
         instructions::init_season::init_season(ctx, season_id)
     }
 
-    pub fn init_player_accounts(ctx: Context<InitPlayerAccounts>, faction: FactionType) -> Result<()> {
+    pub fn init_player_accounts(
+        ctx: Context<InitPlayerAccounts>,
+        faction: FactionType,
+    ) -> Result<()> {
         instructions::init_player_accounts::init_player_accounts(ctx, faction)
     }
 

@@ -1,13 +1,10 @@
-use crate::state::Resources;
 use crate::state::player::*;
 use crate::state::player_base::*;
 use crate::state::structure::*;
+use crate::state::Resources;
 use anchor_lang::prelude::*;
 
-pub fn collect_resources(
-    ctx: Context<CollectResources>,
-    _structure_count: u32,
-) -> Result<()> {
+pub fn collect_resources(ctx: Context<CollectResources>, _structure_count: u32) -> Result<()> {
     let player_account = &mut ctx.accounts.player_account;
     let structure_account = &mut ctx.accounts.structure_account;
 

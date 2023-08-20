@@ -139,7 +139,7 @@ impl Structure {
 
         Ok(())
     }
-    
+
     // May need more logic here, using Result type
     pub fn add_worker(&mut self) -> Result<()> {
         require!(self.is_assignable(), StructureError::CannotAssignWorker);

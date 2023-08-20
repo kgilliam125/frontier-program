@@ -1,5 +1,5 @@
 use crate::errors::BaseError;
-use crate::state::{StructureStats, StructureType, FactionType};
+use crate::state::{FactionType, StructureStats, StructureType};
 use anchor_lang::prelude::*;
 
 #[account]
@@ -11,7 +11,7 @@ pub struct PlayerBase {
     max_workers: u32,
     pub rating: u16,
     pub faction: FactionType,
-    is_initialized: bool
+    is_initialized: bool,
 }
 
 impl PlayerBase {
@@ -25,7 +25,7 @@ impl PlayerBase {
             0 => 3,
             1 => 5,
             2 => 7,
-            _ => 100 // Should error instead
+            _ => 100, // Should error instead
         }
     }
 
@@ -36,8 +36,8 @@ impl PlayerBase {
             1 => 5,
             2 => 7,
             3 => 10,
-            4 ..= 5 => 15,
-            _ => 20 // Max level is 50, but treat anything about as the same
+            4..=5 => 15,
+            _ => 20, // Max level is 50, but treat anything about as the same
         }
     }
 
@@ -61,7 +61,10 @@ impl PlayerBase {
 
     pub fn upgrade(&mut self) -> Result<()> {
         require_eq!(self.is_initialized, true, BaseError::NotInitialized);
-        require!(self.rating < PlayerBase::MAX_RATING, BaseError::MaxRatingExceeded);
+        require!(
+            self.rating < PlayerBase::MAX_RATING,
+            BaseError::MaxRatingExceeded
+        );
 
         self.rating += 1;
         self.max_base_size = self.get_max_base_size();
@@ -69,21 +72,28 @@ impl PlayerBase {
         Ok(())
     }
 
-    pub fn add_structure_to_base(&mut self, structure_type: StructureType, structure_stats: StructureStats) -> Result<()> {
+    pub fn add_structure_to_base(
+        &mut self,
+        structure_type: StructureType,
+        structure_stats: StructureStats,
+    ) -> Result<()> {
         require_eq!(self.is_initialized, true, BaseError::NotInitialized);
 
         match structure_type {
             StructureType::ThroneHall => {
                 self.rating = structure_stats.rank;
-                
+
                 let worker_count = self.get_max_workers();
-                self.max_base_size = self.get_max_base_size(); 
+                self.max_base_size = self.get_max_base_size();
                 self.max_workers = worker_count;
             }
             _ => {}
         }
-        
-        require!(self.base_size <= self.get_max_base_size(), BaseError::BaseSizeExceeded);
+
+        require!(
+            self.base_size <= self.get_max_base_size(),
+            BaseError::BaseSizeExceeded
+        );
 
         self.structure_count = self.structure_count.checked_add(1).unwrap();
         self.base_size += 1;

@@ -11,7 +11,7 @@ pub struct Season {
     pub match_count: u32,
     player_count: u32,
     state: SeasonState,
-    is_initialized: bool
+    is_initialized: bool,
 }
 
 impl Season {

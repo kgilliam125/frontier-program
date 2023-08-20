@@ -32,7 +32,7 @@ pub enum GameMatchError {
     MatchAlreadyEnded,
     MatchAlreadyStarted,
     MatchNotInProgress,
-    CannotRepopulateMatch
+    CannotRepopulateMatch,
 }
 
 #[error_code]
@@ -41,7 +41,7 @@ pub enum StructureError {
     NotInitialized,
     InvalidPosition,
     CannotAssignWorker,
-    StructureHasNoWorkers
+    StructureHasNoWorkers,
 }
 
 #[error_code]

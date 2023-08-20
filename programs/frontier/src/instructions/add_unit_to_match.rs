@@ -1,7 +1,7 @@
-use crate::state::player::*;
-use crate::state::player_base::*;
 use crate::state::army::*;
 use crate::state::game_match::*;
+use crate::state::player::*;
+use crate::state::player_base::*;
 use crate::state::season::*;
 use crate::state::unit::*;
 use anchor_lang::prelude::*;
@@ -21,8 +21,7 @@ pub fn add_unit_to_match(
     // game_match.can_add()?;
 
     // Ignore resource cost since this is an ephemeral account
-    match_attacking_army
-        .add_unit_to_army()?;
+    match_attacking_army.add_unit_to_army()?;
     match_unit_account.init(
         game_match.key(),
         match_attacking_army.key(),

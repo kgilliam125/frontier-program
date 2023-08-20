@@ -43,7 +43,6 @@ pub struct AttackStructure<'info> {
     )]
     pub attacking_army: Account<'info, Army>,
 
-
     // defender accounts
     /// CHECK: Used for PDA validation and derivation of the various defender accounts
     pub defender: UncheckedAccount<'info>,
@@ -93,4 +92,3 @@ pub struct AttackStructure<'info> {
     )]
     pub defending_match_structure: Account<'info, Structure>,
 }
-

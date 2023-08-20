@@ -1,8 +1,8 @@
+use crate::errors::StructureError;
 use crate::state::player::*;
 use crate::state::player_base::*;
 use crate::state::structure::*;
 use crate::state::structure_cost::*;
-use crate::errors::StructureError;
 use anchor_lang::prelude::*;
 
 pub fn build_structure(
@@ -27,7 +27,7 @@ pub fn build_structure(
     structure_account.init(
         player_account.key(),
         base_account.key(),
-        base_account.structure_count, 
+        base_account.structure_count,
         stats,
         structure_type,
         position,

@@ -1,7 +1,7 @@
+use crate::errors::StructureError;
 use crate::state::player::*;
 use crate::state::player_base::*;
 use crate::state::structure::*;
-use crate::errors::StructureError;
 use anchor_lang::prelude::*;
 
 pub fn move_structure(
@@ -15,7 +15,10 @@ pub fn move_structure(
     // let base_account = &mut ctx.accounts.base_account;
     let structure_account = &mut ctx.accounts.structure_account;
 
-    require!(structure_account.is_initialized, StructureError::NotInitialized);
+    require!(
+        structure_account.is_initialized,
+        StructureError::NotInitialized
+    );
 
     structure_account.move_structure(new_pos)?;
 

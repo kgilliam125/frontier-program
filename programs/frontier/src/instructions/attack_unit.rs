@@ -15,7 +15,7 @@ pub fn attack_unit(
     _match_unit_id: u32,
     _match_structure_id: u32,
 ) -> Result<()> {
-    let defending_match_structure = & ctx.accounts.defending_match_structure;
+    let defending_match_structure = &ctx.accounts.defending_match_structure;
     let attacking_match_unit = &mut ctx.accounts.attacking_match_unit;
 
     let can_attack = defending_match_structure.can_attack();
@@ -43,7 +43,6 @@ pub struct AttackUnit<'info> {
         bump,
     )]
     pub attacking_army: Account<'info, Army>,
-
 
     // defender accounts
     /// CHECK: Used for PDA validation and derivation of the various defender accounts

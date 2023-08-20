@@ -1,13 +1,19 @@
-use crate::state::player::*;
-use crate::state::player_base::*;
+use crate::errors::{GameMatchError, StructureError};
 use crate::state::army::*;
 use crate::state::game_match::*;
+use crate::state::player::*;
+use crate::state::player_base::*;
 use crate::state::season::*;
 use crate::state::structure::*;
-use crate::errors::{GameMatchError, StructureError};
 use anchor_lang::prelude::*;
 
-pub fn transition_match_state(ctx: Context<TransitionMatchState>, _season_id: u32, _match_id: u32, _pvp_structure_id: u32, requested_state: MatchState) -> Result<()> {
+pub fn transition_match_state(
+    ctx: Context<TransitionMatchState>,
+    _season_id: u32,
+    _match_id: u32,
+    _pvp_structure_id: u32,
+    requested_state: MatchState,
+) -> Result<()> {
     let game_match = &mut ctx.accounts.game_match;
 
     game_match.try_transition_state(requested_state)?;

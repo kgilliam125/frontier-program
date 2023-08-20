@@ -1,6 +1,6 @@
 use crate::errors::PlayerError;
-use crate::state::Resources;
 use crate::state::FactionType;
+use crate::state::Resources;
 use anchor_lang::prelude::*;
 
 #[account]
@@ -81,4 +81,3 @@ impl Player {
         Ok(())
     }
 }
-

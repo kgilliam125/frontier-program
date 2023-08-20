@@ -1,14 +1,10 @@
+use crate::state::army::*;
 use crate::state::player::*;
 use crate::state::unit::*;
-use crate::state::army::*;
 use crate::state::unit_cost::*;
 use anchor_lang::prelude::*;
 
-pub fn train_unit(
-    ctx: Context<TrainUnit>,
-    _unit_count: u32,
-    unit_type: UnitType,
-) -> Result<()> {
+pub fn train_unit(ctx: Context<TrainUnit>, _unit_count: u32, unit_type: UnitType) -> Result<()> {
     let player_account = &mut ctx.accounts.player_account;
     let army_account = &mut ctx.accounts.army_account;
     let unit_account = &mut ctx.accounts.unit_account;
@@ -23,9 +19,9 @@ pub fn train_unit(
     unit_account.init(
         player_account.key(),
         army_account.key(),
-        army_account.army_size, 
+        army_account.army_size,
         unit_type,
-        stats
+        stats,
     )?;
 
     Ok(())

@@ -1,21 +1,30 @@
-use crate::state::player::*;
-use crate::state::player_base::*;
+use crate::errors::{GameMatchError, StructureError};
 use crate::state::army::*;
 use crate::state::game_match::*;
+use crate::state::player::*;
+use crate::state::player_base::*;
 use crate::state::season::*;
 use crate::state::structure::*;
-use crate::errors::{GameMatchError, StructureError};
 use anchor_lang::prelude::*;
 
-pub fn end_match(ctx: Context<EndMatch>, _season_id: u32, _match_id: u32, _pvp_structure_id: u32, match_state: MatchState) -> Result<()> {
-    let pvp_structure  = & ctx.accounts.defending_pvp_structure;
+pub fn end_match(
+    ctx: Context<EndMatch>,
+    _season_id: u32,
+    _match_id: u32,
+    _pvp_structure_id: u32,
+    match_state: MatchState,
+) -> Result<()> {
+    let pvp_structure = &ctx.accounts.defending_pvp_structure;
     require!(pvp_structure.is_initialized, StructureError::NotInitialized);
-    require!(pvp_structure.structure_type == StructureType::PvpPortal, GameMatchError::InvalidDefenderPvpPortal);
+    require!(
+        pvp_structure.structure_type == StructureType::PvpPortal,
+        GameMatchError::InvalidDefenderPvpPortal
+    );
 
     let match_account = &mut ctx.accounts.game_match;
-    
+
     match_account.end_match(match_state)?;
-    
+
     Ok(())
 }
 
@@ -30,7 +39,7 @@ pub struct EndMatch<'info> {
         bump,
     )]
     pub attacker_account: Account<'info, Player>,
-        #[account(
+    #[account(
         seeds=["army".as_bytes(), attacker_account.key().as_ref()],
         bump,
     )]

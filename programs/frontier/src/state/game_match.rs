@@ -7,15 +7,24 @@ pub struct GameMatch {
     pub state: MatchState,
     attacking_army: Pubkey,
     defending_base: Pubkey,
-    is_initialized: bool
+    is_initialized: bool,
 }
 
 impl GameMatch {
     // Set to maximum account size to leave expansion room, find what it is
     pub const MAXIMUM_SIZE: usize = 5000;
 
-    pub fn init(&mut self, match_id: u32, attacking_army: Pubkey, defending_base: Pubkey) -> Result<()> {
-        require_eq!(self.is_initialized, false, GameMatchError::AlreadyInitialized);
+    pub fn init(
+        &mut self,
+        match_id: u32,
+        attacking_army: Pubkey,
+        defending_base: Pubkey,
+    ) -> Result<()> {
+        require_eq!(
+            self.is_initialized,
+            false,
+            GameMatchError::AlreadyInitialized
+        );
 
         self.id = match_id;
         self.state = MatchState::Populating;
@@ -27,7 +36,10 @@ impl GameMatch {
 
     pub fn can_add(&mut self) -> Result<()> {
         require_eq!(self.is_initialized, true, GameMatchError::NotInitialized);
-        require!(self.state == MatchState::Populating, GameMatchError::MatchAlreadyStarted);
+        require!(
+            self.state == MatchState::Populating,
+            GameMatchError::MatchAlreadyStarted
+        );
 
         Ok(())
     }
@@ -36,21 +48,30 @@ impl GameMatch {
         require_eq!(self.is_initialized, true, GameMatchError::NotInitialized);
 
         /*
-            Match transitions:
-            Populating -> InProgress, Cancelled
-            InProgress -> Cancelled, Completed
-         */
+           Match transitions:
+           Populating -> InProgress, Cancelled
+           InProgress -> Cancelled, Completed
+        */
         match requested_state {
             MatchState::InProgress => {
-                require!(self.state == MatchState::Populating, GameMatchError::MatchAlreadyStarted);
-            },
+                require!(
+                    self.state == MatchState::Populating,
+                    GameMatchError::MatchAlreadyStarted
+                );
+            }
             MatchState::Cancelled => {
                 // Technically means you can cancel a match that's already been cancelled but w/e
-                require!(self.state != MatchState::Completed, GameMatchError::MatchAlreadyEnded);
-            },
+                require!(
+                    self.state != MatchState::Completed,
+                    GameMatchError::MatchAlreadyEnded
+                );
+            }
             MatchState::Completed => {
-                require!(self.state == MatchState::InProgress, GameMatchError::MatchNotInProgress);
-            },
+                require!(
+                    self.state == MatchState::InProgress,
+                    GameMatchError::MatchNotInProgress
+                );
+            }
             MatchState::Populating => {
                 require!(false, GameMatchError::CannotRepopulateMatch);
             }
@@ -63,7 +84,10 @@ impl GameMatch {
 
     pub fn end_match(&mut self, match_state: MatchState) -> Result<()> {
         require_eq!(self.is_initialized, true, GameMatchError::NotInitialized);
-        require!(self.state == MatchState::InProgress, GameMatchError::MatchAlreadyEnded);
+        require!(
+            self.state == MatchState::InProgress,
+            GameMatchError::MatchAlreadyEnded
+        );
 
         self.state = match_state;
 
