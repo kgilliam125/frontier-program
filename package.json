@@ -11,7 +11,8 @@
         "singleQuote": true
     },
     "dependencies": {
-        "@coral-xyz/anchor": "^0.28.0"
+        "@coral-xyz/anchor": "^0.28.0",
+        "ts-node": "^10.9.1"
     },
     "devDependencies": {
         "@types/bn.js": "^5.1.0",
