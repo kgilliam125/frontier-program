@@ -34,11 +34,21 @@ impl GameMatch {
         Ok(())
     }
 
-    pub fn can_add(&mut self) -> Result<()> {
+    pub fn can_add(&self) -> Result<()> {
         require_eq!(self.is_initialized, true, GameMatchError::NotInitialized);
         require!(
             self.state == MatchState::Populating,
             GameMatchError::MatchAlreadyStarted
+        );
+
+        Ok(())
+    }
+
+    pub fn can_attack(&self) -> Result<()> {
+        require_eq!(self.is_initialized, true, GameMatchError::NotInitialized);
+        require!(
+            self.state == MatchState::InProgress,
+            GameMatchError::MatchNotInProgress
         );
 
         Ok(())

@@ -106,14 +106,13 @@ pub mod frontier {
         )
     }
 
-    pub fn end_match(
-        ctx: Context<EndMatch>,
+    pub fn transition_match_state(
+        ctx: Context<TransitionMatchState>,
         season_id: u32,
         match_id: u32,
-        pvp_structure_id: u32,
         match_state: MatchState,
     ) -> Result<()> {
-        instructions::end_match::end_match(ctx, season_id, match_id, pvp_structure_id, match_state)
+        instructions::transition_match_state::transition_match_state(ctx, season_id, match_id, match_state)
     }
 
     pub fn attack_structure(

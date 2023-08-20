@@ -940,6 +940,37 @@ describe('frontier', () => {
         expect(matchArmyPdaAccount.armySize).toEqual(1)
     })
 
+    // todo test that you can't complete match if not in progress
+    // todo test that you can cancel match, but this is annoying right now
+
+    it('transitions match to combat phase', async () => {
+        const matchPda = getMatchPda(
+            matchNumber,
+            seasonPda,
+            armyPda,
+            defenderBasePda
+        )
+        const requestedTransitionState = { inProgress: {}}
+
+        await program.methods
+            .transitionMatchState(seasonNumber, matchNumber, requestedTransitionState)
+            .accounts({
+                attacker: provider.publicKey,
+                attackerAccount: playerPda,
+                attackingArmy: armyPda,
+                defender: defenderKeypair.publicKey,
+                defenderAccount: defenderPda,
+                defendingBase: defenderBasePda,
+                seasonOwner: seasonCreatorKeypair.publicKey,
+                seasonAccount: seasonPda,
+                gameMatch: matchPda,
+            })
+            .rpc()
+
+        const matchAccount = await program.account.gameMatch.fetch(matchPda)
+        expect(matchAccount.state).toEqual(requestedTransitionState)
+    })
+
     it('unit attacks a structure', async () => {
         // todo I just happen to know these because of the order of prior tests. Should make available globally
         const matchUnitId = 1
@@ -1122,38 +1153,31 @@ describe('frontier', () => {
         expect(matchStructureAccount.isDestroyed).toEqual(true)
     })
 
-    // it('ends a match', async () => {
-    //     const pvpPortalId = 1
+    it('transitions match to completion', async () => {
+        const matchPda = getMatchPda(
+            matchNumber,
+            seasonPda,
+            armyPda,
+            defenderBasePda
+        )
+        const requestedTransitionState = { completed: {}}
 
-    //     const defenderPvpPortal = getStructurePdaFromId(
-    //         pvpPortalId,
-    //         defenderBasePda
-    //     )
-    //     // Now finally create the match. provider is the signer
-    //     await program.methods
-    //         .endMatch(seasonNumber, matchNumber, pvpPortalId, { completed: {} })
-    //         .accounts({
-    //             attacker: provider.publicKey,
-    //             attackerAccount: playerPda,
-    //             attackingArmy: armyPda,
-    //             defender: defenderKeypair.publicKey,
-    //             defenderAccount: defenderPda,
-    //             defendingBase: defenderBasePda,
-    //             defendingPvpStructure: defenderPvpPortal,
-    //             seasonOwner: seasonCreatorKeypair.publicKey,
-    //             seasonAccount: seasonPda,
-    //             gameMatch: matchPda,
-    //         })
-    //         .rpc()
+        await program.methods
+            .transitionMatchState(seasonNumber, matchNumber, requestedTransitionState)
+            .accounts({
+                attacker: provider.publicKey,
+                attackerAccount: playerPda,
+                attackingArmy: armyPda,
+                defender: defenderKeypair.publicKey,
+                defenderAccount: defenderPda,
+                defendingBase: defenderBasePda,
+                seasonOwner: seasonCreatorKeypair.publicKey,
+                seasonAccount: seasonPda,
+                gameMatch: matchPda,
+            })
+            .rpc()
 
-    //     const seasonAccount = await program.account.season.fetch(seasonPda)
-    //     expect(seasonAccount.matchCount).toEqual(matchNumber)
-
-    //     const matchAccount = await program.account.gameMatch.fetch(matchPda)
-    //     expect(matchAccount.id).toEqual(matchNumber)
-    //     expect(matchAccount.isInitialized).toEqual(true)
-    //     expect(matchAccount.defendingBase).toEqual(defenderBasePda)
-    //     expect(matchAccount.attackingArmy).toEqual(armyPda)
-    //     expect(matchAccount.state).toEqual({ completed: {} })
-    // })
+        const matchAccount = await program.account.gameMatch.fetch(matchPda)
+        expect(matchAccount.state).toEqual(requestedTransitionState)
+    })
 })

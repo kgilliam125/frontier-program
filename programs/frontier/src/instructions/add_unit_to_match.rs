@@ -13,12 +13,12 @@ pub fn add_unit_to_match(
     _added_unit_id: u32,
     _match_unit_id: u32,
 ) -> Result<()> {
-    let game_match = &ctx.accounts.game_match;
-    let unit_to_add = &ctx.accounts.unit_to_add;
+    let game_match = & ctx.accounts.game_match;
+    let unit_to_add = & ctx.accounts.unit_to_add;
     let match_attacking_army = &mut ctx.accounts.match_attacking_army;
     let match_unit_account = &mut ctx.accounts.match_unit_account;
 
-    // game_match.can_add()?;
+    game_match.can_add()?;
 
     // Ignore resource cost since this is an ephemeral account
     match_attacking_army.add_unit_to_army()?;

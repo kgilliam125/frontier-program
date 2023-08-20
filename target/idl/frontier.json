@@ -525,7 +525,7 @@
       ]
     },
     {
-      "name": "endMatch",
+      "name": "transitionMatchState",
       "accounts": [
         {
           "name": "attacker",
@@ -558,11 +558,6 @@
           "isSigner": false
         },
         {
-          "name": "defendingPvpStructure",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
           "name": "seasonOwner",
           "isMut": false,
           "isSigner": false
@@ -585,10 +580,6 @@
         },
         {
           "name": "matchId",
-          "type": "u32"
-        },
-        {
-          "name": "pvpStructureId",
           "type": "u32"
         },
         {

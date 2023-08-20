@@ -15,6 +15,9 @@ pub fn attack_unit(
     _match_unit_id: u32,
     _match_structure_id: u32,
 ) -> Result<()> {
+    let game_match = &ctx.accounts.game_match;
+    game_match.can_attack()?;
+    
     let defending_match_structure = &ctx.accounts.defending_match_structure;
     let attacking_match_unit = &mut ctx.accounts.attacking_match_unit;
 
