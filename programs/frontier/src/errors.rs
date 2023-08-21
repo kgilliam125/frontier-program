@@ -33,6 +33,12 @@ pub enum GameMatchError {
     MatchAlreadyStarted,
     MatchNotInProgress,
     CannotRepopulateMatch,
+    MatchNotReadyForCompletion,
+    MatchNotReadyForRewardDistribution,
+    ThroneHallAlreadyActive,
+    NoActiveStructures,
+    NoActiveUnits,
+    NoActiveThroneHall
 }
 
 #[error_code]

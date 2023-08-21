@@ -13,12 +13,12 @@ pub fn add_unit_to_match(
     _added_unit_id: u32,
     _match_unit_id: u32,
 ) -> Result<()> {
-    let game_match = &ctx.accounts.game_match;
-    let unit_to_add = &ctx.accounts.unit_to_add;
+    let game_match = &mut ctx.accounts.game_match;
+    let unit_to_add = & ctx.accounts.unit_to_add;
     let match_attacking_army = &mut ctx.accounts.match_attacking_army;
     let match_unit_account = &mut ctx.accounts.match_unit_account;
 
-    // game_match.can_add()?;
+    game_match.can_add()?;
 
     // Ignore resource cost since this is an ephemeral account
     match_attacking_army.add_unit_to_army()?;
@@ -29,6 +29,7 @@ pub fn add_unit_to_match(
         unit_to_add.unit_type,
         unit_to_add.stats,
     )?;
+    game_match.add_unit()?;
 
     Ok(())
 }
@@ -79,6 +80,7 @@ pub struct AddUnitToMatch<'info> {
     )]
     pub season_account: Account<'info, Season>,
     #[account(
+        mut,
         seeds=[match_id.to_le_bytes().as_ref(), season_account.key().as_ref(), attacking_army.key().as_ref(), defending_base.key().as_ref()],
         bump,
     )]

@@ -14,6 +14,9 @@ pub fn attack_structure(
     _match_unit_id: u32,
     _match_structure_id: u32,
 ) -> Result<()> {
+    let game_match = &mut ctx.accounts.game_match;
+    game_match.can_attack()?;
+
     let defending_match_structure = &mut ctx.accounts.defending_match_structure;
     let attacking_match_unit = &ctx.accounts.attacking_match_unit;
 
@@ -21,6 +24,10 @@ pub fn attack_structure(
 
     if can_attack {
         defending_match_structure.try_take_damage(attacking_match_unit.stats.attack)?;
+
+        if defending_match_structure.is_destroyed{
+            game_match.destroy_structure(defending_match_structure.structure_type)?;
+        }
     }
 
     Ok(())
@@ -71,6 +78,7 @@ pub struct AttackStructure<'info> {
     )]
     pub game_match: Account<'info, GameMatch>,
     #[account(
+        mut,
         seeds=["army".as_bytes(), game_match.key().as_ref(), attacker_account.key().as_ref()],
         bump,
     )]

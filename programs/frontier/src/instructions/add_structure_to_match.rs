@@ -13,12 +13,12 @@ pub fn add_structure_to_match(
     _added_structure_id: u32,
     _match_structure_id: u32,
 ) -> Result<()> {
-    let game_match = &ctx.accounts.game_match;
+    let game_match = &mut ctx.accounts.game_match;
     let structure_to_add = &ctx.accounts.structure_to_add;
     let match_defending_base = &mut ctx.accounts.match_defending_base;
     let match_structure_account = &mut ctx.accounts.match_structure_account;
 
-    // game_match.can_add()?;
+    game_match.can_add()?;
 
     // Ignore resource cost since this is an ephemeral account
     match_defending_base
@@ -31,6 +31,7 @@ pub fn add_structure_to_match(
         structure_to_add.structure_type,
         structure_to_add.position,
     )?;
+    game_match.add_structure(structure_to_add.structure_type, structure_to_add.stats.rank)?;
 
     Ok(())
 }
@@ -80,6 +81,7 @@ pub struct AddStructureToMatch<'info> {
     )]
     pub season_account: Account<'info, Season>,
     #[account(
+        mut,
         seeds=[match_id.to_le_bytes().as_ref(), season_account.key().as_ref(), attacking_army.key().as_ref(), defending_base.key().as_ref()],
         bump,
     )]

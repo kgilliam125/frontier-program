@@ -1,17 +1,14 @@
-use crate::errors::{GameMatchError, StructureError};
 use crate::state::army::*;
 use crate::state::game_match::*;
 use crate::state::player::*;
 use crate::state::player_base::*;
 use crate::state::season::*;
-use crate::state::structure::*;
 use anchor_lang::prelude::*;
 
 pub fn transition_match_state(
     ctx: Context<TransitionMatchState>,
     _season_id: u32,
     _match_id: u32,
-    _pvp_structure_id: u32,
     requested_state: MatchState,
 ) -> Result<()> {
     let game_match = &mut ctx.accounts.game_match;
@@ -22,7 +19,7 @@ pub fn transition_match_state(
 }
 
 #[derive(Accounts)]
-#[instruction(season_id: u32, match_id: u32, pvp_structure_id: u32)]
+#[instruction(season_id: u32, match_id: u32)]
 pub struct TransitionMatchState<'info> {
     // attacker accounts
     #[account(mut)]
@@ -56,17 +53,14 @@ pub struct TransitionMatchState<'info> {
     /// CHECK: Used for PDA validation and derivation of the various game accounts
     pub season_owner: UncheckedAccount<'info>,
     #[account(
-        mut,
         seeds=["season".as_bytes(), season_id.to_le_bytes().as_ref(), season_owner.key().as_ref()],
         bump,
     )]
     pub season_account: Account<'info, Season>,
     #[account(
-        init,
+        mut,
         seeds=[match_id.to_le_bytes().as_ref(), season_account.key().as_ref(), attacking_army.key().as_ref(), defending_base.key().as_ref()],
         bump,
-        payer=attacker,
-        space=1000,
     )]
     pub game_match: Account<'info, GameMatch>,
 }
